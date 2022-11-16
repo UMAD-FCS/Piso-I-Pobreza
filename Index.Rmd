@@ -29,7 +29,9 @@ suppressPackageStartupMessages(library(DT))
 suppressPackageStartupMessages(library(kableExtra))
 
 
-base        <- readxl::read_excel("Data/Base_Motor_Pobreza.xls")
+base        <- readxl::read_excel("Data/Base_Motor_Pobreza.xlsx")
+base        <- base %>% rename(PAÍS = PAIS)
+base        <- base %>% rename(REGIÓN = REGION)
 base_fichas <- readxl::read_excel("Data/Base_Fichas_Técnicas.xls")
 base_fichas <- base_fichas[order(base_fichas$ID),]
 
@@ -87,7 +89,7 @@ g1 <-
   NOMINDICADOR =="Promedio de ingreso per-cápita de los hogares (Cte. Base diciembre 2006)" ~ "Media",
   NOMINDICADOR =="Mediana de ingreso per-cápita de los hogares (Cte. Base diciembre 2006)" ~ "Mediana")) %>%
   mutate(VALOR = as.numeric(VALOR)) %>% 
-  ggplot(aes(x = ANIO, y = VALOR)) +
+  ggplot(aes(x = as.numeric(ANIO), y = as.numeric(VALOR))) +
   geom_line(aes(group = 2, color = UNIDAD)) +
   geom_point(aes(color = UNIDAD)) +
   scale_color_manual(
@@ -95,7 +97,7 @@ g1 <-
     labels = c("Media", "Mediana")
   ) +
   ylim(0, 15000) +
-  xlim(1980, 2020) +
+  xlim(1980, 2021) +
   
   theme_minimal() +
   labs(
@@ -195,8 +197,9 @@ periodo_formatted <- paste(
 g1 <- 
   base %>% filter(NOMINDICADOR == "Índice de Gini", CORTE_NUEVA == "Total") %>%
   mutate(VALOR = as.numeric(VALOR)) %>% 
-  ggplot(aes(x = ANIO, y = VALOR)) +
+  ggplot(aes(x = as.numeric(ANIO), y = as.numeric(VALOR))) +
   geom_point(aes(color = NOMINDICADOR)) +
+  geom_line(aes(color = NOMINDICADOR)) +
   scale_color_manual(
     values = c("#a1dd70"),
     labels = c("Índice de Gini")
@@ -300,7 +303,7 @@ periodo_formatted <- paste(
 g1 <- 
   base %>% filter(NOMINDICADOR == "Relación entre el Ingreso medio per cápita del primer y quinto quintil", CORTE_NUEVA == "Total") %>%
   mutate(VALOR = as.numeric(VALOR)) %>% 
-  ggplot(aes(x = ANIO, y = VALOR)) +
+  ggplot(aes(x = as.numeric(ANIO), y = as.numeric(VALOR))) +
   geom_line(aes(group = 2, color = URBANORURALUY)) +
   geom_point(aes(color = URBANORURALUY)) +
   scale_color_manual(
@@ -719,7 +722,7 @@ periodo_formatted <- paste(
 g1 <- 
   base %>% filter(NOMINDICADOR == "Brecha de pobreza a usd 3,20 por día (2011 ppp) (%)") %>%
   mutate(VALOR = as.numeric(VALOR)) %>%
-  ggplot(aes(x = ANIO, y = VALOR)) +
+  ggplot(aes(x = as.numeric(ANIO), y = as.numeric(VALOR))) +
   geom_line(aes(group = 1, color = NOMINDICADOR)) +
   geom_point(aes(color = NOMINDICADOR)) +
   scale_color_manual(
@@ -935,8 +938,8 @@ periodo_formatted <- paste(
 g1 <- 
   base %>% filter(NOMINDICADOR == "Personas en hogares con hacinamiento (% de la población total) (def. CELADE)", CORTE_NUEVA == "Total") %>%
   mutate(VALOR = as.numeric(VALOR)) %>% 
-  mutate(VALOR = VALOR*100) %>% 
-  ggplot(aes(x = ANIO, y = VALOR)) +
+  mutate(VALOR = as.numeric(VALOR)*100) %>% 
+  ggplot(aes(x = as.numeric(ANIO), y = as.numeric(VALOR))) +
   geom_line(aes(group = 2, color = URBANORURALUY)) +
   geom_point(aes(color = URBANORURALUY)) +
   scale_color_manual(
@@ -944,7 +947,7 @@ g1 <-
     labels = c("Total País", "Urbano (más de 5.000 habitantes)")
   ) +
   ylim(0, 50) +
-  xlim(1990, 2019) +
+  xlim(1990, 2021) +
   
   theme_minimal() +
   labs(
@@ -1237,8 +1240,8 @@ periodo_formatted <- paste(
 g1 <- 
   base %>% filter(NOMINDICADOR == "Personas en hogares con miembros de 4 a 17 años que no asisten a centros educativos (% de la población total)", CORTE_NUEVA == "Total") %>%
   mutate(VALOR = as.numeric(VALOR)) %>% 
-  mutate(VALOR = VALOR*100) %>% 
-  ggplot(aes(x = ANIO, y = VALOR)) +
+  mutate(VALOR = as.numeric(VALOR)*100) %>% 
+  ggplot(aes(x = as.numeric(ANIO), y = as.numeric(VALOR))) +
   geom_line(aes(group = 2, color = URBANORURALUY)) +
   geom_point(aes(color = URBANORURALUY)) +
   scale_color_manual(
@@ -1246,7 +1249,7 @@ g1 <-
     labels = c("Total País", "Urbano (más de 5.000 habitantes)")
   ) +
   ylim(0, 50) +
-  xlim(1980, 2020) +
+  xlim(1980, 2021) +
   
   theme_minimal() +
   labs(
