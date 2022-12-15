@@ -57,7 +57,7 @@ El ingreso de los hogares es indicativo de sus posibilidades de acceso a bienes 
 
 Los valores que la media poblacional alcanza son indicativos de los niveles de vida general de la población. Sin embargo, el indicador no da cuenta de la desigualdad en la percepción de ingresos entre distintos grupos poblacionales y los vaores pueden verse afectados por cifras extremas y poco frecuentes como la existencia de pocos hogares con ingresos muy elevados. En 1981, en promedio, los hogres percibían \$8.766 por persona (a precios de diciembre de 2006). El valor de la mediana indica el valor central del ingreso de todos los hogares cuando estos están ordenados de menor a mayor. En 1981, el 50 por ciento de los hogares perciben un ingreso menor o igual a \$6.384.   
 
-El gráfico presentan la evolución del promedio y la mediana de ingresos per-cápita en los hogares uruguayos desde la década del ochenta. Durante el período se registra una caída de los ingresos desde finales de la década del 90, alcanzando el valor más bajo durante la crisis del 2002. A partir del 2005 se presenta una tendencia constante al aumento de los ingresos. 
+El gráfico presentan la evolución del promedio y la mediana de ingresos per-cápita en los hogares uruguayos desde la década del ochenta. Durante el período se registra una caída de los ingresos desde finales de la década del 90, alcanzando el valor más bajo durante la crisis del 2002. A partir del 2005 y hasta 2019 se presenta una tendencia constante al aumento de los ingresos. 
 </div>
 
 <br />
@@ -274,7 +274,7 @@ cita_formatted <- paste(
 
 
 <div style="text-align: justify">
-La relación entre el ingreso medio per-cápita del primer y quinto quintil de ingresos refleja cuántas veces mayor es el ingreso medio del 20% más rico de las personas, en relación con el del 20% más pobre. Desde el año 2005 a la fecha se observa una disminución del valor del cocinete. En consonancia con el indicador anterior, este hecho evidencia una disminución de la desiguldad en la percepción de ingresos entre los hogares más ricos y más pobres en términos relativos. 
+La relación entre el ingreso medio per-cápita del primer y quinto quintil de ingresos refleja cuántas veces mayor es el ingreso medio del 20% más rico de las personas, en relación con el del 20% más pobre. Desde el año 2005 se observa una disminución del valor del cocinete y, a partir de 2016, se mantiene relativamente estable. En consonancia con el indicador anterior, este hecho evidencia una disminución de la desiguldad en la percepción de ingresos entre los hogares más ricos y más pobres en términos relativos. 
 </div>
 
 <br />
@@ -311,7 +311,7 @@ g1 <-
     labels = c("Total País", "Urbano (más de 5.000 habitantes)")
   ) +
   ylim(0, 15) +
-  xlim(1995, 2020) +
+  xlim(1995, 2021) +
   
   theme_minimal() +
   labs(
@@ -383,7 +383,7 @@ cita_formatted <- paste(
 <div style="text-align: justify">
 La medida de pobreza más simple y más ampliamente utilizada es la tasa de recuento, que es el porcentaje de pobres en una población dada. La construcción de la línea de pobreza (LP) se basa en la definición de un umbral de ingresos necesarios para cubrir una Canasta Básica Total (CBT). Para su cálculo, se utilizan índices de precios tanto de bienes alimentarios como no alimentarios. Para determinar la LP se introducen economías de escala en los gastos no alimentarios para los estratos de referencia seleccionados en las diferentes regiones geográficas, tomando en cuenta el tamaño del hogar (INE, 2015). La línea de indigencia refiere al ingreso necesario para cubrir los gastos únicamente alimentarios. 
 
-Los siguientes gráficos muestran la evolución de ambos indicadores como proporción de hogares en condición de pobreza e indigencia y porcentaje de personas que en los mismos residen. Los mismos muestran cómo desde el 2006 la pobreza monetaria ha caído sostenidamente en Uruguay. Si se observasen registros de años anteriores se podría observar cómo, luego de más de una década de aumento en su incidencia, intensidad y severidad, es a partir del año 2005 en que se registra un punto de inflexión en la tendencia (INE, 2011). En un contexto de fuerte expansión económica, el crecimiento del empleo y los ingresos, así como la instauración de un conjunto de políticas redistributivas, han contribuido a la mejora de los indicadores de pobreza (Amarante et al., 2011). 
+Los siguientes gráficos muestran la evolución de ambos indicadores como proporción de hogares en condición de pobreza e indigencia y porcentaje de personas que en los mismos residen. Los mismos muestran cómo desde el 2006 la pobreza monetaria ha caído sostenidamente en Uruguay. Si se observasen registros de años anteriores se podría observar cómo, luego de más de una década de aumento en su incidencia, intensidad y severidad, es a partir del año 2005 en que se registra un punto de inflexión en la tendencia (INE, 2011). En un contexto de fuerte expansión económica, el crecimiento del empleo y los ingresos, así como la instauración de un conjunto de políticas redistributivas, han contribuido a la mejora de los indicadores de pobreza (Amarante et al., 2011). En 2020 se observa un aumento de la pobreza y de la indigencia y una posterior disminución en 2021, aunque manteniéndose en niveles superiores a los observados en los últimos 5 años.  
 </div>
 
 <br />
@@ -844,6 +844,7 @@ g1 <-
     labels = c("Hogares", "Personas")
   ) +
   ylim(0, 60) +
+#  scale_x_continuos(breaks=seq(2006, max, 1)) +
   theme_minimal() +
   labs(
     color = "",
@@ -1051,6 +1052,7 @@ g1 <-
     labels = c("Total País", "Urbano (más de 5.000 habitantes)")
   ) +
   ylim(0, 15) +
+#    xlim(2006, 2021) +
   theme_minimal() +
   labs(
     color = "",
@@ -1113,7 +1115,7 @@ cita_formatted <- paste(
 
 <br />
 
-La tenencia de algunos bienes en el hogar son indicativos de la calidad de vida de las personas. Se considera que la persona posee una privación en términos de acceso a artefactos básicos de confort en base a la ausencia de medios de calefacción, para refrigerar alimentos o para disponer de agua caliente en el baño. La evolución de este indicador desde 2006 al 2019 muestra una tendencia decreciente, evidenciando una mejora en la calidad de vida de las personas durante el período.
+La tenencia de algunos bienes en el hogar son indicativos de la calidad de vida de las personas. Se considera que la persona posee una privación en términos de acceso a artefactos básicos de confort en base a la ausencia de medios de calefacción, para refrigerar alimentos o para disponer de agua caliente en el baño. La evolución de este indicador desde 2006 al 2021 muestra una tendencia decreciente, evidenciando una mejora en la calidad de vida de las personas durante el período.
 
 
 <br />
@@ -1150,6 +1152,7 @@ g1 <-
     labels = c("Total País", "Urbano (más de 5.000 habitantes)")
   ) +
   ylim(0, 35) +
+#  xlim(2006, 2021) +
   theme_minimal() +
   labs(
     color = "",
@@ -1213,7 +1216,7 @@ cita_formatted <- paste(
 <br />
 
 <div style="text-align: justify">
-La educación constituye un requerimiento mínimo para que las personas puedan incorporarse adecuadamente a la vida productiva y social. En Uruguay, se establece como obligatoria la asistencia a algún centro educativo entre los 4 años y hasta la educación media superior. Se considera que un hogar presenta una carencia en el acceso a la educación si al menos un integrante del hogar con edad comprendida entre los 4 y los 17 años no se encuentra asistiendo a un centro educativo formal, no habiendo finalizado enseñanza secundaria. Desde la década del ochenta, la proporción de hogares con una carencia en este indicador disminuye significativamente y alcanza un valor de 2,1% en 2018. 
+La educación constituye un requerimiento mínimo para que las personas puedan incorporarse adecuadamente a la vida productiva y social. En Uruguay, se establece como obligatoria la asistencia a algún centro educativo entre los 4 años y hasta la educación media superior. Se considera que un hogar presenta una carencia en el acceso a la educación si al menos un integrante del hogar con edad comprendida entre los 4 y los 17 años no se encuentra asistiendo a un centro educativo formal, no habiendo finalizado enseñanza secundaria. Desde la década del ochenta, la proporción de hogares con una carencia en este indicador disminuye significativamente y alcanza un valor de 2,8% en 2021. 
 </div>
 
 <br />
