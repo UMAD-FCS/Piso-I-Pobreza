@@ -55,7 +55,7 @@ La [Unidad de Métodos y Acceso a Datos](https://umad.cienciassociales.edu.uy/) 
 
 El ingreso de los hogares es indicativo de sus posibilidades de acceso a bienes y servicios en el mercado. El ingreso per-cápita se calcula dividiendo el total de ingresos que percibe un hogar entre la cantidad de personas que en el mismo residen. 
 
-Los valores que la media poblacional alcanza son indicativos de los niveles de vida general de la población. Sin embargo, el indicador no da cuenta de la desigualdad en la percepción de ingresos entre distintos grupos poblacionales y los vaores pueden verse afectados por cifras extremas y poco frecuentes como la existencia de pocos hogares con ingresos muy elevados. En 1981, en promedio, los hogres percibían \$8.766 por persona (a precios de diciembre de 2006). El valor de la mediana indica el valor central del ingreso de todos los hogares cuando estos están ordenados de menor a mayor. En 1981, el 50 por ciento de los hogares perciben un ingreso menor o igual a \$6.384.   
+Los valores que la media poblacional alcanza son indicativos de los niveles de vida general de la población. Sin embargo, el indicador no da cuenta de la desigualdad en la percepción de ingresos entre distintos grupos poblacionales y los valores pueden verse afectados por cifras extremas y poco frecuentes como la existencia de pocos hogares con ingresos muy elevados. En 1981, en promedio, los hogres percibían \$8.766 por persona (a precios de diciembre de 2006). El valor de la mediana indica el valor central del ingreso de todos los hogares cuando estos están ordenados de menor a mayor. En 1981, el 50 por ciento de los hogares perciben un ingreso menor o igual a \$6.384.   
 
 El gráfico presentan la evolución del promedio y la mediana de ingresos per-cápita en los hogares uruguayos desde la década del ochenta. Durante el período se registra una caída de los ingresos desde finales de la década del 90, alcanzando el valor más bajo durante la crisis del 2002. A partir del 2005 y hasta 2019 se presenta una tendencia constante al aumento de los ingresos. 
 </div>
@@ -97,7 +97,7 @@ g1 <-
     labels = c("Media", "Mediana")
   ) +
   ylim(0, 15000) +
-  xlim(1980, 2021) +
+  xlim(1980, 2019) +
   
   theme_minimal() +
   labs(
@@ -166,7 +166,7 @@ cita_formatted <- paste(
 
 
 <div style="text-align: justify">
-El Índice de Gini mide hasta qué punto la distribución del ingreso entre individuos u hogares dentro de una economía se aleja de una distribución perfectamente equitativa. Una curva de Lorenz muestra los porcentajes acumulados de ingreso recibido total contra la cantidad acumulada de receptores, empezando a partir de la persona o el hogar más pobre. El índice de Gini mide la superficie entre la curva de Lorenz y una línea hipotética de equidad absoluta, expresada como porcentaje de la superficie máxima debajo de la línea. Así, un índice de Gini de 0 representa una equidad perfecta, mientras que un índice de 100 representa una inequidad perfecta.
+El Índice de Gini mide hasta qué punto la distribución del ingreso entre individuos u hogares dentro de una economía se aleja de una distribución perfectamente equitativa. Una curva de Lorenz muestra los porcentajes acumulados de ingreso recibido total contra la cantidad acumulada de receptores, empezando a partir de la persona o el hogar de menores ingresos. El índice de Gini mide la superficie entre la curva de Lorenz y una línea hipotética de equidad absoluta, expresada como porcentaje de la superficie máxima debajo de la línea. Así, un índice de Gini de 0 representa una equidad perfecta, mientras que un índice de 100 representa una inequidad perfecta.
 
 Al analizar la evolución de este indicador en Uruguay, se observa una tendencia sostenida de disminución de la desiguladad durante la última década. 
 </div>
@@ -274,7 +274,7 @@ cita_formatted <- paste(
 
 
 <div style="text-align: justify">
-La relación entre el ingreso medio per-cápita del primer y quinto quintil de ingresos refleja cuántas veces mayor es el ingreso medio del 20% más rico de las personas, en relación con el del 20% más pobre. Desde el año 2005 se observa una disminución del valor del cocinete y, a partir de 2016, se mantiene relativamente estable. En consonancia con el indicador anterior, este hecho evidencia una disminución de la desiguldad en la percepción de ingresos entre los hogares más ricos y más pobres en términos relativos. 
+La relación entre el ingreso medio per-cápita del primer y quinto quintil de ingresos refleja cuántas veces mayor es el ingreso medio del 20% más rico de las personas, en relación con el del 20% más pobre. Desde el año 2005 se observa una disminución del valor del cociente y, a partir de 2016, se mantiene relativamente estable. En consonancia con el indicador anterior, este hecho evidencia una disminución de la desiguldad en la percepción de ingresos entre los hogares más ricos y más pobres en términos relativos. 
 </div>
 
 <br />
