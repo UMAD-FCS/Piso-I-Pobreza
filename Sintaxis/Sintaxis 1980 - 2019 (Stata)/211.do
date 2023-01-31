@@ -1,0 +1,304 @@
+
+*======================================================================================*
+*                       **   POBREZA Y DESIGUALDAD   **
+*                            MATRIZ PARA BASE WEB
+*
+*
+* Creación:      09/06/2020
+* Institución:   UMAD, FCS
+* Responsable:   Jimena Pandolfi
+* Descripción:   Construcción de matriz para base web (Piso II - Motores)para 
+*				 indicadores de dimiensión temática "Familia"
+*
+*
+*======================================================================================*
+
+
+*======================================================================================*
+*                           UBICACIÓN DE ARCHIVOS      
+*======================================================================================*
+
+	cd "C:\Users\Usuario\Dropbox\1. Unidad de Métodos y Acceso a Datos\1. Observatorio UMAD"
+	global bases "C:\Users\Usuario\Dropbox\1. Unidad de Métodos y Acceso a Datos\1. Observatorio UMAD\PISO I_MICRODATOS\ECH\Microdatos\Compatibilizadas Iecon\En uso"
+	global tabulados C:\Users\Usuario\Dropbox\1. Unidad de Métodos y Acceso a Datos\1. Observatorio UMAD\PISO II_MOTORES\Base web\Extracciones parciales\2. Familia
+
+
+*======================================================================================*
+*              CARACTERÍSTICAS GENERALES DE LA MATRIZ DE EXPORTACAIÓN      
+*======================================================================================*
+
+    global seieURB 81/99 0/18   // Años de serie para país urbano
+	global seieTOT 6/18         // Años de serie para total país
+
+	  
+
+*======================================================================================*
+*                 1.1. Composición y tamaño de los hogares    
+*======================================================================================*
+
+* INDICADOR: Distribución de hogares según tipo
+* CÓDIGO:    211
+* GRUPOS:    Región / Condición de pobreza / Quintil de ingreso / Sexo del jefe(a)
+* FUENTE:    ECH (INE)
+* PERÍODO:   1990-2018 País urbano / 2006-2018 Total país 
+
+
+**
+**MODIFICACIÓN MANUAL: CÓDIGOS Y LOCAL J PARA VARIABLES AUXILIARES**
+
+
+*======================================================================================*
+* A. HOGARES UNIPERSONALES
+*======================================================================================*
+
+
+    *TOTAL PAÍS
+	local i      = 1
+	local codind = 211                  // Código de indicador
+	local grupo  = 12                   // Cantidad de grupos
+	local canio  = 13                   // Cantidad de años de la serie
+
+	local filas = (1 + `grupo') * `canio' // Cantidad de grupos más el total por cantidad de años de la serie
+	matrix def       MATR= J(`filas',3,.)
+	matrix colnames  MATR= VALOR AUXILIAR ANIO
+
+	foreach anio of numlist $seieTOT  {
+    use "$bases\p`anio'.dta", clear
+	
+	g sexojefe=0
+	replace sexojefe=1 if bc_pe4==1 & bc_pe2==1
+	replace sexojefe=2 if bc_pe4==1 & bc_pe2==2
+	
+		
+	mean bc_ht11_sss [aw=bc_pesoan] if bc_pe4==1
+	matrix MATR  [`i',1]=  e(b)
+	matrix MATR  [`i',2]=  0
+	matrix MATR  [`i',3]=  `anio'
+   	
+	ta umad_tipohogar, g(tipo)
+	
+	local i  = `i' + 1
+	foreach val of numlist 1/3  {
+	mean tipo1 [aw=bc_pesoan] if bc_pe4==1 & bd_region==`val'
+	matrix MATR  [`i',1]=  e(b)
+	matrix MATR  [`i',2]=  `val'
+	matrix MATR  [`i',3]=  `anio'
+	local i  = `i' + 1
+    }
+    *
+	
+	local j  = 	4
+	foreach val of numlist 1/5  {
+	mean tipo1 [aw=bc_pesoan] if bc_pe4==1 & bd_quintilesy==`val'
+	matrix MATR  [`i',1]=  e(b)
+	matrix MATR  [`i',2]=  `j'
+    matrix MATR  [`i',3]=  `anio'
+	
+	local i  = `i' + 1
+	local j  = `j' + 1
+	}
+    *	
+	
+	local j  = 	9
+	foreach val of numlist 0/1  {
+	mean tipo1 [aw=bc_pesoan] if bc_pe4==1 & pobre06==`val'
+	matrix MATR  [`i',1]=  e(b)
+	matrix MATR  [`i',2]=  `j'
+    matrix MATR  [`i',3]=  `anio'
+	
+	local i  = `i' + 1
+	local j  = `j' + 1
+	}
+    *	
+	
+	local j  = 	11
+	foreach val of numlist 1/2  {
+	mean tipo1 [aw=bc_pesoan] if bc_pe4==1 & sexojefe==`val'
+	matrix MATR  [`i',1]=  e(b)
+	matrix MATR  [`i',2]=  `j'
+    matrix MATR  [`i',3]=  `anio'
+	
+	local i  = `i' + 1
+	local j  = `j' + 1
+	}
+    *
+	
+	
+	}
+    *
+
+**
+
+xml_tab MATR, save("$tabulados\Auxiliares\AUX`codind'_TP.xls") replace
+
+**
+/*PROBLEMA: GUARDAR COMO EXCEL 97, STATA NO ABRE CON ESTE COMANDO ARCHIVOS EXCEL 2003*/
+**MODIFICACIÓN MANUAL: GUARDAR COMO LA BASE DE DATOS Y EDITAR NOMBRES DE INDICADORES E INFORMACIÓN DE METADATO**
+**MODIFICACIÓN MANUAL: ACTUALIZAR LOCALS**
+
+	local i      = 1
+	local codind = 111                  // Código de indicador
+	local grupo  = 12                   // Cantidad de grupos
+	local canio  = 13                   // Cantidad de años de la serie
+
+
+import  excel "$tabulados\Auxiliares\AUX`codind'_TP.xls", firstrow clear
+sort AUXILIAR ANIO
+drop if ANIO==.
+
+g CODIND                 = 111
+g NOMINDICADOR           = "PROMEDIO DE INGRESO PER-CÁPITA DE LOS HOGARES (CTE. BASE DICIEMBRE 2006)"
+g SEXO                   = "NA"
+g ASCENDENCIA    		 = "NA"
+g QUINTIL       		 = "NA"
+g DEPARTAMENTOUY		 = "NA"
+g URBANORURALUY 		 = "NA"
+g PAÍS			 		 = "URUGUAY"
+g RESPONSABLE			 = "JIMENA PANDOLFI"
+
+**
+
+**
+**MODIFICACIÓN MANUAL: CÓDIGOS Y TÍTULOS DE LA VARIABLES AUXILIARES CORRESPONDIENTES**
+
+replace URBANORURALUY    = "URBANO (MÁS DE 5.000 HABITANTES)"     if AUXILIAR==1
+replace URBANORURALUY    = "URBANO (MENOS DE 5.000 HABITANTES)"   if AUXILIAR==2
+replace URBANORURALUY    = "RURAL DISPERSO"                       if AUXILIAR==3
+
+replace QUINTIL			 = "QUINTIL 1"							  if AUXILIAR==4
+replace QUINTIL			 = "QUINTIL 2"							  if AUXILIAR==5
+replace QUINTIL			 = "QUINTIL 3"							  if AUXILIAR==6
+replace QUINTIL			 = "QUINTIL 4"							  if AUXILIAR==7
+replace QUINTIL			 = "QUINTIL 5"							  if AUXILIAR==8
+
+replace NOMINDICADOR    = "PROMEDIO DE INGRESO PER-CÁPITA DE LOS HOGARES (CTE. BASE DICIEMBRE 2006) EN HOGARES EN SITUACIÓN DE POBREZA"            if AUXILIAR==9
+replace NOMINDICADOR    = "PROMEDIO DE INGRESO PER-CÁPITA DE LOS HOGARES (CTE. BASE DICIEMBRE 2006) EN HOGARES NO EN SITUACIÓN DE POBREZA"         if AUXILIAR==10
+
+replace NOMINDICADOR    = "PROMEDIO DE INGRESO PER-CÁPITA DE LOS HOGARES (CTE. BASE DICIEMBRE 2006) EN HOGARES CON JEFATURA MASCULINA"      if AUXILIAR==11
+replace NOMINDICADOR    = "PROMEDIO DE INGRESO PER-CÁPITA DE LOS HOGARES (CTE. BASE DICIEMBRE 2006) EN HOGARES CON JEFATURA FEMENINA"       if AUXILIAR==12
+
+** 
+
+** 
+
+save "$tabulados\Auxiliares\\`codind'_TP.dta", replace
+
+
+
+
+************************************************************************************************
+************************************************************************************************
+
+    *PAÍS URBANO
+	local i      = 1
+	local codind = 111                  // Código de indicador
+	local grupo  = 8                    // Cantidad de grupos (se agrega un grupo para el total)
+	local canio  = 38                   // Cantidad de años de la serie
+
+	local filas = `grupo' * `canio' // Cantidad de grupos más el total por cantidad de años de la serie
+	matrix def       MATR= J(`filas',3,.)
+	matrix colnames  MATR= VALOR AUXILIAR ANIO
+
+	foreach anio of numlist $seieURB  {
+    use "$bases\p`anio'.dta", clear
+	
+	g sexojefe=0
+	replace sexojefe=1 if bc_pe4==1 & bc_pe2==1
+	replace sexojefe=2 if bc_pe4==1 & bc_pe2==2
+	
+	
+	local j  = 	1
+	mean bc_ht11_sss [aw=bc_pesoan] if bc_pe4==1 & bc_filtloc==1
+ 	matrix MATR  [`i',1]=  e(b)
+	matrix MATR  [`i',2]=  `j'
+    matrix MATR  [`i',3]=  `anio'
+
+	local i  = `i' + 1
+	
+	local j  = 	4
+	foreach val of numlist 1/5  {
+	mean bc_ht11_sss [aw=bc_pesoan] if bc_pe4==1 & bd_quintilesy==`val' & bc_filtloc==1
+	matrix MATR  [`i',1]=  e(b)
+	matrix MATR  [`i',2]=  `j'
+    matrix MATR  [`i',3]=  `anio'
+	
+	local i  = `i' + 1
+	local j  = `j' + 1
+	}
+	
+		local j  = 	11
+	foreach val of numlist 1/2  {
+	mean bc_ht11_sss [aw=bc_pesoan] if bc_pe4==1 & sexojefe==`val' & bc_filtloc==1
+	matrix MATR  [`i',1]=  e(b)
+	matrix MATR  [`i',2]=  `j'
+    matrix MATR  [`i',3]=  `anio'
+	
+	local i  = `i' + 1
+	local j  = `j' + 1
+	}
+    *	
+	
+	}
+    *
+
+**
+
+xml_tab MATR, save("$tabulados\Auxiliares\AUX`codind'_PU.xls") replace
+
+**
+/*PROBLEMA: GUARDAR COMO EXCEL 97, STATA NO ABRE CON ESTE COMANDO ARCHIVOS EXCEL 2003*/
+**MODIFICACIÓN MANUAL: GUARDAR COMO LA BASE DE DATOS Y EDITAR NOMBRES DE INDICADORES E INFORMACIÓN DE METADATO**
+**MODIFICACIÓN MANUAL: ACTUALIZAR LOCALS**
+
+	local i      = 1
+	local codind = 111                  // Código de indicador
+	local grupo  = 8                    // Cantidad de grupos
+	local canio  = 38                   // Cantidad de años de la serie
+
+
+import  excel "$tabulados\Auxiliares\AUX`codind'_PU.xls", firstrow clear
+sort AUXILIAR ANIO
+
+g CODIND                 = 111
+g NOMINDICADOR           = "PROMEDIO DE INGRESO PER-CÁPITA DE LOS HOGARES (CTE. BASE DICIEMBRE 2006)"
+g SEXO                   = "NA"
+g ASCENDENCIA    		 = "NA"
+g QUINTIL       		 = "NA"
+g DEPARTAMENTOUY		 = "NA"
+g URBANORURALUY 		 = "URBANO (MÁS DE 5.000 HABITANTES)"
+g PAÍS			 		 = "URUGUAY"
+g RESPONSABLE			 = "JIMENA PANDOLFI"
+
+**
+
+**
+**MODIFICACIÓN MANUAL: CÓDIGOS Y TÍTULOS DE LA VARIABLES AUXILIARES CORRESPONDIENTES**
+
+destring AUXILIAR, replace
+
+replace URBANORURALUY    = "URBANO (MÁS DE 5.000 HABITANTES)"            if AUXILIAR==1
+
+
+replace QUINTIL			 = "QUINTIL 1"							  if AUXILIAR==4
+replace QUINTIL			 = "QUINTIL 2"							  if AUXILIAR==5
+replace QUINTIL			 = "QUINTIL 3"							  if AUXILIAR==6
+replace QUINTIL			 = "QUINTIL 4"							  if AUXILIAR==7
+replace QUINTIL			 = "QUINTIL 5"							  if AUXILIAR==8
+
+
+replace NOMINDICADOR    = "PROMEDIO DE INGRESO PER-CÁPITA DE LOS HOGARES (CTE. BASE DICIEMBRE 2006) EN HOGARES CON JEFATURA MASCULINA"      if AUXILIAR==11
+replace NOMINDICADOR    = "PROMEDIO DE INGRESO PER-CÁPITA DE LOS HOGARES (CTE. BASE DICIEMBRE 2006) EN HOGARES CON JEFATURA FEMENINA"       if AUXILIAR==12
+
+
+** 
+
+save  "$tabulados\Auxiliares\\`codind'_PU.dta", replace
+
+
+
+************************************************************************************************
+************************************************************************************************
+*FUSIÓN PAÍS URBANO Y TOTAL PAÍS
+
+append using "$tabulados\Auxiliares\\`codind'_TP.dta", force
+export excel  "$tabulados\\`codind'.xls", cell(A1) firstrow(varlabels) replace
