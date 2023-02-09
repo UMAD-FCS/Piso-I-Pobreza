@@ -11,7 +11,7 @@ library(srvyr)
 library(tidyverse)
 library(laeken)
 library(statar)
-
+library(xlsx)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 ### Carga de bases ###
@@ -85,13 +85,13 @@ sem2_implant <- sem2_implant %>% dplyr::mutate(bc_ipc = case_when(
 # Ingresos
 sem1 <- sem1 %>% dplyr::mutate(y_pc       =  HT11 / ht19 )                      #Ingreso per-cápita
 sem1 <- sem1 %>% dplyr::mutate(y_pc_svl   =  (HT11 - HT13) / ht19)              #Ingreso per-cápita sin valor locativo
-sem1 <- sem1 %>% dplyr::mutate(y_pc_d     =  HT11 / ht19 / bc_ipc_tot)          #Ingreso per-cápita deflactado
-sem1 <- sem1 %>% dplyr::mutate(y_pc_svl_d =  (HT11 - HT13) / ht19 / bc_ipc_tot) #Ingreso per-cápita sin valor locativo deflactado
+sem1 <- sem1 %>% dplyr::mutate(y_pc_d     =  (HT11 / ht19) * bc_ipc_tot)          #Ingreso per-cápita deflactado
+sem1 <- sem1 %>% dplyr::mutate(y_pc_svl_d =  (HT11 - HT13) / ht19 * bc_ipc_tot) #Ingreso per-cápita sin valor locativo deflactado
 
 sem2_implant <- sem2_implant %>% dplyr::mutate(y_pc       =  ht11 / ht19 )                      #Ingreso per-cápita
 sem2_implant <- sem2_implant %>% dplyr::mutate(y_pc_svl   =  (ht11 - ht13) / ht19)              #Ingreso per-cápita sin valor locativo
-sem2_implant <- sem2_implant %>% dplyr::mutate(y_pc_d     =  ht11 / ht19 / bc_ipc_tot)          #Ingreso per-cápita deflactado
-sem2_implant <- sem2_implant %>% dplyr::mutate(y_pc_svl_d =  (ht11 - ht13) / ht19 / bc_ipc_tot) #Ingreso per-cápita sin valor locativo deflactado
+sem2_implant <- sem2_implant %>% dplyr::mutate(y_pc_d     =  (ht11 / ht19) * bc_ipc_tot)          #Ingreso per-cápita deflactado
+sem2_implant <- sem2_implant %>% dplyr::mutate(y_pc_svl_d =  (ht11 - ht13) / ht19 * bc_ipc_tot) #Ingreso per-cápita sin valor locativo deflactado
 
 
 # Quintil de ingresos
@@ -105,6 +105,11 @@ sem2_h <- sem2_h %>% dplyr::mutate(quintilesy = statar::xtile(y_pc, n=5, wt = w_
 sem2_h <- sem2_h[,c("ID","quintilesy")]
 sem2_implant <- merge(sem2_implant, sem2_h, by = "ID")   
 
+sem1 <- sem1 %>% dplyr::mutate(quintilesy_obs = statar::xtile(y_pc, n=5, wt = pesomen))
+sem2_implant <- sem2_implant %>% dplyr::mutate(quintilesy_obs = statar::xtile(y_pc, n=5, wt = w_sem))
+
+sem1 <- sem1 %>% dplyr::mutate(decilesy_obs = statar::xtile(y_pc, n=10, wt = pesomen))
+sem2_implant <- sem2_implant %>% dplyr::mutate(decilesy_obs = statar::xtile(y_pc, n=10, wt = w_sem))
 
 # Pobreza auxiliar
 sem1 <- sem1 %>% dplyr::mutate(pobre_aux = case_when(pobre06 == 0 ~ 2,
@@ -121,7 +126,7 @@ sem1 <- sem1 %>% dplyr::mutate(bd_region = case_when(region_4 == 1 | region_4 ==
 
 sem2_implant <- sem2_implant %>% dplyr::mutate(bd_region = case_when(region_4 == 1 | region_4 == 2 ~ 1,
                                                                   region_4 == 3 ~ 2,
-                                                                  region_4 == 4 ~ 1))
+                                                                  region_4 == 4 ~ 3))
 
 # Sexo
 sem1 <- sem1 %>% dplyr::mutate(bc_pe2 = E26)
@@ -277,10 +282,10 @@ sem2_implant_svy   <- srvyr::as_survey_design(sem2_implant, ids = ID, weights = 
 sem2_implant_h_svy <- srvyr::as_survey_design(sem2_implant_h, ids = ID, weights = w_sem)
 
 
-sem2_panel_svy     <- svrepdesign(data = sem2_panel,
-                                 type = "bootstrap",
-                                 weights =~ w,
-                                 repweights = sem2_panel %>% dplyr::select(dplyr::starts_with("wr")))
+#sem2_panel_svy     <- svrepdesign(data = sem2_panel,
+#                                 type = "bootstrap",
+#                                 weights =~ w,
+#                                 repweights = sem2_panel %>% dplyr::select(dplyr::starts_with("wr")))
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
@@ -446,13 +451,21 @@ QUINTIL      <- c("Todos",
                   "Quintil 5",
                   "Todos",
                   "Todos")
+URBANORURALUY<- c("Urbano (más de 5.000 habitantes)",
+                  "Urbano (más de 5.000 habitantes)",
+                  "Urbano (más de 5.000 habitantes)",
+                  "Urbano (más de 5.000 habitantes)",
+                  "Urbano (más de 5.000 habitantes)",
+                  "Urbano (más de 5.000 habitantes)",
+                  "Urbano (más de 5.000 habitantes)",
+                  "Urbano (más de 5.000 habitantes)")
 PAIS         <- "Uruguay"
 ANIO         <- 2021
 VALOR        <- c(c_ano, c_quintil, c_jefe)
 RESPONSABLE  <- "JIMENA PANDOLFI"
 
 
-m111_pu <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY,	PAIS,	ANIO,	VALOR,	RESPONSABLE)	
+m111_pu <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY, PAIS,	ANIO,	VALOR,	RESPONSABLE)	
 
 
 ## Total país
@@ -697,6 +710,19 @@ QUINTIL      <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos")
+URBANORURALUY<- c("Total país",
+                  "Urbano (más de 5.000 habitantes)",
+                  "Urbano (menos de 5.000 habitantes)",
+                  "Rural disperso",
+                  "Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país")
 PAIS         <- "Uruguay"
 ANIO         <- 2021
 VALOR        <- c(c_ano, c_region, c_quintil, c_pobreza, c_jefe)
@@ -874,6 +900,14 @@ QUINTIL      <- c("Todos",
                   "Quintil 5",
                   "Todos",
                   "Todos")
+URBANORURALUY<- c("Urbano (más de 5.000 habitantes)",
+                  "Urbano (más de 5.000 habitantes)",
+                  "Urbano (más de 5.000 habitantes)",
+                  "Urbano (más de 5.000 habitantes)",
+                  "Urbano (más de 5.000 habitantes)",
+                  "Urbano (más de 5.000 habitantes)",
+                  "Urbano (más de 5.000 habitantes)",
+                  "Urbano (más de 5.000 habitantes)")
 PAIS         <- "Uruguay"
 ANIO         <- 2021
 VALOR        <- c(c_ano, c_quintil, c_jefe)
@@ -1125,6 +1159,19 @@ QUINTIL      <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos")
+URBANORURALUY<- c("Total país",
+                  "Urbano (más de 5.000 habitantes)",
+                  "Urbano (menos de 5.000 habitantes)",
+                  "Rural disperso",
+                  "Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país")
 PAIS         <- "Uruguay"
 ANIO         <- 2021
 VALOR        <- c(c_ano, c_region, c_quintil, c_pobreza, c_jefe)
@@ -1139,7 +1186,7 @@ DEPARTAMENTOUY <- c("")
 URBANORURALUY <- c("")
 DECIL         <- c("")
 
-m113_tp <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY,	PAIS,	ANIO,	VALOR,	RESPONSABLE)	
+m113_tp <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY, PAIS,	ANIO,	VALOR,	RESPONSABLE)	
 
 m113 <- rbind(m113_pu, m113_tp)
 
@@ -1941,11 +1988,14 @@ m124 <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REG
 
 
 ### 125	Severidad de la pobreza
-#-- Manualmente a partir de Observatorio Social Mides--#
+#-- Manualmente a partir de Indicadores sobre distribución del ingreso - INE --#
+
+
 
 ### 126	Brecha de pobreza a usd 1,90 por día (2011 ppp) (%)
 
-m126_bm  <- banco_mundial %>% filter(`Area Sp`== "Nacional" & `Countryname Sp` == "Uruguay" & `Indicator Sp` == "Brecha de pobreza" & `Pline Sp` == "Pobreza $1.9 (2011 PPP)")
+#Total país
+m126_bm_tp  <- banco_mundial %>% filter(`Area Sp`== "Nacional" & `Countryname Sp` == "Uruguay" & `Indicator Sp` == "Brecha de pobreza" & `Pline Sp` == "Pobreza $1.9 (2011 PPP)")
 
 # Base motor
 
@@ -1955,7 +2005,7 @@ CATEGORIA  <- ""
 PESTAÑA  <- ""
 CORTE  <- ""
 CORTE_NUEVA  <- ""
-REGIÓN  <- ""
+REGION  <- ""
 TRAMO  <- ""
 SEXOJEFATURA  <- ""
 POBREZA  <- ""
@@ -1965,7 +2015,7 @@ DECIL  <- ""
 QUINTIL  <- ""
 DEPARTAMENTOUY  <- ""
 
-PAÍS  <- ""
+PAIS  <- ""
 ANIO  <- ""
 VALOR  <- ""
 RESPONSABLE  <- ""
@@ -1976,19 +2026,16 @@ CATEGORIA    <- "Pobreza"
 CORTE_NUEVA  <- "Total"
 REGION       <- "Todos"
 PAIS         <- "Uruguay"
-ANIO         <- m126_bm$Year
-VALOR        <- m126_bm$Rate
+ANIO         <- m126_bm_tp$Year
+VALOR        <- m126_bm_tp$Rate
 RESPONSABLE  <- "JIMENA PANDOLFI"
 
-m126 <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY,	PAIS,	ANIO,	VALOR,	RESPONSABLE)	
+m126_tp <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY,	PAIS,	ANIO,	VALOR,	RESPONSABLE)	
 
 
-
-
-
-### 127	Brecha de pobreza a usd 3,20 por día (2011 ppp) (%)
-
-m127_bm  <- banco_mundial %>% filter(`Area Sp`== "Nacional" & `Countryname Sp` == "Uruguay" & `Indicator Sp` == "Brecha de pobreza" & `Pline Sp` == "Pobreza $3.2 (2011 PPP)")
+#País urbano
+#Total país
+m126_bm_pu  <- banco_mundial %>% filter(`Area Sp`== "Urbano" & `Countryname Sp` == "Uruguay" & `Indicator Sp` == "Brecha de pobreza" & `Pline Sp` == "Pobreza $1.9 (2011 PPP)")
 
 # Base motor
 
@@ -1998,7 +2045,7 @@ CATEGORIA  <- ""
 PESTAÑA  <- ""
 CORTE  <- ""
 CORTE_NUEVA  <- ""
-REGIÓN  <- ""
+REGION  <- ""
 TRAMO  <- ""
 SEXOJEFATURA  <- ""
 POBREZA  <- ""
@@ -2007,7 +2054,50 @@ ASCENDENCIA  <- ""
 DECIL  <- ""
 QUINTIL  <- ""
 DEPARTAMENTOUY  <- ""
-PAÍS  <- ""
+
+PAIS  <- ""
+ANIO  <- ""
+VALOR  <- ""
+RESPONSABLE  <- ""
+
+CODIND       <- 126
+NOMINDICADOR <- "Brecha de pobreza a usd 1,90 por día (2011 ppp) (%)"
+CATEGORIA    <- "Pobreza"
+CORTE_NUEVA  <- "Región"
+REGION       <- "Urbano (menos de 5.000 habitantes)"
+PAIS         <- "Uruguay"
+ANIO         <- m126_bm_pu$Year
+VALOR        <- m126_bm_pu$Rate
+RESPONSABLE  <- "JIMENA PANDOLFI"
+
+m126_pu <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY,	PAIS,	ANIO,	VALOR,	RESPONSABLE)	
+
+m126 <- rbind(m126_pu,m126_tp)
+
+
+
+### 127	Brecha de pobreza a usd 3,20 por día (2011 ppp) (%)
+
+m127_bm_tp  <- banco_mundial %>% filter(`Area Sp`== "Nacional" & `Countryname Sp` == "Uruguay" & `Indicator Sp` == "Brecha de pobreza" & `Pline Sp` == "Pobreza $3.2 (2011 PPP)")
+
+# Base motor
+
+CODIND  <- ""
+NOMINDICADOR  <- ""
+CATEGORIA  <- ""
+PESTAÑA  <- ""
+CORTE  <- ""
+CORTE_NUEVA  <- ""
+REGION  <- ""
+TRAMO  <- ""
+SEXOJEFATURA  <- ""
+POBREZA  <- ""
+SEXO  <- ""
+ASCENDENCIA  <- ""
+DECIL  <- ""
+QUINTIL  <- ""
+DEPARTAMENTOUY  <- ""
+PAIS  <- ""
 ANIO  <- ""
 VALOR  <- ""
 RESPONSABLE  <- ""
@@ -2018,19 +2108,16 @@ CATEGORIA    <- "Pobreza"
 CORTE_NUEVA  <- "Total"
 REGION       <- "Todos"
 PAIS         <- "Uruguay"
-ANIO         <- m127_bm$Year
-VALOR        <- m127_bm$Rate
+ANIO         <- m127_bm_tp$Year
+VALOR        <- m127_bm_tp$Rate
 RESPONSABLE  <- "JIMENA PANDOLFI"
 
-m127 <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY,	PAIS,	ANIO,	VALOR,	RESPONSABLE)	
+m127_tp <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY,	PAIS,	ANIO,	VALOR,	RESPONSABLE)	
 
 
+#País urbano
 
-
-### 128	Brecha de pobreza a usd 5,50 por día (2011 ppp) (%)
-
-
-m128_bm  <- banco_mundial %>% filter(`Area Sp`== "Nacional" & `Countryname Sp` == "Uruguay" & `Indicator Sp` == "Brecha de pobreza" & `Pline Sp` == "Pobreza $5.5 (2011 PPP)")
+m127_bm_pu  <- banco_mundial %>% filter(`Area Sp`== "Urbano" & `Countryname Sp` == "Uruguay" & `Indicator Sp` == "Brecha de pobreza" & `Pline Sp` == "Pobreza $3.2 (2011 PPP)")
 
 # Base motor
 
@@ -2040,7 +2127,7 @@ CATEGORIA  <- ""
 PESTAÑA  <- ""
 CORTE  <- ""
 CORTE_NUEVA  <- ""
-REGIÓN  <- ""
+REGION  <- ""
 TRAMO  <- ""
 SEXOJEFATURA  <- ""
 POBREZA  <- ""
@@ -2049,7 +2136,49 @@ ASCENDENCIA  <- ""
 DECIL  <- ""
 QUINTIL  <- ""
 DEPARTAMENTOUY  <- ""
-PAÍS  <- ""
+PAIS  <- ""
+ANIO  <- ""
+VALOR  <- ""
+RESPONSABLE  <- ""
+
+CODIND       <- 127
+NOMINDICADOR <- "Brecha de pobreza a usd 3,20 por día (2011 ppp) (%)"
+CATEGORIA    <- "Pobreza"
+CORTE_NUEVA  <- "Total"
+REGION       <- "Todos"
+PAIS         <- "Uruguay"
+ANIO         <- m127_bm_pu$Year
+VALOR        <- m127_bm_pu$Rate
+RESPONSABLE  <- "JIMENA PANDOLFI"
+
+m127_pu <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY,	PAIS,	ANIO,	VALOR,	RESPONSABLE)	
+
+
+m127 <- rbind (m127_pu, m127_tp)
+
+### 128	Brecha de pobreza a usd 5,50 por día (2011 ppp) (%)
+
+
+m128_bm_tp  <- banco_mundial %>% filter(`Area Sp`== "Nacional" & `Countryname Sp` == "Uruguay" & `Indicator Sp` == "Brecha de pobreza" & `Pline Sp` == "Pobreza $5.5 (2011 PPP)")
+
+# Base motor
+
+CODIND  <- ""
+NOMINDICADOR  <- ""
+CATEGORIA  <- ""
+PESTAÑA  <- ""
+CORTE  <- ""
+CORTE_NUEVA  <- ""
+REGION  <- ""
+TRAMO  <- ""
+SEXOJEFATURA  <- ""
+POBREZA  <- ""
+SEXO  <- ""
+ASCENDENCIA  <- ""
+DECIL  <- ""
+QUINTIL  <- ""
+DEPARTAMENTOUY  <- ""
+PAIS  <- ""
 ANIO  <- ""
 VALOR  <- ""
 RESPONSABLE  <- ""
@@ -2060,26 +2189,132 @@ CATEGORIA    <- "Pobreza"
 CORTE_NUEVA  <- "Total"
 REGION       <- "Todos"
 PAIS         <- "Uruguay"
-ANIO         <- m128_bm$Year
-VALOR        <- m128_bm$Rate
+ANIO         <- m128_bm_tp$Year
+VALOR        <- m128_bm_tp$Rate
 RESPONSABLE  <- "JIMENA PANDOLFI"
 
-m128 <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY,	PAIS,	ANIO,	VALOR,	RESPONSABLE)	
+m128_tp <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY,	PAIS,	ANIO,	VALOR,	RESPONSABLE)	
+
+
+
+#Pais urbano
+
+m128_bm_pu  <- banco_mundial %>% filter(`Area Sp`== "Urbano" & `Countryname Sp` == "Uruguay" & `Indicator Sp` == "Brecha de pobreza" & `Pline Sp` == "Pobreza $5.5 (2011 PPP)")
+
+# Base motor
+
+CODIND  <- ""
+NOMINDICADOR  <- ""
+CATEGORIA  <- ""
+PESTAÑA  <- ""
+CORTE  <- ""
+CORTE_NUEVA  <- ""
+REGION  <- ""
+TRAMO  <- ""
+SEXOJEFATURA  <- ""
+POBREZA  <- ""
+SEXO  <- ""
+ASCENDENCIA  <- ""
+DECIL  <- ""
+QUINTIL  <- ""
+DEPARTAMENTOUY  <- ""
+PAIS  <- ""
+ANIO  <- ""
+VALOR  <- ""
+RESPONSABLE  <- ""
+
+CODIND       <- 128
+NOMINDICADOR <- "Brecha de pobreza a usd 5,50 por día (2011 ppp) (%)"
+CATEGORIA    <- "Pobreza"
+CORTE_NUEVA  <- "Total"
+REGION       <- "Todos"
+PAIS         <- "Uruguay"
+ANIO         <- m128_bm_pu$Year
+VALOR        <- m128_bm_pu$Rate
+RESPONSABLE  <- "JIMENA PANDOLFI"
+
+m128_pu <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY,	PAIS,	ANIO,	VALOR,	RESPONSABLE)	
+
+
+
+m128 <- rbind(m128_tp, m128_pu)
 
 
 
 ### 131	Índice de Gini -------------------------------------------------------------------------------------
 
-#y_wrv_pc_d_r = (ech19[[ht11]] - ech19[[ht13]]) / ech19[[ht19]]) * deflator_r)
-ech19$y_wrv_pc_d_r = ech19$ht11 - ech19$ht13 / ech19$ht19
-h = subset(ech19, e30 == 1 & region_3 != 3)
-laeken::gini(h$y_wrv_pc_d_r, weights = h$pesoano) # hogares país urbano
-laeken::gini(ech19$y_wrv_pc_d_r, weights = ech19$pesoano) # personas total país
+#-- Manualmente a partir de INE --#
 
 
 
-# Base motor
+### 132 Distribución porcentual de Ingresos medios per cápita apropiado según quintil
 
+a_quintil <- function(x) {
+  x <- sem1_h_svy %>%
+    filter(quintilesy_obs == x & bd_region == 1) %>%
+    srvyr::group_by(mes) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(y_pc))
+  x <- mean(x$colname)
+}       
+
+a_e_quintil <- numeric()
+
+for(i in 1:5){
+  a_e_quintil[i] <- a_quintil(x = i)
+}     
+
+b_quintil <- function(x) {
+  x <- sem2_implant_svy %>%
+    filter(quintilesy_obs == x  & bd_region == 1) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(y_pc))
+  x <- mean(x$colname)
+}       
+
+b_e_quintil <- numeric()
+
+for(i in 1:5){
+  b_e_quintil[i] <- b_quintil(x = i)
+}         
+
+c_quintil <- as.data.frame(cbind(a_e_quintil, b_e_quintil))
+c_quintil <- c_quintil %>% dplyr::mutate(m_quintil = (a_e_quintil + b_e_quintil)/2)
+c_quintil_pu <- c_quintil[,c("m_quintil")]
+m132_pu <- c_quintil_pu/sum(c_quintil_pu)
+
+a_quintil <- function(x) {
+  x <- sem1_h_svy %>%
+    filter(quintilesy_obs == x) %>%
+    srvyr::group_by(mes) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(y_pc))
+  x <- mean(x$colname)
+}       
+
+a_e_quintil <- numeric()
+
+for(i in 1:5){
+  a_e_quintil[i] <- a_quintil(x = i)
+}     
+
+b_quintil <- function(x) {
+  x <- sem2_implant_svy %>%
+    filter(quintilesy_obs == x) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(y_pc))
+  x <- mean(x$colname)
+}       
+
+b_e_quintil <- numeric()
+
+for(i in 1:5){
+  b_e_quintil[i] <- b_quintil(x = i)
+}         
+
+c_quintil <- as.data.frame(cbind(a_e_quintil, b_e_quintil))
+c_quintil <- c_quintil %>% dplyr::mutate(m_quintil = (a_e_quintil + b_e_quintil)/2)
+c_quintil_tp <- c_quintil[,c("m_quintil")]
+m132_tp <- c_quintil_tp/sum(c_quintil_tp)
+
+
+###BASE MOTOR
 CODIND  <- ""
 NOMINDICADOR  <- ""
 CATEGORIA  <- ""
@@ -2100,29 +2335,296 @@ ANIO  <- ""
 VALOR  <- ""
 RESPONSABLE  <- ""
 
-CODIND       <- 131
-NOMINDICADOR <- "Índice de Gini"
-PESTAÑA  <- "País Urbano"
+CODIND       <- 132
+NOMINDICADOR <- "Distribución porcentual de Ingresos medios per cápita apropiado según quintil"
 CATEGORIA    <- "Ingresos y desigualdad"
-CORTE_NUEVA  <- c("Total")
-REGION       <- c("Total País")
+PESTAÑA      <- c("País Urbano",
+                  "País Urbano",
+                  "País Urbano",
+                  "País Urbano",
+                  "País Urbano",
+                  "Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país")
+CORTE <- "Quintil de ingreso y región"
+CORTE_NUEVA <- "Quintil de ingreso"
+REGION       <- c("Urbano (más de 5.000 habitantes)",
+                  "Urbano (más de 5.000 habitantes)",
+                  "Urbano (más de 5.000 habitantes)",
+                  "Urbano (más de 5.000 habitantes)",
+                  "Urbano (más de 5.000 habitantes)",
+                  "Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país")
+URBANORURALUY       <- c("Urbano (más de 5.000 habitantes)",
+                         "Urbano (más de 5.000 habitantes)",
+                         "Urbano (más de 5.000 habitantes)",
+                         "Urbano (más de 5.000 habitantes)",
+                         "Urbano (más de 5.000 habitantes)",
+                         "Total país",
+                         "Total país",
+                         "Total país",
+                         "Total país",
+                         "Total país")
+POBREZA      <- c("Todos")
+QUINTIL      <- c("Quintil 1",
+                  "Quintil 2",
+                  "Quintil 3",
+                  "Quintil 4",
+                  "Quintil 5",
+                  "Quintil 1",
+                  "Quintil 2",
+                  "Quintil 3",
+                  "Quintil 4",
+                  "Quintil 5")
 PAIS         <- "Uruguay"
 ANIO         <- 2021
-VALOR        <- c()
+VALOR        <- c(m132_pu, m132_tp)
 RESPONSABLE  <- "JIMENA PANDOLFI"
 
 
-
-#m131 <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY,	PAIS,	ANIO,	VALOR,	RESPONSABLE)	
-
+m132 <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY,	PAIS,	ANIO,	VALOR,	RESPONSABLE)	
 
 
-### 132	Distribución porcentual de Ingresos medios per cápita apropiado según quintil ----------------------
-### 133	Ingreso total acumulado apropiado según decil ------------------------------------------------------
-### 134	Relación entre el ingreso medio per cápita del primer y décimo decil -------------------------------
-### 135	Relación entre el ingreso medio per cápita del primer y quinto quintil------------------------------
+### 133 Ingreso total acumulado apropiado según decil
+
+a_decil <- function(x) {
+  x <- sem1_h_svy %>%
+    filter(decilesy_obs == x) %>%
+    srvyr::group_by(mes) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(y_pc))
+  x <- mean(x$colname)
+}       
+
+a_e_decil <- numeric()
+
+for(i in 1:10){
+  a_e_decil[i] <- a_decil(x = i)
+}     
+
+b_decil <- function(x) {
+  x <- sem2_implant_svy %>%
+    filter(decilesy_obs == x) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(y_pc))
+  x <- mean(x$colname)
+}       
+
+b_e_decil <- numeric()
+
+for(i in 1:10){
+  b_e_decil[i] <- b_decil(x = i)
+}         
+
+c_decil <- as.data.frame(cbind(a_e_decil, b_e_decil))
+c_decil <- c_decil %>% dplyr::mutate(m_decil = (a_e_decil + b_e_decil)/2)
+c_decil_tp <- c_decil[,c("m_decil")]
+m133_tp <- c_decil_tp/sum(c_decil_tp)
+
+##País urbano (insumo para indicador 134)
+a_decil <- function(x) {
+  x <- sem1_h_svy %>%
+    filter(decilesy_obs == x & bd_region == 1) %>%
+    srvyr::group_by(mes) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(y_pc))
+  x <- mean(x$colname)
+}       
+
+a_e_decil <- numeric()
+
+for(i in 1:10){
+  a_e_decil[i] <- a_decil(x = i)
+}     
+
+b_decil <- function(x) {
+  x <- sem2_implant_svy %>%
+    filter(decilesy_obs == x & bd_region==1) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(y_pc))
+  x <- mean(x$colname)
+}       
+
+b_e_decil <- numeric()
+
+for(i in 1:10){
+  b_e_decil[i] <- b_decil(x = i)
+}         
+
+c_decil <- as.data.frame(cbind(a_e_decil, b_e_decil))
+c_decil <- c_decil %>% dplyr::mutate(m_decil = (a_e_decil + b_e_decil)/2)
+c_decil_pu <- c_decil[,c("m_decil")]
+m133_pu <- c_decil_pu/sum(c_decil_pu)
 
 
+
+###BASE MOTOR
+CODIND  <- ""
+NOMINDICADOR  <- ""
+CATEGORIA  <- ""
+CORTE  <- ""
+CORTE_NUEVA  <- ""
+REGIÓN  <- ""
+TRAMO  <- ""
+SEXOJEFATURA  <- ""
+POBREZA  <- ""
+SEXO  <- ""
+ASCENDENCIA  <- ""
+DECIL  <- ""
+QUINTIL  <- ""
+DEPARTAMENTOUY  <- ""
+
+PAÍS  <- ""
+ANIO  <- ""
+VALOR  <- ""
+RESPONSABLE  <- ""
+
+
+CODIND       <- 133
+NOMINDICADOR <- "Ingreso total acumulado apropiado según decil"
+CATEGORIA    <- "Ingresos y desigualdad"
+PESTAÑA      <- c("Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país")
+CORTE <- "Decil de ingreso"
+CORTE_NUEVA <- "Decil de ingreso"
+REGION       <- c("Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país",
+                  "Total país")
+URBANORURALUY       <- c("Total país",
+                         "Total país",
+                         "Total país",
+                         "Total país",
+                         "Total país",
+                         "Total país",
+                         "Total país",
+                         "Total país",
+                         "Total país",
+                         "Total país")
+DECIL      <- c("Decil 1",
+                "Decil 2",
+                "Decil 3",
+                "Decil 4",
+                "Decil 5",
+                "Decil 6",
+                "Decil 7",
+                "Decil 8",
+                "Decil 9",
+                "Decil 10")
+PAIS         <- "Uruguay"
+ANIO         <- 2021
+VALOR        <- c(m133_tp)
+RESPONSABLE  <- "JIMENA PANDOLFI"
+
+
+m133 <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY, PAIS,	ANIO,	VALOR,	RESPONSABLE)	
+
+
+### 134 Relación entre el Ingreso medio per cápita del primer y décimo decil
+m134_pu <- c_decil_pu[10]/c_decil_pu[1]
+m134_tp <- c_decil_tp[10]/c_decil_tp[1]
+
+###BASE MOTOR
+CODIND  <- ""
+NOMINDICADOR  <- ""
+CATEGORIA  <- ""
+CORTE  <- ""
+CORTE_NUEVA  <- ""
+REGIÓN  <- ""
+TRAMO  <- ""
+SEXOJEFATURA  <- ""
+POBREZA  <- ""
+SEXO  <- ""
+ASCENDENCIA  <- ""
+DECIL  <- ""
+QUINTIL  <- ""
+DEPARTAMENTOUY  <- ""
+
+PAÍS  <- ""
+ANIO  <- ""
+VALOR  <- ""
+RESPONSABLE  <- ""
+
+
+CODIND       <- 134
+NOMINDICADOR <- "Relación entre el Ingreso medio per cápita del primer y décimo decil"
+CATEGORIA    <- "Ingresos y desigualdad"
+PESTAÑA      <- c("Total país",
+                  "País Urbano")
+CORTE <- "Región"
+CORTE_NUEVA <- "Total"
+REGION       <- c("Total país",
+                  "Urbano (más de 5.000 habitantes)")
+URBANORURALUY       <- c("Total país",
+                         "Urbano (más de 5.000 habitantes)")
+PAIS         <- "Uruguay"
+ANIO         <- 2021
+VALOR        <- c(m134_tp, m134_pu)
+RESPONSABLE  <- "JIMENA PANDOLFI"
+
+m134 <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY,	PAIS,	ANIO,	VALOR,	RESPONSABLE)	
+
+
+
+
+### 135 Relación entre el Ingreso medio per cápita del primer y quinto quintil
+m135_pu <- c_quintil_pu[5]/c_quintil_pu[1]
+m135_tp <- c_quintil_tp[5]/c_quintil_tp[1]
+
+###BASE MOTOR
+CODIND  <- ""
+NOMINDICADOR  <- ""
+CATEGORIA  <- ""
+CORTE  <- ""
+CORTE_NUEVA  <- ""
+REGIÓN  <- ""
+TRAMO  <- ""
+SEXOJEFATURA  <- ""
+POBREZA  <- ""
+SEXO  <- ""
+ASCENDENCIA  <- ""
+DECIL  <- ""
+QUINTIL  <- ""
+DEPARTAMENTOUY  <- ""
+
+PAÍS  <- ""
+ANIO  <- ""
+VALOR  <- ""
+RESPONSABLE  <- ""
+
+
+CODIND       <- 135
+NOMINDICADOR <- "Relación entre el Ingreso medio per cápita del primer y quinto quintil"
+CATEGORIA    <- "Ingresos y desigualdad"
+PESTAÑA      <- c("Total país",
+                  "País Urbano")
+CORTE <- "Región"
+CORTE_NUEVA <- "Total"
+REGION       <- c("Total país",
+                  "Urbano (más de 5.000 habitantes)")
+URBANORURALUY       <- c("Total país",
+                         "Urbano (más de 5.000 habitantes)")
+PAIS         <- "Uruguay"
+ANIO         <- 2021
+VALOR        <- c(m135_tp, m135_pu)
+RESPONSABLE  <- "JIMENA PANDOLFI"
+
+m135 <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY, PAIS,	ANIO,	VALOR,	RESPONSABLE)	
 
 
 ### 141	Hogares con necesidades básicas insatisfechas (met 2011)(% de la población total) ------------------
@@ -3101,7 +3603,7 @@ m146_tp <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	
 # Total
 
 b_sem <- sem2_implant_svy %>%
-  filter(bd_e29_1 == x) %>%
+  srvyr::filter(bd_region == 1) %>%
   srvyr::summarise(colname = srvyr::survey_mean(bd_hacinamiento2))
 b_sem <- as.numeric(b_sem$colname)
 
@@ -3111,7 +3613,7 @@ b_sem <- as.numeric(b_sem$colname)
 
 b_quintil <- function(x) {
   x <- sem2_implant_svy %>%
-    filter(bd_e29_1 == x) %>%
+    filter(bd_region == x) %>%
     filter(quintilesy == x) %>%
     srvyr::summarise(colname = srvyr::survey_mean(bd_hacinamiento2))
   x <- mean(x$colname)
@@ -3128,7 +3630,7 @@ for(i in 1:5){
 
 b_edad <- function(x) {
   x <- sem2_implant_svy %>%
-    filter(bd_e29_1 == x) %>%
+    filter(bd_region == 1) %>%
     filter(tramo_edad == x) %>%
     srvyr::summarise(colname = srvyr::survey_mean(bd_hacinamiento2))
   x <- mean(x$colname)
@@ -3144,7 +3646,7 @@ for(i in 1:7){
 
 b_sexo <- function(x) {
   x <- sem2_implant_svy %>%
-    filter(bd_e29_1 == x) %>%
+    filter(bd_region == 1) %>%
     filter(e26 == x) %>%
     srvyr::summarise(colname = srvyr::survey_mean(bd_hacinamiento2))
   x <- mean(x$colname)
@@ -3784,7 +4286,7 @@ m148_tp <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	
 # Total
 
 b_sem <- sem2_implant_svy %>%
-  filter(bd_e29_1 == x) %>%
+  filter(bd_region == 1) %>%
   srvyr::summarise(colname = srvyr::survey_mean(bd_hacinamiento1))
 b_sem <- as.numeric(b_sem$colname)
 
@@ -3794,7 +4296,7 @@ b_sem <- as.numeric(b_sem$colname)
 
 b_quintil <- function(x) {
   x <- sem2_implant_svy %>%
-    filter(bd_e29_1 == x) %>%
+    filter(bd_region == 1) %>%
     filter(quintilesy == x) %>%
     srvyr::summarise(colname = srvyr::survey_mean(bd_hacinamiento1))
   x <- mean(x$colname)
@@ -3811,7 +4313,7 @@ for(i in 1:5){
 
 b_edad <- function(x) {
   x <- sem2_implant_svy %>%
-    filter(bd_e29_1 == x) %>%
+    filter(bd_region == 1) %>%
     filter(tramo_edad == x) %>%
     srvyr::summarise(colname = srvyr::survey_mean(bd_hacinamiento1))
   x <- mean(x$colname)
@@ -3827,7 +4329,7 @@ for(i in 1:7){
 
 b_sexo <- function(x) {
   x <- sem2_implant_svy %>%
-    filter(bd_e29_1 == x) %>%
+    filter(bd_region == 1) %>%
     filter(e26 == x) %>%
     srvyr::summarise(colname = srvyr::survey_mean(bd_hacinamiento1))
   x <- mean(x$colname)
@@ -6223,7 +6725,7 @@ m158_tp <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	
 # Total
 
 b_sem <- sem2_implant_svy %>%
-  filter(bd_e29_1 == x) %>%
+  filter(bd_region == 1) %>%
   srvyr::summarise(colname = srvyr::survey_mean(NBI_educacion11))
 b_sem <- as.numeric(b_sem$colname)
 
@@ -6233,7 +6735,7 @@ b_sem <- as.numeric(b_sem$colname)
 
 b_quintil <- function(x) {
   x <- sem2_implant_svy %>%
-    filter(bd_e29_1 == x) %>%
+    filter(bd_region == 1) %>%
     filter(quintilesy == x) %>%
     srvyr::summarise(colname = srvyr::survey_mean(NBI_educacion11))
   x <- mean(x$colname)
@@ -6250,7 +6752,7 @@ for(i in 1:5){
 
 b_edad <- function(x) {
   x <- sem2_implant_svy %>%
-    filter(bd_e29_1 == x) %>%
+    filter(bd_region == 1) %>%
     filter(tramo_edad == x) %>%
     srvyr::summarise(colname = srvyr::survey_mean(NBI_educacion11))
   x <- mean(x$colname)
@@ -6266,7 +6768,7 @@ for(i in 1:7){
 
 b_sexo <- function(x) {
   x <- sem2_implant_svy %>%
-    filter(bd_e29_1 == x) %>%
+    filter(bd_region == 1) %>%
     filter(e26 == x) %>%
     srvyr::summarise(colname = srvyr::survey_mean(NBI_educacion11))
   x <- mean(x$colname)
@@ -6384,7 +6886,11 @@ m158 <- rbind(m158_pu, m158_tp)
 
 ### Fusión de base motor ###
 
-motor_2021 <- rbind(m111, m121, m122, m123, m124, m126, m127, m128, m141, m142, m145, m146 , m147, m148, m149, m150, m151, m152, m153, m154, m155, m156, m157, m158 )
+motor_2021 <- rbind(m111, m113, m121, m122, m123, m124, 
+                    m126, m127, m128, m132, m133, m134, 
+                    m135, m141, m142, m145, m146 , m147, 
+                    m148, m149, m150, m151, m152, m153, 
+                    m154, m155, m156, m157, m158 )
 motor_2021 <- as.data.frame(motor_2021)
 motor_2021 <- motor_2021  %>% mutate(URBANORURALUY = case_when(PESTAÑA == "País Urbano"                                                                            ~ "Urbano (más de 5.000 habitantes)",
                                                                PESTAÑA == "Total País" & CORTE_NUEVA != "Región"                                                   ~  "Total País",
@@ -6400,8 +6906,11 @@ motor_2021 <- motor_2021  %>% mutate(URBANORURALUY = case_when(PESTAÑA == "Paí
 Base_Motor_Pobreza  <- rio::import("Bases/Data_Umad/Base_Motor_Pobreza.xls")
 Base_Motor_Pobreza  <- Base_Motor_Pobreza  %>% rename(REGION = REGIÓN)
 Base_Motor_Pobreza  <- Base_Motor_Pobreza  %>% rename(PAIS = PAÍS)
-Base_Motor_Pobreza  <- Base_Motor_Pobreza  %>% filter(CODIND != 126 & CODIND != 127 & CODIND != 128) # se quitan indicadores de Banco Mundial y se actualiza toda la serie
+Base_Motor_Pobreza  <- Base_Motor_Pobreza  %>% filter(CODIND != 126 | CODIND != 127 | CODIND != 128) # se quitan indicadores de Banco Mundial y se actualiza toda la serie
 
-Base_Motor_Pobreza_15062022  <- rbind(Base_Motor_Pobreza, motor_2021)
+Base_Motor_Pobreza_15122022  <- rbind(Base_Motor_Pobreza, motor_2021)
 
-rio::export(Base_Motor_Pobreza_15062022, "Bases/Data_Umad/Base_Motor_Pobreza_15062022.xlsx" )
+write.xlsx(Base_Motor_Pobreza_15122022, "Base_Motor_Pobreza_15122022.xlsx")
+
+
+#rio::export(Base_Motor_Pobreza_15062022, "Bases/Data_Umad/Base_Motor_Pobreza_15062022.xlsx" )
