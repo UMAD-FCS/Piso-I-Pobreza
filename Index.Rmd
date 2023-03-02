@@ -93,7 +93,7 @@ periodo_formatted <- paste(
 
 ```{r, out.width='100%'}
 #===============================================================================
-g1 <- 
+g2 <- 
   base %>% filter(NOMINDICADOR == "Promedio de ingreso per-cápita de los hogares (Cte. Base diciembre 2006)" | NOMINDICADOR == "Mediana de ingreso per-cápita de los hogares (Cte. Base diciembre 2006)", CORTE_NUEVA == "Total", URBANORURALUY == "Urbano (más de 5.000 habitantes)" ) %>%
   mutate(UNIDAD = case_when(
   NOMINDICADOR =="Promedio de ingreso per-cápita de los hogares (Cte. Base diciembre 2006)" ~ "Media",
@@ -118,7 +118,7 @@ g1 <-
     x = "",
     y = ""
   )
-ggplotly(g1) %>% 
+ggplotly(g2) %>% 
   config(displayModeBar = F) %>%
   layout(margin = list(b = 100), legend = list(x = 0.5, y = -0.1,orientation = "h", xanchor = "center" )) 
 
@@ -126,7 +126,15 @@ ggplotly(g1) %>%
 ```
 
 
-#### Descargar Tabla
+
+```{r}
+download_this(g2,
+              button_label = "Descargar gráfico",
+              icon = "fa fa-download")
+```
+
+
+#### Tabla
 
 
 ```{r}
