@@ -1,12 +1,19 @@
-
 ---
-title: "**<br /> <br /> Pobreza y desigualdad en Uruguay**"
+title: '**<br /> <br /> Pobreza y desigualdad en Uruguay**'
 output:
   html_document:
-    toc: true
-    toc_float: true
-    toc_depth: 1
+    theme: flatly
+    toc: yes
+    toc_float: yes
+    smooth_scroll: yes
+    toc_depth: 2
+    number_sections: false 
+    css: "www/estilo.css"
+  pdf_document:
+    toc: yes
+    toc_depth: '2'
 ---
+
 
 <script>
   $(document).ready(function() {
@@ -27,6 +34,7 @@ suppressPackageStartupMessages(library(plotly))
 suppressPackageStartupMessages(library(ggplot2))
 suppressPackageStartupMessages(library(DT))
 suppressPackageStartupMessages(library(kableExtra))
+suppressPackageStartupMessages(library(downloadthis))
 
 
 base        <- readxl::read_excel("Data/Base_Motor_Pobreza.xlsx")
@@ -41,15 +49,17 @@ base_fichas <- base_fichas[order(base_fichas$ID),]
 <br />
 
 <div style="text-align: justify">
-La [Unidad de Métodos y Acceso a Datos](https://umad.cienciassociales.edu.uy/) (UMAD) (FCS-UdelaR) a partir del [Observatorio Uruguay](https://umad.cienciassociales.edu.uy/observatorio-uruguay/) busca aportar a la difusión de conocimiento respecto a temas de interés general sobre la realidad social, económica y política del Uruguay. Esta serie de documentos tiene como objetivo presentar indicadores clave para el análisis de tendencias históricas del país que esperamos sean de utilidad para las comunidades académicas, los tomadores de decisión y los formadores de opinión, así como el público en general. Se presentan aquí indicadores sobre niveles de bienestar material de la población, ingresos, desigualdad y pobreza en el Uruguay durante las últimas décadas. 
+
+**La [Unidad de Métodos y Acceso a Datos](https://umad.cienciassociales.edu.uy/) (UMAD) (FCS-UdelaR) a partir del [Observatorio Uruguay](https://umad.cienciassociales.edu.uy/observatorio-uruguay/) busca aportar a la difusión de conocimiento respecto a temas de interés general sobre la realidad social, económica y política del Uruguay. Esta serie de documentos tiene como objetivo presentar indicadores clave para el análisis de tendencias históricas del país que esperamos sean de utilidad para las comunidades académicas, los tomadores de decisión y los formadores de opinión, así como el público en general. Se presentan aquí indicadores sobre niveles de bienestar material de la población, ingresos, desigualdad y pobreza en el Uruguay durante las últimas décadas.** 
 </div>
 
-<br />
-
-# Nivel de ingresos 
-
+<hr style="border:1.5px solid #2c3e50"> </hr>
 
 <br />
+
+# **Nivel de ingresos** 
+## **Promedio y mediana**
+
 
 <div style="text-align: justify">
 
@@ -64,7 +74,7 @@ El gráfico presentan la evolución del promedio y la mediana de ingresos per-c�
 
 
 <div style="text-align: center">
-##### **Promedio y mediana de ingresos per-cápita de los hogares (cte. base diciembre 2006)** 
+#### **Promedio y mediana de ingresos per-cápita de los hogares (cte. base diciembre 2006)** 
 ```{r}
 periodo <- base[base$NOMINDICADOR == "Promedio de ingreso per-cápita de los hogares (Cte. Base diciembre 2006)",]
 max<- max(periodo$ANIO)
@@ -77,8 +87,8 @@ periodo_formatted <- paste(
 ##### País Urbano, `r periodo_formatted`
 </div>
 
-## {.tabset .tabset-fade .tabset-pills}
-### Gráfico
+### {.tabset .tabset-fade .tabset-pills}
+#### Gráfico
 
 
 ```{r, out.width='100%'}
@@ -116,7 +126,7 @@ ggplotly(g1) %>%
 ```
 
 
-### Descargar Tabla
+#### Descargar Tabla
 
 
 ```{r}
@@ -130,7 +140,7 @@ DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
 ) 
 ```
 
-### Ficha Técnica
+#### Ficha Técnica
 
 
 ```{r}
@@ -151,7 +161,7 @@ calc_formatted <- paste(
 > **Forma de cálculo:** `r calc_formatted`
 
 
-##
+## {.toc-ignore .unlisted .unnumbered}
 
 
 ```{r}
@@ -165,6 +175,7 @@ cita_formatted <- paste(
 
 <br />
 
+## **Índice de Gini**
 
 <div style="text-align: justify">
 El Índice de Gini mide hasta qué punto la distribución del ingreso entre individuos u hogares dentro de una economía se aleja de una distribución perfectamente equitativa. Una curva de Lorenz muestra los porcentajes acumulados de ingreso recibido total contra la cantidad acumulada de receptores, empezando a partir de la persona o el hogar de menores ingresos. El índice de Gini mide la superficie entre la curva de Lorenz y una línea hipotética de equidad absoluta, expresada como porcentaje de la superficie máxima debajo de la línea. Así, un índice de Gini de 0 representa una equidad perfecta, mientras que un índice de 100 representa una inequidad perfecta.
@@ -175,7 +186,7 @@ Al analizar la evolución de este indicador en Uruguay, se observa una tendencia
 <br />
 
 <div style="text-align: center">
-##### **Índice de Gini** 
+#### **Índice de Gini** 
 ```{r}
 periodo <- base[base$NOMINDICADOR == "Índice de Gini",]
 max<- max(periodo$ANIO)
@@ -188,8 +199,8 @@ periodo_formatted <- paste(
 ##### País Urbano, `r periodo_formatted`
 </div>
 
-## {.tabset .tabset-fade .tabset-pills}
-### Gráfico
+### {.tabset .tabset-fade .tabset-pills}
+#### Gráfico
 
 
 ```{r, out.width='100%'}
@@ -225,7 +236,7 @@ ggplotly(g1) %>%
 #===============================================================================
 ```
 
-### Descargar Tabla
+#### Descargar Tabla
 
 
 ```{r}
@@ -241,7 +252,7 @@ DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
 ```
 
 
-### Ficha Técnica
+#### Ficha Técnica
 
 
 ```{r}
@@ -261,7 +272,8 @@ calc_formatted <- paste(
 ```
 > **Forma de cálculo:** `r calc_formatted`
 
-##
+
+## {.toc-ignore .unlisted .unnumbered}
 
 
 ```{r}
@@ -274,7 +286,7 @@ cita_formatted <- paste(
 
 <br />
 
-
+## **Relación de ingreso medio**
 <div style="text-align: justify">
 La relación entre el ingreso medio per-cápita del primer y quinto quintil de ingresos refleja cuántas veces mayor es el ingreso medio del 20% más rico de las personas, en relación con el del 20% más pobre. Desde el año 2005 se observa una disminución del valor del cociente y, a partir de 2016, se mantiene relativamente estable. En consonancia con el indicador anterior, este hecho evidencia una disminución de la desiguldad en la percepción de ingresos entre los hogares más ricos y más pobres en términos relativos. 
 </div>
@@ -296,8 +308,8 @@ periodo_formatted <- paste(
 ##### País Urbano, `r periodo_formatted`
 </div>
 
-## {.tabset .tabset-fade .tabset-pills}
-### Gráfico
+### {.tabset .tabset-fade .tabset-pills}
+#### Gráfico
 
 ```{r, out.width='100%'}
 #===============================================================================
@@ -331,7 +343,7 @@ ggplotly(g1) %>%
 #===============================================================================
 ```
 
-### Descargar Tabla
+#### Descargar Tabla
 
 
 ```{r}
@@ -346,7 +358,7 @@ DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
 ) 
 ```
 
-### Ficha Técnica
+#### Ficha Técnica
 
 
 ```{r}
@@ -366,7 +378,7 @@ calc_formatted <- paste(
 ```
 > **Forma de cálculo:** `r calc_formatted`
 
-##
+## {.toc-ignore .unlisted .unnumbered}
 
 
 ```{r}
@@ -379,9 +391,9 @@ cita_formatted <- paste(
 
 <br />
 
-# Pobreza monetaria
+# **Pobreza monetaria**
 
-<br />
+## **Tasa de recuento**
 
 <div style="text-align: justify">
 La medida de pobreza más simple y más ampliamente utilizada es la tasa de recuento, que es el porcentaje de pobres en una población dada. La construcción de la línea de pobreza (LP) se basa en la definición de un umbral de ingresos necesarios para cubrir una Canasta Básica Total (CBT). Para su cálculo, se utilizan índices de precios tanto de bienes alimentarios como no alimentarios. Para determinar la LP se introducen economías de escala en los gastos no alimentarios para los estratos de referencia seleccionados en las diferentes regiones geográficas, tomando en cuenta el tamaño del hogar (INE, 2015). La línea de indigencia refiere al ingreso necesario para cubrir los gastos únicamente alimentarios. 
@@ -405,8 +417,8 @@ periodo_formatted <- paste(
 ##### Total país, `r periodo_formatted`
 </div>
 
-## {.tabset .tabset-fade .tabset-pills}
-### Gráfico
+### {.tabset .tabset-fade .tabset-pills}
+#### Gráfico
 
 ```{r, out.width='100%'}
 #===============================================================================
@@ -444,7 +456,7 @@ ggplotly(g1) %>%
 ```
 
 
-### Descargar Tabla
+#### Descargar Tabla
 
 
 ```{r}
@@ -462,7 +474,7 @@ DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
 ) 
 ```
 
-### Ficha Técnica
+#### Ficha Técnica
 
 ```{r}
 def <- strsplit(paste0(base_fichas [4,"DEFINICION"])," ")[[1]]
@@ -481,7 +493,8 @@ calc_formatted <- paste(
 ```
 > **Forma de cálculo:** `r calc_formatted`
 
-##
+## {.toc-ignore .unlisted .unnumbered}
+
 
 
 ```{r}
@@ -509,8 +522,8 @@ periodo_formatted <- paste(
 ##### Total país, `r periodo_formatted`
 </div>
 
-## {.tabset .tabset-fade .tabset-pills}
-### Gráfico
+### {.tabset .tabset-fade .tabset-pills}
+#### Gráfico
 
 
 ```{r, out.width='100%'}
@@ -549,7 +562,7 @@ ggplotly(g1) %>%
 #===============================================================================
 ```
 
-### Descargar Tabla
+#### Descargar Tabla
 
 
 ```{r}
@@ -567,7 +580,7 @@ DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
 ) 
 ```
 
-### Ficha Técnica
+#### Ficha Técnica
 
 ```{r}
 def <- strsplit(paste0(base_fichas [6,"DEFINICION"])," ")[[1]]
@@ -586,7 +599,8 @@ calc_formatted <- paste(
 ```
 > **Forma de cálculo:** `r calc_formatted`
 
-##
+## {.toc-ignore .unlisted .unnumbered}
+
 
 
 ```{r}
@@ -598,6 +612,10 @@ cita_formatted <- paste(
 `r cita_formatted` 
 
 <br />
+
+
+
+## **Severidad de la pobreza**
 
 <div style="text-align: justify">
 La severidad de la pobreza mide el grado de desigualdad entre los hogares o personas bajo la línea de pobreza. De algún modo brinda indicios sobre la heterogeneidad u homogeneidad de quienes se encuentran en situación de pobreza. A partir del año 2006 se observa en Uruguay una disminución en su severidad y tendencia a la homogeneidad entre estos hogares. 
@@ -619,8 +637,8 @@ periodo_formatted <- paste(
 ##### Total país, `r periodo_formatted`
 </div>
 
-## {.tabset .tabset-fade .tabset-pills}
-### Gráfico
+### {.tabset .tabset-fade .tabset-pills}
+#### Gráfico
 
 ```{r, out.width='100%'}
 #===============================================================================
@@ -653,7 +671,7 @@ ggplotly(g1) %>%
 #===============================================================================
 ```
 
-### Descargar Tabla
+#### Descargar Tabla
 
 
 ```{r}
@@ -668,7 +686,7 @@ DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
 ) 
 ```
 
-### Ficha Técnica
+#### Ficha Técnica
 
 ```{r}
 def <- strsplit(paste0(base_fichas [8,"DEFINICION"])," ")[[1]]
@@ -680,7 +698,8 @@ def_formatted <- paste(
 
 
 
-##
+## {.toc-ignore .unlisted .unnumbered}
+
 
 
 ```{r}
@@ -692,6 +711,10 @@ cita_formatted <- paste(
 `r cita_formatted` 
 
 <br />
+
+
+
+## **Brecha de pobreza**
 
 <div style="text-align: justify">
 La brecha de la pobreza (per cápita), identifica el agregado de la distancia que separa el ingreso de los pobres y el ingreso determinado por la línea de pobreza, medida en unidades de la línea de la pobreza y promediada entre la población. La brecha de la pobreza es sensible a las disminuciones de ingreso entre los pobres y registra un aumento cuando se eleva el déficit de una persona pobre. Es a partir del año 2004 en que es posible observar una disminución en la tendencia de este indicador. 
@@ -713,8 +736,8 @@ periodo_formatted <- paste(
 ##### País urbano, `r periodo_formatted`
 </div>
 
-## {.tabset .tabset-fade .tabset-pills}
-### Gráfico
+### {.tabset .tabset-fade .tabset-pills}
+#### Gráfico
 
 
 ```{r, out.width='100%'}
@@ -748,7 +771,7 @@ ggplotly(g1) %>%
 #===============================================================================
 ```
 
-### Descargar Tabla
+#### Descargar Tabla
 
 
 ```{r}
@@ -764,7 +787,7 @@ DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
 ```
 
 
-### Ficha Técnica
+#### Ficha Técnica
 
 ```{r}
 def <- strsplit(paste0(base_fichas [10,"DEFINICION"])," ")[[1]]
@@ -783,7 +806,8 @@ calc_formatted <- paste(
 ```
 > **Forma de cálculo:** `r calc_formatted`
 
-##
+## {.toc-ignore .unlisted .unnumbered}
+
 
 
 ```{r}
@@ -796,9 +820,9 @@ cita_formatted <- paste(
 
 <br />
 
-# Necesidades básicas
+# **Necesidades básicas**
 
-<br />
+## **Metodología 2011**
 
 <div style="text-align: justify">
 El método de las Necesidades Básicas Insatisfechas (NBI) se orienta a identificar la falta de acceso  a bienes y servicios (o problemas críticos en cuanto a la calidad de aquellos) cuya disposición constituye una condición para el ejercicio de derechos sociales. El mismo requiere la definición, tanto de las necesidades como de la fijación de los umbrales por debajo de los cuales se define la privación. Estas definiciones se han ido modificando a lo largo de los años. Una de las causas fundamentales tiene que ver con el carácter histórico de la definición. Es decir, aquellos bienes y servicios considerados necesarios en un momento histórico puede variar y ser re-definido. La definición de estos indicadores suele realizarse a partir de los relevamientos de los Censos de Población. Existen diferentes definiciones en Uruguay incluidos en la medición a partir de los Censos de 1985 (DGEC, 1990), 1996 (Calvo y Giraldez, 2000) y 2011  (Calvo et. al., 2013).
@@ -822,8 +846,8 @@ periodo_formatted <- paste(
 ##### Total país, `r periodo_formatted`
 </div>
 
-## {.tabset .tabset-fade .tabset-pills}
-### Gráfico
+### {.tabset .tabset-fade .tabset-pills}
+#### Gráfico
 
 ```{r, out.width='100%'}
 #===============================================================================
@@ -862,7 +886,7 @@ ggplotly(g1) %>%
 ```
 
 
-### Descargar Tabla
+#### Descargar Tabla
 
 
 ```{r}
@@ -880,7 +904,7 @@ DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
 ) 
 ```
 
-### Ficha Técnica
+#### Ficha Técnica
 
 ```{r}
 def <- strsplit(paste0(base_fichas [17,"DEFINICION"])," ")[[1]]
@@ -899,7 +923,8 @@ calc_formatted <- paste(
 ```
 > **Forma de cálculo:** `r calc_formatted`
 
-##
+## {.toc-ignore .unlisted .unnumbered}
+
 
 
 ```{r}
@@ -911,6 +936,8 @@ cita_formatted <- paste(
 `r cita_formatted` 
 
 <br />
+
+## **Hacinamiento**
 
 <div style="text-align: justify">
 El hacinamiento es un indicador de las condiciones de vida de la población que mide las carencias de espacio relativo en una vivienda. Se considera que en un hogar particular existe hacinamiento si la cantidad de personas del hogar con relación a la cantidad total de habitaciones para dormir es mayor estricto que tres. Desde la década de los noventa se observa una tendencia a la mejora en las condiciones de habitabilidad de la vivienda en el país de acuerdo a este indicador.
@@ -932,8 +959,9 @@ periodo_formatted <- paste(
 ##### País urbano, `r periodo_formatted`
 </div>
 
-## {.tabset .tabset-fade .tabset-pills}
-### Gráfico
+### {.tabset .tabset-fade .tabset-pills}
+
+#### Gráfico
 
 ```{r, out.width='100%'}
 #===============================================================================
@@ -968,7 +996,7 @@ ggplotly(g1) %>%
 ```
 
 
-### Descargar Tabla
+#### Descargar Tabla
 
 
 ```{r}
@@ -983,7 +1011,7 @@ DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
 ) 
 ```
 
-### Ficha Técnica
+#### Ficha Técnica
 
 ```{r}
 def <- strsplit(paste0(base_fichas [26,"DEFINICION"])," ")[[1]]
@@ -1002,8 +1030,7 @@ calc_formatted <- paste(
 ```
 > **Forma de cálculo:** `r calc_formatted`
 
-##
-
+## {.toc-ignore .unlisted .unnumbered}
 
 ```{r}
 cita <- strsplit(paste0("Fuente: ", base_fichas [26,"CITA"])," ")[[1]]
@@ -1013,7 +1040,12 @@ cita_formatted <- paste(
 ```
 `r cita_formatted` 
 
+
+
 <br />
+
+
+## **Acceso a agua potable**
 
 <div style="text-align: justify">
 El acceso a agua potable constituye una necesidad básica para las personas. El indicador integra factores vinculados al origen del agua así como a la forma en que ella llega a la vivienda. Se registra una clara tendencia a la disminución en la proporción de hogares que no acceden a este servicio desde el año 2006.
@@ -1036,8 +1068,8 @@ periodo_formatted <- paste(
 ##### Total país, `r periodo_formatted`
 </div>
 
-## {.tabset .tabset-fade .tabset-pills}
-### Gráfico
+### {.tabset .tabset-fade .tabset-pills}
+#### Gráfico
 
 ```{r, out.width='100%'}
 #===============================================================================
@@ -1070,7 +1102,7 @@ ggplotly(g1) %>%
 #===============================================================================
 ```
 
-### Descargar Tabla
+#### Descargar Tabla
 
 
 ```{r}
@@ -1085,7 +1117,7 @@ DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
 ) 
 ```
 
-### Ficha técnica
+#### Ficha técnica
 
 ```{r}
 def <- strsplit(paste0(base_fichas [32,"DEFINICION"])," ")[[1]]
@@ -1104,7 +1136,8 @@ calc_formatted <- paste(
 ```
 > **Forma de cálculo:** `r calc_formatted`
 
-##
+## {.toc-ignore .unlisted .unnumbered}
+
 
 
 ```{r}
@@ -1117,6 +1150,9 @@ cita_formatted <- paste(
 
 <br />
 
+## **Artefactos básicos de confort**
+
+<div style="text-align: justify">
 La tenencia de algunos bienes en el hogar son indicativos de la calidad de vida de las personas. Se considera que la persona posee una privación en términos de acceso a artefactos básicos de confort en base a la ausencia de medios de calefacción, para refrigerar alimentos o para disponer de agua caliente en el baño. La evolución de este indicador desde 2006 al 2021 muestra una tendencia decreciente, evidenciando una mejora en la calidad de vida de las personas durante el período.
 
 
@@ -1136,8 +1172,8 @@ periodo_formatted <- paste(
 ##### Total país, `r periodo_formatted`
 </div>
 
-## {.tabset .tabset-fade .tabset-pills}
-### Gráfico
+### {.tabset .tabset-fade .tabset-pills}
+#### Gráfico
 
 ```{r, out.width='100%'}
 #===============================================================================
@@ -1170,7 +1206,7 @@ ggplotly(g1) %>%
 #===============================================================================
 ```
 
-### Descargar Tabla
+#### Descargar Tabla
 
 
 ```{r}
@@ -1185,7 +1221,7 @@ DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
 ) 
 ```
 
-### Ficha técnica
+#### Ficha técnica
 
 ```{r}
 def <- strsplit(paste0(base_fichas [36,"DEFINICION"])," ")[[1]]
@@ -1204,7 +1240,7 @@ calc_formatted <- paste(
 ```
 > **Forma de cálculo:** `r calc_formatted`
 
-##
+## {.toc-ignore .unlisted .unnumbered}
 
 
 ```{r}
@@ -1216,6 +1252,8 @@ cita_formatted <- paste(
 `r cita_formatted` 
 
 <br />
+
+## **Acceso a la educación**
 
 <div style="text-align: justify">
 La educación constituye un requerimiento mínimo para que las personas puedan incorporarse adecuadamente a la vida productiva y social. En Uruguay, se establece como obligatoria la asistencia a algún centro educativo entre los 4 años y hasta la educación media superior. Se considera que un hogar presenta una carencia en el acceso a la educación si al menos un integrante del hogar con edad comprendida entre los 4 y los 17 años no se encuentra asistiendo a un centro educativo formal, no habiendo finalizado enseñanza secundaria. Desde la década del ochenta, la proporción de hogares con una carencia en este indicador disminuye significativamente y alcanza un valor de 2,8% en 2021. 
@@ -1237,8 +1275,10 @@ periodo_formatted <- paste(
 ##### País urbano, `r periodo_formatted`
 </div>
 
-## {.tabset .tabset-fade .tabset-pills}
-### Gráfico
+### {.tabset .tabset-fade .tabset-pills}
+
+
+#### Gráfico
 
 ```{r, out.width='100%'}
 #===============================================================================
@@ -1272,7 +1312,7 @@ ggplotly(g1) %>%
 #===============================================================================
 ```
 
-### Descargar Tabla
+#### Descargar Tabla
 
 
 ```{r}
@@ -1287,7 +1327,7 @@ DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
 ) 
 ```
 
-### Ficha Técnica
+#### Ficha Técnica
 
 ```{r}
 def <- strsplit(paste0(base_fichas [38,"DEFINICION"])," ")[[1]]
@@ -1308,7 +1348,8 @@ calc_formatted <- paste(
 
 
 
-##
+## {.toc-ignore .unlisted .unnumbered}
+
 
 ```{r}
 cita <- strsplit(paste0("Fuente: ", base_fichas [38,"CITA"])," ")[[1]]
@@ -1321,13 +1362,13 @@ cita_formatted <- paste(
 
 
 <br />
+<br />
 
 
 
+# **Referencias**
 
-# Referencias
-
-## Fuentes de consulta			
+## **Fuentes de consulta**			
 
 <div style="text-align: justify">									
 [Instituto Nacional de Estadística](http://www.ine.gub.uy/)								
@@ -1339,7 +1380,7 @@ cita_formatted <- paste(
 
 <br />
 
-## Referencias bibliográficas		
+## **Referencias bibliográficas**		
 
 <div style="text-align: justify">										
 Alkire, Sabine y Foster, James (2008) Recuento y medición multidimensional de la pobreza. OPHI Working paper series. Disponible en: [enlace en línea](https://ophi.org.uk/recuento-y-medicion-multidimensional-de-la-pobreza/). Consultado el 13/03/2020
