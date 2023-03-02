@@ -118,6 +118,7 @@ g2 <-
 ggplotly(g2) %>% 
   config(displayModeBar = F) %>%
   layout(margin = list(b = 100), legend = list(x = 0.5, y = -0.1,orientation = "h", xanchor = "center" )) 
+g2
 
 #===============================================================================
 ```
