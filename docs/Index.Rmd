@@ -1,0 +1,1411 @@
+---
+title: '**<br /> <br /> Pobreza y desigualdad en Uruguay**'
+output:
+  html_document:
+    theme: flatly
+    toc: yes
+    toc_float: yes
+    smooth_scroll: yes
+    toc_depth: 2
+    number_sections: false 
+    css: "www/estilo.css"
+  pdf_document:
+    toc: yes
+    toc_depth: '2'
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+
+```{r}
+htmltools::img(src = knitr::image_uri("www/logo_umad.png"), 
+               alt = 'logo', 
+               style = 'position:absolute; top:0; right:0; padding:15px;max-width: 45%;')
+
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(plotly))
+suppressPackageStartupMessages(library(ggplot2))
+suppressPackageStartupMessages(library(DT))
+suppressPackageStartupMessages(library(kableExtra))
+suppressPackageStartupMessages(library(downloadthis))
+
+
+base        <- readxl::read_excel("Data/Base_Motor_Pobreza.xlsx")
+base        <- base %>% rename(PAÍS = PAIS)
+base        <- base %>% rename(REGIÓN = REGION)
+base_fichas <- readxl::read_excel("Data/Base_Fichas_Técnicas.xls")
+base_fichas <- base_fichas[order(base_fichas$ID),]
+
+```
+
+<br />
+<br />
+
+<div style="text-align: justify">
+
+**La [Unidad de Métodos y Acceso a Datos](https://umad.cienciassociales.edu.uy/) (UMAD) (FCS-UdelaR) a partir del [Observatorio Uruguay](https://umad.cienciassociales.edu.uy/observatorio-uruguay/) busca aportar a la difusión de conocimiento respecto a temas de interés general sobre la realidad social, económica y política del Uruguay. Esta serie de documentos tiene como objetivo presentar indicadores clave para el análisis de tendencias históricas del país que esperamos sean de utilidad para las comunidades académicas, los tomadores de decisión y los formadores de opinión, así como el público en general. Se presentan aquí indicadores sobre niveles de bienestar material de la población, ingresos, desigualdad y pobreza en el Uruguay durante las últimas décadas.** 
+</div>
+
+<hr style="border:1.5px solid #2c3e50"> </hr>
+
+<br />
+
+# **Nivel de ingresos** 
+## **Promedio y mediana**
+
+
+<div style="text-align: justify">
+
+El ingreso de los hogares es indicativo de sus posibilidades de acceso a bienes y servicios en el mercado. El ingreso per-cápita se calcula dividiendo el total de ingresos que percibe un hogar entre la cantidad de personas que en el mismo residen. 
+
+Los valores que la media poblacional alcanza son indicativos de los niveles de vida general de la población. Sin embargo, el indicador no da cuenta de la desigualdad en la percepción de ingresos entre distintos grupos poblacionales y los valores pueden verse afectados por cifras extremas y poco frecuentes como la existencia de pocos hogares con ingresos muy elevados. En 2004, en promedio, los hogres percibían \$7.594 por persona (a precios de diciembre de 2006). El valor de la mediana indica el valor central del ingreso de todos los hogares cuando estos están ordenados de menor a mayor. En 2004, el 50 por ciento de los hogares perciben un ingreso menor o igual a \$5.424.   
+
+El gráfico presentan la evolución del promedio y la mediana de ingresos per-cápita en los hogares uruguayos desde 2004. A partir del 2005 y hasta 2019 se presenta una tendencia constante al aumento de los ingresos. En 2020 se observa una reducción de los ingesos, con una recuperación en 2021, aunque se mantiene en niveles inferiores a los de 2019. 
+</div>
+
+<br />
+
+
+<div style="text-align: center">
+#### **Promedio y mediana de ingresos per-cápita de los hogares (cte. base diciembre 2006)** 
+```{r}
+periodo <- base[base$NOMINDICADOR == "Promedio de ingreso per-cápita de los hogares (Cte. Base diciembre 2006)",]
+max<- max(periodo$ANIO)
+min<- min(periodo$ANIO)
+periodo <- c(min," - ", max)
+periodo_formatted <- paste(
+  text_spec(periodo, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+##### País Urbano, `r periodo_formatted`
+</div>
+
+### {.tabset .tabset-fade .tabset-pills}
+#### Gráfico
+
+
+```{r, out.width='100%'}
+#===============================================================================
+g2 <- 
+  base %>% filter(NOMINDICADOR == "Promedio de ingreso per-cápita de los hogares (Cte. Base diciembre 2006)" | NOMINDICADOR == "Mediana de ingreso per-cápita de los hogares (Cte. Base diciembre 2006)", CORTE_NUEVA == "Total", URBANORURALUY == "Urbano (más de 5.000 habitantes)" ) %>%
+  mutate(UNIDAD = case_when(
+  NOMINDICADOR =="Promedio de ingreso per-cápita de los hogares (Cte. Base diciembre 2006)" ~ "Media",
+  NOMINDICADOR =="Mediana de ingreso per-cápita de los hogares (Cte. Base diciembre 2006)" ~ "Mediana")) %>%
+  mutate(VALOR = round(as.numeric(VALOR),1)) %>% 
+  mutate(ANIO = as.numeric(ANIO)) %>% 
+  ggplot(aes(x = ANIO, y = VALOR)) +
+  geom_line(aes(group = 2, color = UNIDAD)) +
+  geom_point(aes(color = UNIDAD)) +
+  scale_color_manual(
+    values = c(639, "#a1dd70"),
+    labels = c("Media", "Mediana")
+  ) +
+  ylim(0, 15000) +
+  xlim(2004, 2021) +
+  
+  theme_minimal() +
+  labs(
+    color = "",
+    title = "",
+    caption = "Unidad de Métodos y Acceso a Datos (UMAD)",
+    x = "",
+    y = ""
+  )
+ggplotly(g2) %>% 
+  config(displayModeBar = F) %>%
+  layout(margin = list(b = 100), legend = list(x = 0.5, y = -0.1,orientation = "h", xanchor = "center" )) 
+
+#===============================================================================
+```
+
+
+
+```{r}
+download_this(g2,
+              button_label = "Descargar gráfico",
+              icon = "fa fa-download")
+```
+
+
+#### Tabla
+
+
+```{r}
+t1 <-   base %>% filter(NOMINDICADOR == "Promedio de ingreso per-cápita de los hogares (Cte. Base diciembre 2006)" | NOMINDICADOR == "Mediana de ingreso per-cápita de los hogares (Cte. Base diciembre 2006)", CORTE_NUEVA == "Total", URBANORURALUY == "Urbano (más de 5.000 habitantes)" ) %>%
+  mutate(VALOR = round(as.numeric(VALOR),1)) %>%
+  rename(UNIDAD_GEOGRÁFICA = URBANORURALUY)
+t1 <- t1 [,c("NOMINDICADOR","PAÍS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
+
+DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
+                                                       buttons = c('copy', 'csv', 'excel', 'print') )
+) 
+```
+
+#### Ficha Técnica
+
+
+```{r}
+def <- strsplit(paste0(base_fichas [1,"DEFINICION"])," ")[[1]]
+def_formatted <- paste(
+  text_spec(def, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Definición:** `r def_formatted`
+
+
+```{r}
+calc <- strsplit(paste0(base_fichas [1,"CALCULO"])," ")[[1]]
+calc_formatted <- paste(
+  text_spec(calc, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Forma de cálculo:** `r calc_formatted`
+
+
+## {.toc-ignore .unlisted .unnumbered}
+
+
+```{r}
+cita <- strsplit(paste0("Fuente: ", base_fichas [1,"CITA"])," ")[[1]]
+cita_formatted <- paste(
+  text_spec(cita, color = 1, font_size = 12, align = 2),
+  collapse = " ")
+```
+`r cita_formatted` 
+
+
+<br />
+
+## **Índice de Gini**
+
+<div style="text-align: justify">
+El Índice de Gini mide hasta qué punto la distribución del ingreso entre individuos u hogares dentro de una economía se aleja de una distribución perfectamente equitativa. Una curva de Lorenz muestra los porcentajes acumulados de ingreso recibido total contra la cantidad acumulada de receptores, empezando a partir de la persona o el hogar de menores ingresos. El índice de Gini mide la superficie entre la curva de Lorenz y una línea hipotética de equidad absoluta, expresada como porcentaje de la superficie máxima debajo de la línea. Así, un índice de Gini de 0 representa una equidad perfecta, mientras que un índice de 100 representa una inequidad perfecta.
+
+Al analizar la evolución de este indicador en Uruguay, se observa una tendencia sostenida de disminución de la desiguladad durante la última década. 
+</div>
+
+<br />
+
+<div style="text-align: center">
+#### **Índice de Gini** 
+```{r}
+periodo <- base[base$NOMINDICADOR == "Índice de Gini",]
+max<- max(periodo$ANIO)
+min<- min(periodo$ANIO)
+periodo <- c(min," - ", max)
+periodo_formatted <- paste(
+  text_spec(periodo, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+##### País Urbano, `r periodo_formatted`
+</div>
+
+### {.tabset .tabset-fade .tabset-pills}
+#### Gráfico
+
+
+```{r, out.width='100%'}
+#===============================================================================
+
+g1 <- 
+  base %>% filter(NOMINDICADOR == "Índice de Gini", CORTE_NUEVA == "Total") %>%
+  mutate(VALOR = round(as.numeric(VALOR),1)) %>% 
+  mutate(ANIO = as.numeric(ANIO)) %>% 
+  ggplot(aes(x = ANIO, y = VALOR)) +
+  geom_point(aes(color = NOMINDICADOR)) +
+  geom_line(aes(color = NOMINDICADOR)) +
+  scale_color_manual(
+    values = c("#a1dd70"),
+    labels = c("Índice de Gini")
+  ) +
+  ylim(0, 100) +
+  scale_x_continuous(breaks=seq(2006, 2021, 1)) +
+  theme_minimal() +
+  labs(
+    color = "",
+    title = "",
+    caption = "Unidad de Métodos y Acceso a Datos (UMAD)",
+    x = "",
+    y = ""
+  )
+
+
+ggplotly(g1) %>% 
+  config(displayModeBar = F) %>%
+  layout(margin = list(b = 100), legend = list(x = 0.5, y = -0.1,orientation = "h", xanchor = "center" )) 
+
+#===============================================================================
+```
+
+#### Descargar Tabla
+
+
+```{r}
+t1 <- 
+  base %>% filter(NOMINDICADOR == "Índice de Gini", CORTE_NUEVA == "Total") %>%
+  mutate(VALOR = round(as.numeric(VALOR),1)) %>%
+  rename(UNIDAD_GEOGRÁFICA = URBANORURALUY)
+t1 <- t1 [,c("NOMINDICADOR","PAÍS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
+
+DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
+                                                       buttons = c('copy', 'csv', 'excel', 'print') )
+) 
+```
+
+
+#### Ficha Técnica
+
+
+```{r}
+def <- strsplit(paste0(base_fichas [12,"DEFINICION"])," ")[[1]]
+def_formatted <- paste(
+  text_spec(def, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Definición:** `r def_formatted`
+
+
+```{r}
+calc <- strsplit(paste0(base_fichas [12,"CALCULO"])," ")[[1]]
+calc_formatted <- paste(
+  text_spec(calc, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Forma de cálculo:** `r calc_formatted`
+
+
+## {.toc-ignore .unlisted .unnumbered}
+
+
+```{r}
+cita <- strsplit(paste0("Fuente: ", base_fichas [12,"CITA"])," ")[[1]]
+cita_formatted <- paste(
+  text_spec(cita, color = 1, font_size = 12, align = 2),
+  collapse = " ")
+```
+`r cita_formatted` 
+
+<br />
+
+## **Relación de ingreso medio**
+<div style="text-align: justify">
+La relación entre el ingreso medio per-cápita del primer y quinto quintil de ingresos refleja cuántas veces mayor es el ingreso medio del 20% más rico de las personas, en relación con el del 20% más pobre. Desde el año 2005 se observa una disminución del valor del cociente y, a partir de 2016, se mantiene relativamente estable. En consonancia con el indicador anterior, este hecho evidencia una disminución de la desiguldad en la percepción de ingresos entre los hogares más ricos y más pobres en términos relativos. 
+</div>
+
+<br />
+
+
+<div style="text-align: center">
+##### **Relación entre el ingreso medio per-cápita del primer y quinto quintil** 
+```{r}
+periodo <- base[base$NOMINDICADOR == "Relación entre el Ingreso medio per cápita del primer y quinto quintil",]
+max<- max(periodo$ANIO)
+min<- min(periodo$ANIO)
+periodo <- c(min," - ", max)
+periodo_formatted <- paste(
+  text_spec(periodo, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+##### País Urbano, `r periodo_formatted`
+</div>
+
+### {.tabset .tabset-fade .tabset-pills}
+#### Gráfico
+
+```{r, out.width='100%'}
+#===============================================================================
+
+g1 <- 
+  base %>% filter(NOMINDICADOR == "Relación entre el Ingreso medio per cápita del primer y quinto quintil", CORTE_NUEVA == "Total") %>%
+  mutate(VALOR = round(as.numeric(VALOR),1)) %>% 
+  mutate(ANIO = as.numeric(ANIO)) %>% 
+  ggplot(aes(x = ANIO, y = VALOR)) +
+  geom_line(aes(group = 2, color = URBANORURALUY)) +
+  geom_point(aes(color = URBANORURALUY)) +
+  scale_color_manual(
+    values = c(639, "#a1dd70"),
+    labels = c("Total País", "Urbano (más de 5.000 habitantes)")
+  ) +
+  ylim(0, 15) +
+  xlim(1998, 2021) +
+  
+  theme_minimal() +
+  labs(
+    color = "",
+    title = "",
+    caption = "Unidad de Métodos y Acceso a Datos (UMAD)",
+    x = "",
+    y = ""
+  )
+ggplotly(g1) %>% 
+  config(displayModeBar = F) %>%
+  layout(margin = list(b = 100), legend = list(x = 0.5, y = -0.1,orientation = "h", xanchor = "center" )) 
+
+#===============================================================================
+```
+
+#### Descargar Tabla
+
+
+```{r}
+t1 <- 
+  base %>% filter(NOMINDICADOR == "Relación entre el Ingreso medio per cápita del primer y quinto quintil", CORTE_NUEVA == "Total") %>%
+  mutate(VALOR = round(as.numeric(VALOR),1)) %>%
+  rename(UNIDAD_GEOGRÁFICA = URBANORURALUY)
+t1 <- t1 [,c("NOMINDICADOR","PAÍS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
+
+DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
+                                                       buttons = c('copy', 'csv', 'excel', 'print') )
+) 
+```
+
+#### Ficha Técnica
+
+
+```{r}
+def <- strsplit(paste0(base_fichas [16,"DEFINICION"])," ")[[1]]
+def_formatted <- paste(
+  text_spec(def, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Definición:** `r def_formatted`
+
+
+```{r}
+calc <- strsplit(paste0(base_fichas [16,"CALCULO"])," ")[[1]]
+calc_formatted <- paste(
+  text_spec(calc, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Forma de cálculo:** `r calc_formatted`
+
+## {.toc-ignore .unlisted .unnumbered}
+
+
+```{r}
+cita <- strsplit(paste0("Fuente: ", base_fichas [16,"CITA"])," ")[[1]]
+cita_formatted <- paste(
+  text_spec(cita, color = 1, font_size = 12, align = 2),
+  collapse = " ")
+```
+`r cita_formatted` 
+
+<br />
+
+# **Pobreza monetaria**
+
+## **Tasa de recuento**
+
+<div style="text-align: justify">
+La medida de pobreza más simple y más ampliamente utilizada es la tasa de recuento, que es el porcentaje de pobres en una población dada. La construcción de la línea de pobreza (LP) se basa en la definición de un umbral de ingresos necesarios para cubrir una Canasta Básica Total (CBT). Para su cálculo, se utilizan índices de precios tanto de bienes alimentarios como no alimentarios. Para determinar la LP se introducen economías de escala en los gastos no alimentarios para los estratos de referencia seleccionados en las diferentes regiones geográficas, tomando en cuenta el tamaño del hogar (INE, 2015). La línea de indigencia refiere al ingreso necesario para cubrir los gastos únicamente alimentarios. 
+
+Los siguientes gráficos muestran la evolución de ambos indicadores como proporción de hogares en condición de pobreza e indigencia y porcentaje de personas que en los mismos residen. Los mismos muestran cómo desde el 2006 la pobreza monetaria ha caído sostenidamente en Uruguay. Si se observasen registros de años anteriores se podría observar cómo, luego de más de una década de aumento en su incidencia, intensidad y severidad, es a partir del año 2005 en que se registra un punto de inflexión en la tendencia (INE, 2011). En un contexto de fuerte expansión económica, el crecimiento del empleo y los ingresos, así como la instauración de un conjunto de políticas redistributivas, han contribuido a la mejora de los indicadores de pobreza (Amarante et al., 2011). En 2020 se observa un aumento de la pobreza y de la indigencia y una posterior disminución en 2021, aunque manteniéndose en niveles superiores a los observados en los últimos 5 años.  
+</div>
+
+<br />
+
+<div style="text-align: center">
+##### **Hogares y personas en situación de pobreza (met. 2006) (% de la población total)** 
+```{r}
+periodo <- base[base$NOMINDICADOR == "Hogares en situación de pobreza (% de la población total) (INE)",]
+max<- max(periodo$ANIO)
+min<- min(periodo$ANIO)
+periodo <- c(min," - ", max)
+periodo_formatted <- paste(
+  text_spec(periodo, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+##### Total país, `r periodo_formatted`
+</div>
+
+### {.tabset .tabset-fade .tabset-pills}
+#### Gráfico
+
+```{r, out.width='100%'}
+#===============================================================================
+g1 <- 
+  base %>% 
+  filter(NOMINDICADOR =="Hogares en situación de pobreza (% de la población total) (INE)" | NOMINDICADOR =="Personas en situación de pobreza (% de la población total) (INE)", 
+         CORTE_NUEVA == "Total", 
+         URBANORURALUY =="Total País") %>%
+  mutate(UNIDAD = case_when(
+  NOMINDICADOR =="Hogares en situación de pobreza (% de la población total) (INE)" ~ "Hogares",
+  NOMINDICADOR =="Personas en situación de pobreza (% de la población total) (INE)" ~ "Personas")) %>%
+  mutate(VALOR = round(as.numeric(VALOR)*100,1)) %>% 
+  mutate(ANIO = as.factor(ANIO)) %>% 
+  ggplot(aes(x = ANIO, y = VALOR)) +
+  geom_line(aes(group = 2, color = UNIDAD)) +
+  geom_point(aes(color = UNIDAD)) +
+  scale_color_manual(
+    values = c(639, "#a1dd70"),
+    labels = c("Hogares", "Personas")
+  ) +
+  ylim(0, 40) +
+  theme_minimal() +
+  labs(
+    color = "",
+    title = "",
+    caption = "Unidad de Métodos y Acceso a Datos (UMAD)",
+    x = "",
+    y = ""
+  )
+ggplotly(g1) %>% 
+  config(displayModeBar = F) %>%
+  layout(margin = list(b = 100), legend = list(x = 0.5, y = -0.1,orientation = "h", xanchor = "center" )) 
+
+#===============================================================================
+```
+
+
+#### Descargar Tabla
+
+
+```{r}
+t1 <- 
+  base %>% 
+  filter(NOMINDICADOR =="Hogares en situación de pobreza (% de la población total) (INE)" | NOMINDICADOR =="Personas en situación de pobreza (% de la población total) (INE)", 
+         CORTE_NUEVA == "Total", 
+         URBANORURALUY =="Total País") %>%
+  mutate(VALOR = round(as.numeric(VALOR)*100, 1)) %>%
+  rename(UNIDAD_GEOGRÁFICA = URBANORURALUY)
+t1 <- t1 [,c("NOMINDICADOR","PAÍS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
+
+DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
+                                                       buttons = c('copy', 'csv', 'excel', 'print') )
+) 
+```
+
+#### Ficha Técnica
+
+```{r}
+def <- strsplit(paste0(base_fichas [4,"DEFINICION"])," ")[[1]]
+def_formatted <- paste(
+  text_spec(def, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Definición:** `r def_formatted`
+
+
+```{r}
+calc <- strsplit(paste0(base_fichas [4,"CALCULO"])," ")[[1]]
+calc_formatted <- paste(
+  text_spec(calc, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Forma de cálculo:** `r calc_formatted`
+
+## {.toc-ignore .unlisted .unnumbered}
+
+
+
+```{r}
+cita <- strsplit(paste0("Fuente: ", base_fichas [4,"CITA"])," ")[[1]]
+cita_formatted <- paste(
+  text_spec(cita, color = 1, font_size = 12, align = 2),
+  collapse = " ")
+```
+`r cita_formatted` 
+
+<br />
+
+
+<div style="text-align: center">
+##### **Hogares y personas en situación de indigencia (met. 2006) (% de la población total)** 
+```{r}
+periodo <- base[base$NOMINDICADOR == "Hogares en situación de indigencia (% de la población total) (INE)",]
+max<- max(periodo$ANIO)
+min<- min(periodo$ANIO)
+periodo <- c(min," - ", max)
+periodo_formatted <- paste(
+  text_spec(periodo, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+##### Total país, `r periodo_formatted`
+</div>
+
+### {.tabset .tabset-fade .tabset-pills}
+#### Gráfico
+
+
+```{r, out.width='100%'}
+#===============================================================================
+
+g1 <- 
+  base %>% 
+  filter(NOMINDICADOR =="Hogares en situación de indigencia (% de la población total) (INE)" | NOMINDICADOR =="Personas en situación de indigencia (% de la población total) (INE)", 
+         CORTE_NUEVA == "Total", 
+         URBANORURALUY =="Total País") %>%
+  mutate(UNIDAD = case_when(
+  NOMINDICADOR =="Hogares en situación de indigencia (% de la población total) (INE)" ~ "Hogares",
+  NOMINDICADOR =="Personas en situación de indigencia (% de la población total) (INE)" ~ "Personas")) %>%
+  mutate(VALOR = round(as.numeric(VALOR)*100,1)) %>% 
+  mutate(ANIO = as.factor(ANIO)) %>% 
+  ggplot(aes(x = ANIO, y = VALOR)) +
+  geom_line(aes(group = 2, color = UNIDAD)) +
+  geom_point(aes(color = UNIDAD)) +
+  scale_color_manual(
+    values = c(639, "#a1dd70"),
+    labels = c("Hogares", "Personas")
+  ) +
+  ylim(0, 4) +
+  theme_minimal() +
+  labs(
+    color = "",
+    title = "",
+    caption = "Unidad de Métodos y Acceso a Datos (UMAD)",
+    x = "",
+    y = ""
+  )
+ggplotly(g1) %>% 
+  config(displayModeBar = F) %>%
+  layout(margin = list(b = 100), legend = list(x = 0.5, y = -0.1,orientation = "h", xanchor = "center" )) 
+
+#===============================================================================
+```
+
+#### Descargar Tabla
+
+
+```{r}
+t1 <- 
+  base %>% 
+  filter(NOMINDICADOR =="Hogares en situación de indigencia (% de la población total) (INE)" | NOMINDICADOR =="Personas en situación de indigencia (% de la población total) (INE)", 
+  CORTE_NUEVA == "Total", 
+  URBANORURALUY =="Total País") %>%
+  mutate(VALOR =  round(as.numeric(VALOR)*100, 1)) %>%
+  rename(UNIDAD_GEOGRÁFICA = URBANORURALUY)
+t1 <- t1 [,c("NOMINDICADOR","PAÍS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
+
+DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
+                                                       buttons = c('copy', 'csv', 'excel', 'print') )
+) 
+```
+
+#### Ficha Técnica
+
+```{r}
+def <- strsplit(paste0(base_fichas [6,"DEFINICION"])," ")[[1]]
+def_formatted <- paste(
+  text_spec(def, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Definición:** `r def_formatted`
+
+
+```{r}
+calc <- strsplit(paste0(base_fichas [6,"CALCULO"])," ")[[1]]
+calc_formatted <- paste(
+  text_spec(calc, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Forma de cálculo:** `r calc_formatted`
+
+## {.toc-ignore .unlisted .unnumbered}
+
+
+
+```{r}
+cita <- strsplit(paste0("Fuente: ", base_fichas [6,"CITA"])," ")[[1]]
+cita_formatted <- paste(
+  text_spec(cita, color = 1, font_size = 12, align = 2),
+  collapse = " ")
+```
+`r cita_formatted` 
+
+<br />
+
+
+
+## **Severidad de la pobreza**
+
+<div style="text-align: justify">
+La severidad de la pobreza mide el grado de desigualdad entre los hogares o personas bajo la línea de pobreza. De algún modo brinda indicios sobre la heterogeneidad u homogeneidad de quienes se encuentran en situación de pobreza. A partir del año 2006 se observa en Uruguay una disminución en su severidad y tendencia a la homogeneidad entre estos hogares. 
+</div>
+
+<br />
+
+<div style="text-align: center">
+##### **Severidad de la pobreza** 
+```{r}
+periodo <- base[base$NOMINDICADOR == "Severidad de la pobreza",]
+max<- max(periodo$ANIO)
+min<- min(periodo$ANIO)
+periodo <- c(min," - ", max)
+periodo_formatted <- paste(
+  text_spec(periodo, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+##### Total país, `r periodo_formatted`
+</div>
+
+### {.tabset .tabset-fade .tabset-pills}
+#### Gráfico
+
+```{r, out.width='100%'}
+#===============================================================================
+
+g1 <- 
+  base %>% filter(NOMINDICADOR == "Severidad de la pobreza", CORTE_NUEVA == "Total") %>%
+  mutate(VALOR = round(as.numeric(VALOR),1)) %>% 
+  mutate(ANIO = as.factor(ANIO)) %>% 
+  ggplot(aes(x = ANIO, y = VALOR)) +
+  geom_line(aes(group = 1, color = NOMINDICADOR)) +
+  geom_point(aes(color = NOMINDICADOR)) +
+  scale_color_manual(
+    values = c("#a1dd70"),
+    labels = c("Severidad de la pobreza")
+  ) +
+  
+  ylim(0, 5) +
+  theme_minimal() +
+  labs(
+    color = "",
+    title = "",
+    caption = "Unidad de Métodos y Acceso a Datos (UMAD)",
+    x = "",
+    y = ""
+  )
+ggplotly(g1) %>% 
+  config(displayModeBar = F) %>%
+  layout(margin = list(b = 100), legend = list(x = 0.5, y = -0.1,orientation = "h", xanchor = "center" ))  
+
+#===============================================================================
+```
+
+#### Descargar Tabla
+
+
+```{r}
+t1 <- 
+  base %>% filter(NOMINDICADOR == "Severidad de la pobreza", CORTE_NUEVA == "Total") %>%
+  mutate(VALOR = round(as.numeric(VALOR),1)) %>%
+  rename(UNIDAD_GEOGRÁFICA = URBANORURALUY)
+t1 <- t1 [,c("NOMINDICADOR","PAÍS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
+
+DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
+                                                       buttons = c('copy', 'csv', 'excel', 'print') )
+) 
+```
+
+#### Ficha Técnica
+
+```{r}
+def <- strsplit(paste0(base_fichas [8,"DEFINICION"])," ")[[1]]
+def_formatted <- paste(
+  text_spec(def, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Definición:** `r def_formatted`
+
+
+
+## {.toc-ignore .unlisted .unnumbered}
+
+
+
+```{r}
+cita <- strsplit(paste0("Fuente: ", base_fichas [8,"CITA"])," ")[[1]]
+cita_formatted <- paste(
+  text_spec(cita, color = 1, font_size = 12, align = 2),
+  collapse = " ")
+```
+`r cita_formatted` 
+
+<br />
+
+
+
+## **Brecha de pobreza**
+
+<div style="text-align: justify">
+La brecha de la pobreza (per cápita), identifica el agregado de la distancia que separa el ingreso de los pobres y el ingreso determinado por la línea de pobreza, medida en unidades de la línea de la pobreza y promediada entre la población. La brecha de la pobreza es sensible a las disminuciones de ingreso entre los pobres y registra un aumento cuando se eleva el déficit de una persona pobre. Es a partir del año 2004 en que es posible observar una disminución en la tendencia de este indicador. 
+</div>
+
+<br />
+
+<div style="text-align: center">
+##### **Brecha de pobreza a usd 3,20 por día (2011 ppp) (%)** 
+```{r}
+periodo <- base[base$NOMINDICADOR == "Brecha de pobreza a usd 3,20 por día (2011 ppp) (%)",]
+max<- max(periodo$ANIO)
+min<- min(periodo$ANIO)
+periodo <- c(min," - ", max)
+periodo_formatted <- paste(
+  text_spec(periodo, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+##### País urbano, `r periodo_formatted`
+</div>
+
+### {.tabset .tabset-fade .tabset-pills}
+#### Gráfico
+
+
+```{r, out.width='100%'}
+#===============================================================================
+
+g1 <- 
+  base %>% filter(NOMINDICADOR == "Brecha de pobreza a usd 3,20 por día (2011 ppp) (%)") %>%
+  mutate(VALOR = round(as.numeric(VALOR),3)) %>% 
+  mutate(ANIO = as.numeric(ANIO)) %>% 
+  ggplot(aes(x = ANIO, y = VALOR)) +
+  geom_line(aes(group = 1, color = NOMINDICADOR)) +
+  geom_point(aes(color = NOMINDICADOR)) +
+  scale_color_manual(
+    values = c("#a1dd70"),
+    labels = c("Brecha de pobreza")
+  ) +
+  ylim(0, 2) +
+  scale_x_continuous(breaks=seq(1992, 2020, 4)) +
+  theme_minimal() +
+  labs(
+    color = "",
+    title = "",
+    caption = "Unidad de Métodos y Acceso a Datos (UMAD)",
+    x = "",
+    y = ""
+  )
+ggplotly(g1) %>% 
+  config(displayModeBar = F) %>%
+  layout(margin = list(b = 100), legend = list(x = 0.5, y = -0.1,orientation = "h", xanchor = "center" ))  
+
+#===============================================================================
+```
+
+#### Descargar Tabla
+
+
+```{r}
+t1 <- 
+  base %>% filter(NOMINDICADOR == "Brecha de pobreza a usd 3,20 por día (2011 ppp) (%)") %>%
+  mutate(VALOR = round(as.numeric(VALOR),3)) %>% 
+  rename(UNIDAD_GEOGRÁFICA = URBANORURALUY)
+t1 <- t1 [,c("NOMINDICADOR","PAÍS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
+
+DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
+                                                       buttons = c('copy', 'csv', 'excel', 'print') )
+) 
+```
+
+
+#### Ficha Técnica
+
+```{r}
+def <- strsplit(paste0(base_fichas [10,"DEFINICION"])," ")[[1]]
+def_formatted <- paste(
+  text_spec(def, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Definición:** `r def_formatted`
+
+
+```{r}
+calc <- strsplit(paste0(base_fichas [10,"CALCULO"])," ")[[1]]
+calc_formatted <- paste(
+  text_spec(calc, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Forma de cálculo:** `r calc_formatted`
+
+## {.toc-ignore .unlisted .unnumbered}
+
+
+
+```{r}
+cita <- strsplit(paste0("Fuente: ", base_fichas [10,"CITA"])," ")[[1]]
+cita_formatted <- paste(
+  text_spec(cita, color = 1, font_size = 12, align = 2),
+  collapse = " ")
+```
+`r cita_formatted` 
+
+<br />
+
+# **Necesidades básicas**
+
+## **Metodología 2011**
+
+<div style="text-align: justify">
+El método de las Necesidades Básicas Insatisfechas (NBI) se orienta a identificar la falta de acceso  a bienes y servicios (o problemas críticos en cuanto a la calidad de aquellos) cuya disposición constituye una condición para el ejercicio de derechos sociales. El mismo requiere la definición, tanto de las necesidades como de la fijación de los umbrales por debajo de los cuales se define la privación. Estas definiciones se han ido modificando a lo largo de los años. Una de las causas fundamentales tiene que ver con el carácter histórico de la definición. Es decir, aquellos bienes y servicios considerados necesarios en un momento histórico puede variar y ser re-definido. La definición de estos indicadores suele realizarse a partir de los relevamientos de los Censos de Población. Existen diferentes definiciones en Uruguay incluidos en la medición a partir de los Censos de 1985 (DGEC, 1990), 1996 (Calvo y Giraldez, 2000) y 2011  (Calvo et. al., 2013).
+
+Se presenta aquí la evolución de los indicadores de NBI con la metodología aplicada para los Censos 2011, a partir de la disponibilidad de información proveniente de las Encuestas Continuas de Hogares. El siguiente gráfico muestra una tendencia decreciente, tanto del porcentaje de hogares con NBI como de personas que en ellos residen desde el año 2006. 
+</div>
+
+<br />
+
+<div style="text-align: center">
+##### **Hogares y personas en hogares con necesidades básicas insatisfechas (met. 2006) (% de la población total)** 
+```{r}
+periodo <- base[base$NOMINDICADOR == "Hogares con necesidades básicas insatisfechas (met 2011)(% de la población total)",]
+max<- max(periodo$ANIO)
+min<- min(periodo$ANIO)
+periodo <- c(min," - ", max)
+periodo_formatted <- paste(
+  text_spec(periodo, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+##### Total país, `r periodo_formatted`
+</div>
+
+### {.tabset .tabset-fade .tabset-pills}
+#### Gráfico
+
+```{r, out.width='100%'}
+#===============================================================================
+g1 <- 
+  base %>% 
+  filter(NOMINDICADOR =="Hogares con necesidades básicas insatisfechas (met 2011)(% de la población total)" | NOMINDICADOR =="Personas en hogares con necesidades básicas insatisfechas (met 2011) (% de la población total) (INE)", 
+         CORTE_NUEVA == "Total", 
+         URBANORURALUY =="Total País") %>%
+  mutate(UNIDAD = case_when(
+  NOMINDICADOR =="Hogares con necesidades básicas insatisfechas (met 2011)(% de la población total)" ~ "Hogares",
+  NOMINDICADOR =="Personas en hogares con necesidades básicas insatisfechas (met 2011) (% de la población total) (INE)" ~ "Personas")) %>%
+  mutate(VALOR = round(as.numeric(VALOR)*100,1)) %>% 
+  mutate(ANIO = as.factor(ANIO)) %>% 
+  ggplot(aes(x = ANIO, y = VALOR)) +
+  geom_line(aes(group = 2, color = UNIDAD)) +
+  geom_point(aes(color = UNIDAD)) +
+  scale_color_manual(
+    values = c(639, "#a1dd70"),
+    labels = c("Hogares", "Personas")
+  ) +
+  ylim(0, 60) +
+#  scale_x_continuos(breaks=seq(2006, max, 1)) +
+  theme_minimal() +
+  labs(
+    color = "",
+    title = "",
+    caption = "Unidad de Métodos y Acceso a Datos (UMAD)",
+    x = "",
+    y = ""
+  )
+ggplotly(g1) %>% 
+  config(displayModeBar = F) %>%
+  layout(margin = list(b = 100), legend = list(x = 0.5, y = -0.1,orientation = "h", xanchor = "center" )) 
+
+#===============================================================================
+```
+
+
+#### Descargar Tabla
+
+
+```{r}
+t1 <- 
+  base %>% 
+  filter(NOMINDICADOR =="Hogares con necesidades básicas insatisfechas (met 2011)(% de la población total)" | NOMINDICADOR =="Personas en hogares con necesidades básicas insatisfechas (met 2011) (% de la población total) (INE)", 
+         CORTE_NUEVA == "Total", 
+         URBANORURALUY =="Total País") %>%
+  mutate(VALOR = round(as.numeric(VALOR)*100, 1)) %>%
+  rename(UNIDAD_GEOGRÁFICA = URBANORURALUY)
+t1 <- t1 [,c("NOMINDICADOR","PAÍS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
+
+DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
+                                                       buttons = c('copy', 'csv', 'excel', 'print') )
+) 
+```
+
+#### Ficha Técnica
+
+```{r}
+def <- strsplit(paste0(base_fichas [17,"DEFINICION"])," ")[[1]]
+def_formatted <- paste(
+  text_spec(def, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Definición:** `r def_formatted`
+
+
+```{r}
+calc <- strsplit(paste0(base_fichas [17,"CALCULO"])," ")[[1]]
+calc_formatted <- paste(
+  text_spec(calc, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Forma de cálculo:** `r calc_formatted`
+
+## {.toc-ignore .unlisted .unnumbered}
+
+
+
+```{r}
+cita <- strsplit(paste0("Fuente: ", base_fichas [17,"CITA"])," ")[[1]]
+cita_formatted <- paste(
+  text_spec(cita, color = 1, font_size = 12, align = 2),
+  collapse = " ")
+```
+`r cita_formatted` 
+
+<br />
+
+## **Hacinamiento**
+
+<div style="text-align: justify">
+El hacinamiento es un indicador de las condiciones de vida de la población que mide las carencias de espacio relativo en una vivienda. Se considera que en un hogar particular existe hacinamiento si la cantidad de personas del hogar con relación a la cantidad total de habitaciones para dormir es mayor estricto que tres. Desde la década de los noventa se observa una tendencia a la mejora en las condiciones de habitabilidad de la vivienda en el país de acuerdo a este indicador.
+</div>
+
+<br />
+
+<div style="text-align: center">
+##### **Personas en hogares con hacinamiento (% de la población total) (def. CELADE)** 
+```{r}
+periodo <- base[base$NOMINDICADOR == "Personas en hogares con hacinamiento (% de la población total) (def. CELADE)",]
+max<- max(periodo$ANIO)
+min<- min(periodo$ANIO)
+periodo <- c(min," - ", max)
+periodo_formatted <- paste(
+  text_spec(periodo, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+##### País urbano, `r periodo_formatted`
+</div>
+
+### {.tabset .tabset-fade .tabset-pills}
+
+#### Gráfico
+
+```{r, out.width='100%'}
+#===============================================================================
+g1 <- 
+  base %>% filter(NOMINDICADOR == "Personas en hogares con hacinamiento (% de la población total) (def. CELADE)", CORTE_NUEVA == "Total") %>%
+  mutate(VALOR = as.numeric(VALOR)) %>% 
+  mutate(VALOR = round((VALOR)*100,1)) %>% 
+  mutate(ANIO = as.numeric(ANIO)) %>% 
+  ggplot(aes(x = ANIO, y = VALOR)) +
+  geom_line(aes(group = 2, color = URBANORURALUY)) +
+  geom_point(aes(color = URBANORURALUY)) +
+  scale_color_manual(
+    values = c(639, "#a1dd70"),
+    labels = c("Total País", "Urbano (más de 5.000 habitantes)")
+  ) +
+  ylim(0, 50) +
+  xlim(1990, 2021) +
+  
+  theme_minimal() +
+  labs(
+    color = "",
+    title = "",
+    caption = "Unidad de Métodos y Acceso a Datos (UMAD)",
+    x = "",
+    y = ""
+  )
+ggplotly(g1) %>% 
+  config(displayModeBar = F) %>%
+  layout(margin = list(b = 100), legend = list(x = 0.5, y = -0.1,orientation = "h", xanchor = "center" )) 
+
+#===============================================================================
+```
+
+
+#### Descargar Tabla
+
+
+```{r}
+t1 <- 
+  base %>% filter(NOMINDICADOR == "Personas en hogares con hacinamiento (% de la población total) (def. CELADE)", CORTE_NUEVA == "Total") %>%
+  mutate(VALOR = round(as.numeric(VALOR)*100, 1)) %>%
+  rename(UNIDAD_GEOGRÁFICA = URBANORURALUY)
+t1 <- t1 [,c("NOMINDICADOR","PAÍS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
+
+DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
+                                                       buttons = c('copy', 'csv', 'excel', 'print') )
+) 
+```
+
+#### Ficha Técnica
+
+```{r}
+def <- strsplit(paste0(base_fichas [26,"DEFINICION"])," ")[[1]]
+def_formatted <- paste(
+  text_spec(def, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Definición:** `r def_formatted`
+
+
+```{r}
+calc <- strsplit(paste0(base_fichas [26,"CALCULO"])," ")[[1]]
+calc_formatted <- paste(
+  text_spec(calc, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Forma de cálculo:** `r calc_formatted`
+
+## {.toc-ignore .unlisted .unnumbered}
+
+```{r}
+cita <- strsplit(paste0("Fuente: ", base_fichas [26,"CITA"])," ")[[1]]
+cita_formatted <- paste(
+  text_spec(cita, color = 1, font_size = 12, align = 2),
+  collapse = " ")
+```
+`r cita_formatted` 
+
+
+
+<br />
+
+
+## **Acceso a agua potable**
+
+<div style="text-align: justify">
+El acceso a agua potable constituye una necesidad básica para las personas. El indicador integra factores vinculados al origen del agua así como a la forma en que ella llega a la vivienda. Se registra una clara tendencia a la disminución en la proporción de hogares que no acceden a este servicio desde el año 2006.
+</div>
+
+
+<br />
+
+<div style="text-align: center">
+##### **Personas en hogares sin agua potable (% de la población total)** 
+```{r}
+periodo <- base[base$NOMINDICADOR == "Personas en hogares sin agua potable (% de la población total)",]
+max<- max(periodo$ANIO)
+min<- min(periodo$ANIO)
+periodo <- c(min," - ", max)
+periodo_formatted <- paste(
+  text_spec(periodo, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+##### Total país, `r periodo_formatted`
+</div>
+
+### {.tabset .tabset-fade .tabset-pills}
+#### Gráfico
+
+```{r, out.width='100%'}
+#===============================================================================
+g1 <- 
+  base %>% filter(NOMINDICADOR == "Personas en hogares sin agua potable (% de la población total)", CORTE_NUEVA == "Total") %>%
+  mutate(VALOR = as.numeric(VALOR)) %>% 
+  mutate(VALOR = round(VALOR*100,1)) %>% 
+  mutate(ANIO = as.factor(ANIO)) %>%
+  ggplot(aes(x = ANIO, y = VALOR)) +
+  geom_line(aes(group = 2, color = URBANORURALUY)) +
+  geom_point(aes(color = URBANORURALUY)) +
+  scale_color_manual(
+    values = c(639, "#a1dd70"),
+    labels = c("Total País", "Urbano (más de 5.000 habitantes)")
+  ) +
+  ylim(0, 15) +
+#    xlim(2006, 2021) +
+  theme_minimal() +
+  labs(
+    color = "",
+    title = "",
+    caption = "Unidad de Métodos y Acceso a Datos (UMAD)",
+    x = "",
+    y = ""
+  )
+ggplotly(g1) %>% 
+  config(displayModeBar = F) %>%
+  layout(margin = list(b = 100), legend = list(x = 0.5, y = -0.1,orientation = "h", xanchor = "center" )) 
+
+#===============================================================================
+```
+
+#### Descargar Tabla
+
+
+```{r}
+t1 <- 
+  base %>% filter(NOMINDICADOR == "Personas en hogares sin agua potable (% de la población total)", CORTE_NUEVA == "Total") %>%
+  mutate(VALOR = round(as.numeric(VALOR)*100, 1)) %>%
+  rename(UNIDAD_GEOGRÁFICA = URBANORURALUY)
+t1 <- t1 [,c("NOMINDICADOR","PAÍS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
+
+DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
+                                                       buttons = c('copy', 'csv', 'excel', 'print') )
+) 
+```
+
+#### Ficha técnica
+
+```{r}
+def <- strsplit(paste0(base_fichas [32,"DEFINICION"])," ")[[1]]
+def_formatted <- paste(
+  text_spec(def, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Definición:** `r def_formatted`
+
+
+```{r}
+calc <- strsplit(paste0(base_fichas [32,"CALCULO"])," ")[[1]]
+calc_formatted <- paste(
+  text_spec(calc, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Forma de cálculo:** `r calc_formatted`
+
+## {.toc-ignore .unlisted .unnumbered}
+
+
+
+```{r}
+cita <- strsplit(paste0("Fuente: ", base_fichas [32,"CITA"])," ")[[1]]
+cita_formatted <- paste(
+  text_spec(cita, color = 1, font_size = 12, align = 2),
+  collapse = " ")
+```
+`r cita_formatted` 
+
+<br />
+
+## **Artefactos básicos de confort**
+
+<div style="text-align: justify">
+La tenencia de algunos bienes en el hogar son indicativos de la calidad de vida de las personas. Se considera que la persona posee una privación en términos de acceso a artefactos básicos de confort en base a la ausencia de medios de calefacción, para refrigerar alimentos o para disponer de agua caliente en el baño. La evolución de este indicador desde 2006 al 2021 muestra una tendencia decreciente, evidenciando una mejora en la calidad de vida de las personas durante el período.
+
+
+<br />
+
+<div style="text-align: center">
+##### **Personas en hogares sin artefactos básicos de confort (% de la población total)** 
+```{r}
+periodo <- base[base$NOMINDICADOR == "Personas en hogares sin artefactos básicos de confort(% de la población total)",]
+max<- max(periodo$ANIO)
+min<- min(periodo$ANIO)
+periodo <- c(min," - ", max)
+periodo_formatted <- paste(
+  text_spec(periodo, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+##### Total país, `r periodo_formatted`
+</div>
+
+### {.tabset .tabset-fade .tabset-pills}
+#### Gráfico
+
+```{r, out.width='100%'}
+#===============================================================================
+g1 <- 
+  base %>% filter(NOMINDICADOR == "Personas en hogares sin artefactos básicos de confort(% de la población total)", CORTE_NUEVA == "Total") %>%
+  mutate(VALOR = as.numeric(VALOR)) %>% 
+  mutate(VALOR = round(VALOR*100,1)) %>% 
+  mutate(ANIO = as.factor(ANIO)) %>%
+  ggplot(aes(x = ANIO, y = VALOR)) +
+  geom_line(aes(group = 2, color = URBANORURALUY)) +
+  geom_point(aes(color = URBANORURALUY)) +
+  scale_color_manual(
+    values = c(639, "#a1dd70"),
+    labels = c("Total País", "Urbano (más de 5.000 habitantes)")
+  ) +
+  ylim(0, 35) +
+#  xlim(2006, 2021) +
+  theme_minimal() +
+  labs(
+    color = "",
+    title = "",
+    caption = "Unidad de Métodos y Acceso a Datos (UMAD)",
+    x = "",
+    y = ""
+  )
+ggplotly(g1) %>% 
+  config(displayModeBar = F) %>%
+  layout(margin = list(b = 100), legend = list(x = 0.5, y = -0.1,orientation = "h", xanchor = "center" )) 
+
+#===============================================================================
+```
+
+#### Descargar Tabla
+
+
+```{r}
+t1 <- 
+  base %>% filter(NOMINDICADOR == "Personas en hogares sin artefactos básicos de confort(% de la población total)", CORTE_NUEVA == "Total") %>%
+  mutate(VALOR = round(as.numeric(VALOR)*100, 1)) %>%
+  rename(UNIDAD_GEOGRÁFICA = URBANORURALUY)
+t1 <- t1 [,c("NOMINDICADOR","PAÍS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
+
+DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
+                                                       buttons = c('copy', 'csv', 'excel', 'print') )
+) 
+```
+
+#### Ficha técnica
+
+```{r}
+def <- strsplit(paste0(base_fichas [36,"DEFINICION"])," ")[[1]]
+def_formatted <- paste(
+  text_spec(def, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Definición:** `r def_formatted`
+
+
+```{r}
+calc <- strsplit(paste0(base_fichas [36,"CALCULO"])," ")[[1]]
+calc_formatted <- paste(
+  text_spec(calc, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Forma de cálculo:** `r calc_formatted`
+
+## {.toc-ignore .unlisted .unnumbered}
+
+
+```{r}
+cita <- strsplit(paste0("Fuente: ", base_fichas [36,"CITA"])," ")[[1]]
+cita_formatted <- paste(
+  text_spec(cita, color = 1, font_size = 12, align = 2),
+  collapse = " ")
+```
+`r cita_formatted` 
+
+<br />
+
+## **Acceso a la educación**
+
+<div style="text-align: justify">
+La educación constituye un requerimiento mínimo para que las personas puedan incorporarse adecuadamente a la vida productiva y social. En Uruguay, se establece como obligatoria la asistencia a algún centro educativo entre los 4 años y hasta la educación media superior. Se considera que un hogar presenta una carencia en el acceso a la educación si al menos un integrante del hogar con edad comprendida entre los 4 y los 17 años no se encuentra asistiendo a un centro educativo formal, no habiendo finalizado enseñanza secundaria. Desde la década del ochenta, la proporción de hogares con una carencia en este indicador disminuye significativamente y alcanza un valor de 2,8% en 2021. 
+</div>
+
+<br />
+
+<div style="text-align: center">
+##### **Personas en hogares con miembros de 4 a 17 años que no asisten a centros educativos (% de la población total)** 
+```{r}
+periodo <- base[base$NOMINDICADOR == "Personas en hogares con miembros de 4 a 17 años que no asisten a centros educativos (% de la población total)",]
+max<- max(periodo$ANIO)
+min<- min(periodo$ANIO)
+periodo <- c(min," - ", max)
+periodo_formatted <- paste(
+  text_spec(periodo, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+##### País urbano, `r periodo_formatted`
+</div>
+
+### {.tabset .tabset-fade .tabset-pills}
+
+
+#### Gráfico
+
+```{r, out.width='100%'}
+#===============================================================================
+g1 <- 
+  base %>% filter(NOMINDICADOR == "Personas en hogares con miembros de 4 a 17 años que no asisten a centros educativos (% de la población total)", CORTE_NUEVA == "Total") %>%
+  mutate(VALOR = as.numeric(VALOR)) %>% 
+  mutate(VALOR = round(VALOR*100,1)) %>% 
+  mutate(ANIO = as.numeric(ANIO)) %>% 
+  ggplot(aes(x = ANIO, y = VALOR)) +
+  geom_line(aes(group = 2, color = URBANORURALUY)) +
+  geom_point(aes(color = URBANORURALUY)) +
+  scale_color_manual(
+    values = c(639, "#a1dd70"),
+    labels = c("Total País", "Urbano (más de 5.000 habitantes)")
+  ) +
+  ylim(0, 30) +
+  xlim(1980, 2021) +
+  
+  theme_minimal() +
+  labs(
+    color = "",
+    title = "",
+    caption = "Unidad de Métodos y Acceso a Datos (UMAD)",
+    x = "",
+    y = ""
+  )
+ggplotly(g1) %>% 
+  config(displayModeBar = F) %>%
+  layout(margin = list(b = 100), legend = list(x = 0.5, y = -0.1,orientation = "h", xanchor = "center" )) 
+
+#===============================================================================
+```
+
+#### Descargar Tabla
+
+
+```{r}
+t1 <- 
+  base %>% filter(NOMINDICADOR == "Personas en hogares con miembros de 4 a 17 años que no asisten a centros educativos (% de la población total)", CORTE_NUEVA == "Total") %>%
+  mutate(VALOR = round(as.numeric(VALOR)*100, 1)) %>%
+  rename(UNIDAD_GEOGRÁFICA = URBANORURALUY)
+t1 <- t1 [,c("NOMINDICADOR","PAÍS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
+
+DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
+                                                       buttons = c('copy', 'csv', 'excel', 'print') )
+) 
+```
+
+#### Ficha Técnica
+
+```{r}
+def <- strsplit(paste0(base_fichas [38,"DEFINICION"])," ")[[1]]
+def_formatted <- paste(
+  text_spec(def, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Definición:** `r def_formatted`
+
+
+```{r}
+calc <- strsplit(paste0(base_fichas [38,"CALCULO"])," ")[[1]]
+calc_formatted <- paste(
+  text_spec(calc, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Forma de cálculo:** `r calc_formatted`
+
+
+
+## {.toc-ignore .unlisted .unnumbered}
+
+
+```{r}
+cita <- strsplit(paste0("Fuente: ", base_fichas [38,"CITA"])," ")[[1]]
+cita_formatted <- paste(
+  text_spec(cita, color = 1, font_size = 12, align = 2),
+  collapse = " ")
+```
+`r cita_formatted` 
+
+
+
+<br />
+<br />
+
+
+
+# **Referencias**
+
+## **Fuentes de consulta**			
+
+<div style="text-align: justify">									
+[Instituto Nacional de Estadística](http://www.ine.gub.uy/)								
+[Observatorio Social Mides](http://observatoriosocial.mides.gub.uy/portal/indicadores.php)									
+[Cepalstat](https://estadisticas.cepal.org/cepalstat/Portada.html)										
+[Wordld Development Indicators](https://databank.worldbank.org/source/world-development-indicators)  										
+[Banco Mundial](https://www.bancomundial.org/)									
+</div>										
+
+<br />
+
+## **Referencias bibliográficas**		
+
+<div style="text-align: justify">										
+Alkire, Sabine y Foster, James (2008) Recuento y medición multidimensional de la pobreza. OPHI Working paper series. Disponible en: [enlace en línea](https://ophi.org.uk/recuento-y-medicion-multidimensional-de-la-pobreza/). Consultado el 13/03/2020
+
+Amarante, Verónica (2015) La medición de la desigualdad: otros indicadores. CEPAL.
+
+Batthyany, K. (Ed.) (2015) Los tiempos del bienestar social. Género, trabajo no remunerado y cuidados en Uruguay. Inmujeres-Mides, Uruguay.
+
+Borrás, Victor (2017) Multidimensionalidad de la pobreza en Uruguay, 2006-2013: Análisis en cuatro dominios geográficos. Revista de Ciencias Sociales, Vol. 30. FCS-Udelar, Uruguay.
+
+Calvo, J. (Coord.) (2013) Las Necesidades Básicas Insatisfechas a partir de los Censos 2011. Atlas sociodemográfico y de la desigualdad en Uruguay.
+
+Colafranceschi, Marco; Failache, Elisa y Vigorito, Andrea (2013) Desigualdad multidimensional y dinámica de la pobreza en Uruguay en los años recientes. El futuro en foco. Cuadernos sobre Desarrollo Humano. PNUD, Uruguay.
+
+Haughton, Jonathan y Khandker, Shahiur (2009) Handbook on Poverty + Inequality. The World Bank, Washington DC.
+
+INE (2016) Estimación de la pobreza por método de ingreso. Disponible en: [enlace en línea](http://www.ine.gub.uy/documents/10181/364159/Estimaci%C3%B3n+de+la+pobreza+por+el+M%C3%A9todo+del+Ingreso+2016/4b1eabd2-ac77-48ac-95c2-fc5b92f3ade8) . Consultado 13/03/2020.
+
+Mides (2013) Avances para la medición multidimensional de la pobreza en Uruguay desde un enfoque de derechos. Documento de trabajo. Disponible en: [enlace en línea](http://dinem.mides.gub.uy/innovaportal/file/56385/1/avances-para-la-medicion-multidimensional-de-la-pobreza-en-uruguay-desde-un-enfoque-de-derechos.-2015.pdf). Consultado el 13/03/2020.
+
+World Bank (2000) World Development Report 2000/2001: Attacking Poverty. Washington, DC: World Bank										
+Sen, Amartya (1987) Commodities and Capabilities. Amsterdam: North-Holland.
+</div>
