@@ -118,17 +118,14 @@ g2 <-
 ggplotly(g2) %>% 
   config(displayModeBar = F) %>%
   layout(margin = list(b = 100), legend = list(x = 0.5, y = -0.1,orientation = "h", xanchor = "center" )) 
-g2
 
-#===============================================================================
-```
-
-
-
-```{r}
 download_this(g2,
+              output_name = "umad_gráfico",
               button_label = "Descargar gráfico",
-              icon = "fa fa-download")
+              icon = "fa fa-download",
+              output_extension = ".png",
+              has_icon = TRUE)
+#===============================================================================
 ```
 
 
