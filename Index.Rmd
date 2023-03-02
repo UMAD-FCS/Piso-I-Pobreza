@@ -1929,6 +1929,7 @@ calc_formatted <- paste(
   collapse = " ")
 ```
 > **Forma de cálculo:** `r calc_formatted`
+
 #### Código en R
 
 ```{r, echo=TRUE, eval=FALSE}
