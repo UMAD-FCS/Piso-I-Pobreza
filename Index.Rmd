@@ -1261,7 +1261,7 @@ a_mes <- sem1_svy %>%
 a_sem <- mean(as.numeric(a_mes$colname))
 b_sem <- as.numeric(svymean(~indig, sem2_implant_svy))
 
-c_ano <- mean(c(a_sem, b_sem))
+estimacion2021 <- mean(c(a_sem, b_sem))
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
@@ -1771,6 +1771,18 @@ sem2_implant <- sem2_implant %>%
                   NBI_educacion11)
 
 
+# Región
+sem1 <- sem1 %>% 
+  dplyr::mutate(bd_region = case_when(region_4 == 1 | region_4 == 2 ~ 1,
+                                      region_4 == 3 ~ 2,
+                                      region_4 == 4 ~ 3))
+
+sem2_implant <- sem2_implant %>% 
+  dplyr::mutate(bd_region = case_when(region_4 == 1 | region_4 == 2 ~ 1,
+                                      region_4 == 3 ~ 2,
+                                      region_4 == 4 ~ 3))
+
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 ### Bases a nivel hogar ###                               
@@ -1816,6 +1828,12 @@ sem2_panel_svy   <-  srvyr::as_survey_design(sem2_panel,
 b_sem <- sem2_implant_h_svy %>%
   srvyr::summarise(colname = srvyr::survey_mean(NBI_2011))
 estimacion2021 <- as.numeric(b_sem$colname)
+
+
+b_sem <- sem2_implant_h_svy %>%
+  srvyr::filter(bd_region == 1) %>%
+  srvyr::summarise(colname = srvyr::survey_mean(NBI_2011))
+estimacion2021_urb <- as.numeric(b_sem$colname)
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
@@ -1994,6 +2012,17 @@ sem2_implant <- sem2_implant %>%
        bd_hacinamiento1  = ifelse(aux1>2, 1, 0),
        bd_hacinamiento2  = ifelse(aux2>2, 1, 0))
 
+# Región
+sem1 <- sem1 %>% 
+  dplyr::mutate(bd_region = case_when(region_4 == 1 | region_4 == 2 ~ 1,
+                                      region_4 == 3 ~ 2,
+                                      region_4 == 4 ~ 3))
+
+sem2_implant <- sem2_implant %>% 
+  dplyr::mutate(bd_region = case_when(region_4 == 1 | region_4 == 2 ~ 1,
+                                      region_4 == 3 ~ 2,
+                                      region_4 == 4 ~ 3))
+
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
@@ -2041,6 +2070,11 @@ sem2_panel_svy   <-  srvyr::as_survey_design(sem2_panel,
 b_sem <- sem2_implant_h_svy %>%
   srvyr::summarise(colname = srvyr::survey_mean(bd_hacinamiento2))
 estimacion2021 <- as.numeric(b_sem$colname)
+
+b_sem <- sem2_implant_h_svy %>%
+  srvyr::filter(bd_region == 1) %>%
+  srvyr::summarise(colname = srvyr::survey_mean(bd_hacinamiento2))
+estimacion2021_urb <- as.numeric(b_sem$colname)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
@@ -2694,7 +2728,16 @@ sem2_niños_na <- sem2_niños_na[,c("ID","NBI_educacion11")]
 sem2_implant <- merge(sem2_implant, sem2_niños_na, by = "ID")
 
 
+# Región
+sem1 <- sem1 %>% 
+  dplyr::mutate(bd_region = case_when(region_4 == 1 | region_4 == 2 ~ 1,
+                                      region_4 == 3 ~ 2,
+                                      region_4 == 4 ~ 3))
 
+sem2_implant <- sem2_implant %>% 
+  dplyr::mutate(bd_region = case_when(region_4 == 1 | region_4 == 2 ~ 1,
+                                      region_4 == 3 ~ 2,
+                                      region_4 == 4 ~ 3))
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
@@ -2743,6 +2786,12 @@ sem2_panel_svy   <-  srvyr::as_survey_design(sem2_panel,
 b_sem <- sem2_implant_h_svy %>%
   srvyr::summarise(colname = srvyr::survey_mean(NBI_educacion11))
 estimacion2021 <- as.numeric(b_sem$colname)
+
+b_sem <- sem2_implant_h_svy %>%
+  srvyr::filter(bd_region == 1) %>%
+  srvyr::summarise(colname = srvyr::survey_mean(NBI_educacion11))
+estimacion2021_urb <- as.numeric(b_sem$colname)
+
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
