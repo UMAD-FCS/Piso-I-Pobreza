@@ -31,12 +31,10 @@ suppressPackageStartupMessages(library(plotly))
 suppressPackageStartupMessages(library(ggplot2))
 suppressPackageStartupMessages(library(DT))
 suppressPackageStartupMessages(library(kableExtra))
-suppressPackageStartupMessages(library(downloadthis))
+#suppressPackageStartupMessages(library(downloadthis))
 
 
 base        <- readxl::read_excel("Data/Base_Motor_Pobreza.xlsx")
-base        <- base %>% rename(PAÍS = PAIS)
-base        <- base %>% rename(REGIÓN = REGION)
 base_fichas <- readxl::read_excel("Data/Base_Fichas_Técnicas.xls")
 base_fichas <- base_fichas[order(base_fichas$ID),]
 
@@ -64,7 +62,7 @@ El ingreso de los hogares es indicativo de sus posibilidades de acceso a bienes 
 
 Los valores que la media poblacional alcanza son indicativos de los niveles de vida general de la población. Sin embargo, el indicador no da cuenta de la desigualdad en la percepción de ingresos entre distintos grupos poblacionales y los valores pueden verse afectados por cifras extremas y poco frecuentes como la existencia de pocos hogares con ingresos muy elevados. En 2004, en promedio, los hogres percibían \$7.594 por persona (a precios de diciembre de 2006). El valor de la mediana indica el valor central del ingreso de todos los hogares cuando estos están ordenados de menor a mayor. En 2004, el 50 por ciento de los hogares perciben un ingreso menor o igual a \$5.424.   
 
-El gráfico presentan la evolución del promedio y la mediana de ingresos per-cápita en los hogares uruguayos desde 2004. A partir del 2005 y hasta 2019 se presenta una tendencia constante al aumento de los ingresos. En 2020 se observa una reducción de los ingesos, con una recuperación en 2021, aunque se mantiene en niveles inferiores a los de 2019. 
+El gráfico presentan la evolución del promedio y la mediana de ingresos per-cápita en los hogares uruguayos desde 2004. A partir del 2005 y hasta 2019 se presenta una tendencia constante al aumento de los ingresos. En 2020 se observa una reducción de los ingesos, con una recuperación a partir de 2021, aunque se mantiene en niveles inferiores a los de 2019. 
 </div>
 
 <br />
@@ -90,34 +88,41 @@ periodo_formatted <- paste(
 
 ```{r, out.width='100%'}
 #===============================================================================
-g2 <- 
+dat <- 
   base %>% filter(NOMINDICADOR == "Promedio de ingreso per-cápita de los hogares (Cte. Base diciembre 2006)" | NOMINDICADOR == "Mediana de ingreso per-cápita de los hogares (Cte. Base diciembre 2006)", CORTE_NUEVA == "Total", URBANORURALUY == "Urbano (más de 5.000 habitantes)" ) %>%
   mutate(UNIDAD = case_when(
   NOMINDICADOR =="Promedio de ingreso per-cápita de los hogares (Cte. Base diciembre 2006)" ~ "Media",
   NOMINDICADOR =="Mediana de ingreso per-cápita de los hogares (Cte. Base diciembre 2006)" ~ "Mediana")) %>%
   mutate(VALOR = round(as.numeric(VALOR),1)) %>% 
-  mutate(ANIO = as.numeric(ANIO)) %>% 
-  ggplot(aes(x = ANIO, y = VALOR)) +
-  geom_line(aes(group = 2, color = UNIDAD)) +
-  geom_point(aes(color = UNIDAD)) +
+  mutate(ANIO = as.numeric(ANIO)) %>%
+  mutate(metodo = case_when(ANIO<=2019 ~ "pre", ANIO==2020 ~ "2020", ANIO==2021~ "2021", ANIO>=2022~ "post"))
+
+
+g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, alpha=metodo, color=UNIDAD)) +
+  geom_line(dat = dat %>% filter(ANIO <= 2019),
+            size = 1, alpha = 0.4) +
+  geom_point(size = 2, show.legend = FALSE) +
+  ylim(0, 15000) +
+  #  xlim(2004, max) +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        legend.title = element_blank(),
+        axis.text.x =  element_text(size=8),
+legend.text = element_text(size=8)) +
+  scale_alpha_manual(values = c(.8, .8, .8, .4)) +
   scale_color_manual(
     values = c(639, "#a1dd70"),
     labels = c("Media", "Mediana")
   ) +
-  ylim(0, 15000) +
-  xlim(2004, 2021) +
-  
-  theme_minimal() +
-  labs(
+    labs(
     color = "",
     title = "",
-    caption = "Unidad de Métodos y Acceso a Datos (UMAD)",
+    caption = "",
     x = "",
     y = ""
   )
-ggplotly(g2) %>% 
-  config(displayModeBar = F) %>%
-  layout(margin = list(b = 100), legend = list(x = 0.5, y = -0.1,orientation = "h", xanchor = "center" )) 
+g1
+
 #===============================================================================
 ```
 
@@ -129,7 +134,7 @@ ggplotly(g2) %>%
 t1 <-   base %>% filter(NOMINDICADOR == "Promedio de ingreso per-cápita de los hogares (Cte. Base diciembre 2006)" | NOMINDICADOR == "Mediana de ingreso per-cápita de los hogares (Cte. Base diciembre 2006)", CORTE_NUEVA == "Total", URBANORURALUY == "Urbano (más de 5.000 habitantes)" ) %>%
   mutate(VALOR = round(as.numeric(VALOR),1)) %>%
   rename(UNIDAD_GEOGRÁFICA = URBANORURALUY)
-t1 <- t1 [,c("NOMINDICADOR","PAÍS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
+t1 <- t1 [,c("NOMINDICADOR","PAIS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
 
 DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
                                                        buttons = c('copy', 'csv', 'excel', 'print') )
@@ -156,11 +161,21 @@ calc_formatted <- paste(
 ```
 > **Forma de cálculo:** `r calc_formatted`
 
+
+```{r}
+adv <- strsplit(paste0(base_fichas [1,"NOTAS2"])," ")[[1]]
+adv_formatted <- paste(
+  text_spec(adv, color = 1, font_size = 16, align =  "justify"),
+  collapse = " ")
+```
+> **Advertencia:** `r adv_formatted`
+
+
 #### Código en R
 
 ```{r, echo=TRUE, eval=FALSE}
 
-### Estimación de valores 2021 ###
+### Estimación de valores 2022 ###
 
 # Para sintaxix de años anteriores consultar: 
 # https://osf.io/dyzg8/files/osfstorage#
@@ -181,31 +196,19 @@ library(tidyverse)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
-### Descarga bases ECH 2021 (INE) de repositorio UMAD-FCS ###
+### Descarga bases ECH 2022 (INE) de repositorio UMAD-FCS ###
 
-download.file(
-  url = "https://osf.io/dyzg8/files/osfstorage/63da65232781fc021200aab6", 
-  destfile = "ECH2021_sem1.Rdata"
-)
+#download.file(
+#  url = "https://osf.io/download/rehz2/", 
+#  destfile = "Base anual 2022.Rdata"
+#)
 
-download.file(
-  url = "https://osf.io/dyzg8/files/osfstorage/63da65616946a002027a4652", 
-  destfile = "ECH2021_sem2_implant.Rdata"
-)
-
-
-download.file(
-  url = "https://osf.io/dyzg8/files/osfstorage/63da65276946a001fe7a4630", 
-  destfile = "ECH2021_sem2_panel.Rdata"
-)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 ### Carga de bases ###
 
-sem1          <- rio::import("ECH2021_sem1.Rdata")
-sem2_implant  <- rio::import("ECH2021_sem2_implant.Rdata")
-sem2_panel    <- rio::import("ECH2021_sem2_panel.Rdata")
+#load("Base anual 2022.Rdata")
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
@@ -214,108 +217,57 @@ sem2_panel    <- rio::import("ECH2021_sem2_panel.Rdata")
 
 #IPC
 
-sem1 <- sem1 %>% dplyr::mutate(bc_ipc_tot = case_when(mes == 1 ~ 0.335542051,
-                                                      mes == 2 ~ 0.330249262,
-                                                      mes == 3 ~ 0.327549795,
-                                                      mes == 4 ~ 0.32554687,
-                                                      mes == 5 ~ 0.323919843,
-                                                      mes == 6 ~ 0.322448435))
-
-sem2_implant <- sem2_implant %>% dplyr::mutate(bc_ipc_tot = case_when(
-  mes == 7  ~ 0.320314392,
-  mes == 8  ~ 0.318657357,
-  mes == 9  ~ 0.31596912,
-  mes == 10 ~ 0.314515807,
-  mes == 11 ~ 0.31128448,
-  mes == 12 ~ 0.310493463))
-
-
-sem1 <- sem1 %>% dplyr::mutate(bc_ipc = case_when(mes == 1 ~ 0.329708731,
-                                                  mes == 2 ~ 0.325120854,
-                                                  mes == 3 ~ 0.32193312,
-                                                  mes == 4 ~ 0.320163041,
-                                                  mes == 5 ~ 0.318357918,
-                                                  mes == 6 ~ 0.316774856))
-
-sem2_implant <- sem2_implant %>% dplyr::mutate(bc_ipc = case_when(
-  mes == 7 ~  0.314794762,
-  mes == 8 ~  0.31306265,
-  mes == 9 ~  0.310558149,
-  mes == 10 ~ 0.309320866,
-  mes == 11 ~ 0.306270364,
-  mes == 12 ~ 0.305191859))                                                 
+base <- base %>% dplyr::mutate(bc_ipc_tot = case_when(
+  mes == 1  ~ 0.310804203,
+  mes == 2  ~ 0.305354401,
+  mes == 3  ~ 0.300928439,
+  mes == 4  ~ 0.297635795,
+  mes == 5  ~ 0.296181029,
+  mes == 6  ~ 0.294810362,
+  mes == 7  ~ 0.293094596,
+  mes == 8  ~ 0.290852868,
+  mes == 9  ~ 0.288466429,
+  mes == 10 ~ 0.286063926,
+  mes == 11 ~ 0.28546134,
+  mes == 12 ~ 0.286262936))
 
 
 # Ingresos
 
-sem1 <- sem1 %>% 
-  dplyr::mutate(y_pc       =  HT11 / ht19 )                      
-sem1 <- sem1 %>% 
-  dplyr::mutate(y_pc_svl   =  (HT11 - HT13) / ht19)              
-sem1 <- sem1 %>% 
-  dplyr::mutate(y_pc_d     =  (HT11 / ht19) * bc_ipc_tot)         
-sem1 <- sem1 %>% 
-  dplyr::mutate(y_pc_svl_d =  (HT11 - HT13) / ht19 * bc_ipc_tot)  
-
-sem2_implant <- sem2_implant %>% 
-  dplyr::mutate(y_pc       =  ht11 / ht19 )                      
-sem2_implant <- sem2_implant %>% 
-  dplyr::mutate(y_pc_svl   =  (ht11 - ht13) / ht19)              
-sem2_implant <- sem2_implant %>% 
-  dplyr::mutate(y_pc_d     =  (ht11 / ht19) * bc_ipc_tot)          
-sem2_implant <- sem2_implant %>% 
-  dplyr::mutate(y_pc_svl_d =  (ht11 - ht13) / ht19 * bc_ipc_tot) 
+base <- base %>% 
+  dplyr::mutate(y_pc       =  ht11 / HT19 )                      
+base <- base %>% 
+  dplyr::mutate(y_pc_svl   =  (ht11 - ht13) / HT19)              
+base <- base %>% 
+  dplyr::mutate(y_pc_d     =  (ht11 / HT19) * bc_ipc_tot)         
+base <- base %>% 
+  dplyr::mutate(y_pc_svl_d =  (ht11 - ht13) / HT19 * bc_ipc_tot)  
 
 
 # Región
 
-sem1 <- sem1 %>% 
+base <- base %>% 
   dplyr::mutate(bd_region = case_when(region_4 == 1 | region_4 == 2 ~ 1,
                                       region_4 == 3 ~ 2,
                                       region_4 == 4 ~ 3))
-
-sem2_implant <- sem2_implant %>% 
-  dplyr::mutate(bd_region = case_when(region_4 == 1 | region_4 == 2 ~ 1,
-                                      region_4 == 3 ~ 2,
-                                      region_4 == 4 ~ 3))
-
-
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 ### Bases a nivel hogar ###                               
 
-sem1_h <- sem1 %>% distinct(numero, .keep_all = TRUE)
-sem2_implant_h <- sem2_implant %>% distinct(ID, .keep_all = TRUE)
-
+base_h <- base %>% distinct(ID, .keep_all = TRUE)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 ### Información de muestreo ###
 
-sem1 <- sem1 %>% dplyr::mutate(pesosem = pesomen / 6)
-
-
-sem1_svy           <- srvyr::as_survey_design(sem1, 
-                                              ids = numero, 
-                                              weights = pesomen)
-
-sem1_h_svy         <- srvyr::as_survey_design(sem1_h, 
-                                              ids = numero, 
-                                              weights = pesomen)
-
-sem2_implant_svy   <- srvyr::as_survey_design(sem2_implant, 
+base_svy           <- srvyr::as_survey_design(base, 
                                               ids = ID, 
-                                              weights = w_sem)
+                                              weights = w_ano)
 
-sem2_implant_h_svy <- srvyr::as_survey_design(sem2_implant_h, ids = ID, 
-                                              weights = w_sem)
-
-sem2_panel_svy   <-  srvyr::as_survey_design(sem2_panel, 
-                                             ids = ID, 
-                                             weights = w)
-
-
+base_h_svy         <- srvyr::as_survey_design(base_h, 
+                                              ids = ID, 
+                                              weights = w_ano)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
@@ -324,35 +276,21 @@ sem2_panel_svy   <-  srvyr::as_survey_design(sem2_panel,
 
 ###  Promedio de ingreso per-cápita de los hogares (cte. base diciembre 2006)
 
-a_mes <- sem1_h_svy %>%
-  srvyr::filter(bd_region == 1) %>%
-  srvyr::group_by(mes) %>%
-  srvyr::summarise(colname = srvyr::survey_mean(y_pc_d))
-a_sem <- mean(as.numeric(a_mes$colname))
-
-b_sem <- sem2_implant_h_svy %>%
+a_ano <- base_h_svy %>%
   srvyr::filter(bd_region == 1) %>%
   srvyr::summarise(colname = srvyr::survey_mean(y_pc_d))
-b_sem <- as.numeric(b_sem$colname)
+a_ano <- mean(as.numeric(a_ano$colname))
 
-estimacion2021 <- mean(c(a_sem, b_sem))
-
+estimacion2022 <- a_ano
 
 ### Mediana de ingreso per-cápita de los hogares (cte. base diciembre 2006)
 
-
-a_mes <- sem1_h_svy %>%
-  srvyr::filter(bd_region == 1) %>%
-  srvyr::group_by(mes) %>%
-  srvyr::summarise(colname = srvyr::survey_median(y_pc_d))
-a_sem <- mean(as.numeric(a_mes$colname))
-
-b_sem <- sem2_implant_h_svy %>%
+a_ano <- base_h_svy %>%
   srvyr::filter(bd_region == 1) %>%
   srvyr::summarise(colname = srvyr::survey_median(y_pc_d))
-b_sem <- as.numeric(b_sem$colname)
+a_ano <- mean(as.numeric(a_ano$colname))
 
-estimacion2021 <- mean(c(a_sem, b_sem))
+estimacion2022 <- a_ano
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
@@ -372,6 +310,14 @@ cita_formatted <- paste(
 ```
 `r cita_formatted` 
 
+```{r}
+nota <- strsplit(paste0("Notas: ", base_fichas [1,"NOTAS1"])," ")[[1]]
+nota_formatted <- paste(
+  text_spec(nota, color = 1, font_size = 12, align =  2),
+  collapse = " ")
+```
+`r nota_formatted`
+
 
 <br />
 
@@ -380,7 +326,7 @@ cita_formatted <- paste(
 <div style="text-align: justify">
 El Índice de Gini mide hasta qué punto la distribución del ingreso entre individuos u hogares dentro de una economía se aleja de una distribución perfectamente equitativa. Una curva de Lorenz muestra los porcentajes acumulados de ingreso recibido total contra la cantidad acumulada de receptores, empezando a partir de la persona o el hogar de menores ingresos. El índice de Gini mide la superficie entre la curva de Lorenz y una línea hipotética de equidad absoluta, expresada como porcentaje de la superficie máxima debajo de la línea. Así, un índice de Gini de 0 representa una equidad perfecta, mientras que un índice de 100 representa una inequidad perfecta.
 
-Al analizar la evolución de este indicador en Uruguay, se observa una tendencia sostenida de disminución de la desiguladad durante la última década. 
+Al analizar la evolución de este indicador en Uruguay, se observa una disminución de la desiguladad entre 2006 y 2012 y luego se mantiene estable en niveles en el entorno del 38%. 
 </div>
 
 <br />
@@ -444,7 +390,7 @@ t1 <-
   base %>% filter(NOMINDICADOR == "Índice de Gini", CORTE_NUEVA == "Total") %>%
   mutate(VALOR = round(as.numeric(VALOR),1)) %>%
   rename(UNIDAD_GEOGRÁFICA = URBANORURALUY)
-t1 <- t1 [,c("NOMINDICADOR","PAÍS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
+t1 <- t1 [,c("NOMINDICADOR","PAIS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
 
 DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
                                                        buttons = c('copy', 'csv', 'excel', 'print') )
@@ -514,31 +460,38 @@ periodo_formatted <- paste(
 ```{r, out.width='100%'}
 #===============================================================================
 
-g1 <- 
+dat <- 
   base %>% filter(NOMINDICADOR == "Relación entre el Ingreso medio per cápita del primer y quinto quintil", CORTE_NUEVA == "Total") %>%
   mutate(VALOR = round(as.numeric(VALOR),1)) %>% 
-  mutate(ANIO = as.numeric(ANIO)) %>% 
-  ggplot(aes(x = ANIO, y = VALOR)) +
-  geom_line(aes(group = 2, color = URBANORURALUY)) +
-  geom_point(aes(color = URBANORURALUY)) +
+  mutate(ANIO = as.numeric(ANIO)) %>%
+    mutate(metodo = case_when(ANIO<=2019 ~ "pre", ANIO==2020 ~ "2020", ANIO==2021~ "2021", ANIO>=2022~ "post")) 
+  
+  
+g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, alpha=metodo, color=URBANORURALUY)) +
+  geom_line(dat = dat %>% filter(ANIO <= 2019),
+            size = 1, alpha = 0.4) +
+  geom_point(size = 2, show.legend = FALSE) +
+  ylim(0, 15) +
+  #  xlim(2004, max) +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        legend.title = element_blank(),
+        axis.text.x =  element_text(size=8),
+legend.text = element_text(size=8)) +
+  scale_alpha_manual(values = c(.8, .8, .8, .4)) +
   scale_color_manual(
     values = c(639, "#a1dd70"),
     labels = c("Total País", "Urbano (más de 5.000 habitantes)")
   ) +
-  ylim(0, 15) +
-  xlim(1998, 2021) +
-  
-  theme_minimal() +
-  labs(
+    labs(
     color = "",
     title = "",
-    caption = "Unidad de Métodos y Acceso a Datos (UMAD)",
+    caption = "",
     x = "",
     y = ""
   )
-ggplotly(g1) %>% 
-  config(displayModeBar = F) %>%
-  layout(margin = list(b = 100), legend = list(x = 0.5, y = -0.1,orientation = "h", xanchor = "center" )) 
+g1
+
 
 #===============================================================================
 ```
@@ -551,7 +504,7 @@ t1 <-
   base %>% filter(NOMINDICADOR == "Relación entre el Ingreso medio per cápita del primer y quinto quintil", CORTE_NUEVA == "Total") %>%
   mutate(VALOR = round(as.numeric(VALOR),1)) %>%
   rename(UNIDAD_GEOGRÁFICA = URBANORURALUY)
-t1 <- t1 [,c("NOMINDICADOR","PAÍS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
+t1 <- t1 [,c("NOMINDICADOR","PAIS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
 
 DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
                                                        buttons = c('copy', 'csv', 'excel', 'print') )
@@ -578,11 +531,21 @@ calc_formatted <- paste(
 ```
 > **Forma de cálculo:** `r calc_formatted`
 
+```{r}
+adv <- strsplit(paste0(base_fichas [16,"NOTAS2"])," ")[[1]]
+adv_formatted <- paste(
+  text_spec(adv, color = 1, font_size = 16, align =  "justify"),
+  collapse = " ")
+```
+> **Advertencia:** `r adv_formatted`
+
+
+
 #### Código en R
 
 ```{r, echo=TRUE, eval=FALSE}
 
-### Estimación de valores 2021 ###
+### Estimación de valores 2022 ###
 
 # Para sintaxix de años anteriores consultar: 
 # https://osf.io/dyzg8/files/osfstorage#
@@ -603,31 +566,18 @@ library(tidyverse)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
-### Descarga bases ECH 2021 (INE) de repositorio UMAD-FCS ###
+### Descarga bases ECH 2022 (INE) de repositorio UMAD-FCS ###
 
-download.file(
-  url = "https://osf.io/dyzg8/files/osfstorage/63da65232781fc021200aab6", 
-  destfile = "ECH2021_sem1.Rdata"
-)
-
-download.file(
-  url = "https://osf.io/dyzg8/files/osfstorage/63da65616946a002027a4652", 
-  destfile = "ECH2021_sem2_implant.Rdata"
-)
-
-
-download.file(
-  url = "https://osf.io/dyzg8/files/osfstorage/63da65276946a001fe7a4630", 
-  destfile = "ECH2021_sem2_panel.Rdata"
-)
+#download.file(
+#  url = "https://osf.io/download/rehz2/", 
+#  destfile = "Base anual 2022.Rdata"
+#)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 ### Carga de bases ###
 
-sem1          <- rio::import("ECH2021_sem1.Rdata")
-sem2_implant  <- rio::import("ECH2021_sem2_implant.Rdata")
-sem2_panel    <- rio::import("ECH2021_sem2_panel.Rdata")
+#load("Base anual 2022.Rdata")
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
@@ -636,108 +586,57 @@ sem2_panel    <- rio::import("ECH2021_sem2_panel.Rdata")
 
 #IPC
 
-sem1 <- sem1 %>% dplyr::mutate(bc_ipc_tot = case_when(mes == 1 ~ 0.335542051,
-                                                      mes == 2 ~ 0.330249262,
-                                                      mes == 3 ~ 0.327549795,
-                                                      mes == 4 ~ 0.32554687,
-                                                      mes == 5 ~ 0.323919843,
-                                                      mes == 6 ~ 0.322448435))
-
-sem2_implant <- sem2_implant %>% dplyr::mutate(bc_ipc_tot = case_when(
-  mes == 7  ~ 0.320314392,
-  mes == 8  ~ 0.318657357,
-  mes == 9  ~ 0.31596912,
-  mes == 10 ~ 0.314515807,
-  mes == 11 ~ 0.31128448,
-  mes == 12 ~ 0.310493463))
-
-
-sem1 <- sem1 %>% dplyr::mutate(bc_ipc = case_when(mes == 1 ~ 0.329708731,
-                                                  mes == 2 ~ 0.325120854,
-                                                  mes == 3 ~ 0.32193312,
-                                                  mes == 4 ~ 0.320163041,
-                                                  mes == 5 ~ 0.318357918,
-                                                  mes == 6 ~ 0.316774856))
-
-sem2_implant <- sem2_implant %>% dplyr::mutate(bc_ipc = case_when(
-  mes == 7 ~  0.314794762,
-  mes == 8 ~  0.31306265,
-  mes == 9 ~  0.310558149,
-  mes == 10 ~ 0.309320866,
-  mes == 11 ~ 0.306270364,
-  mes == 12 ~ 0.305191859))                                                 
+base <- base %>% dplyr::mutate(bc_ipc_tot = case_when(
+  mes == 1  ~ 0.310804203,
+  mes == 2  ~ 0.305354401,
+  mes == 3  ~ 0.300928439,
+  mes == 4  ~ 0.297635795,
+  mes == 5  ~ 0.296181029,
+  mes == 6  ~ 0.294810362,
+  mes == 7  ~ 0.293094596,
+  mes == 8  ~ 0.290852868,
+  mes == 9  ~ 0.288466429,
+  mes == 10 ~ 0.286063926,
+  mes == 11 ~ 0.28546134,
+  mes == 12 ~ 0.286262936))
 
 
 # Ingresos
 
-sem1 <- sem1 %>% 
-  dplyr::mutate(y_pc       =  HT11 / ht19 )                      
-sem1 <- sem1 %>% 
-  dplyr::mutate(y_pc_svl   =  (HT11 - HT13) / ht19)              
-sem1 <- sem1 %>% 
-  dplyr::mutate(y_pc_d     =  (HT11 / ht19) * bc_ipc_tot)         
-sem1 <- sem1 %>% 
-  dplyr::mutate(y_pc_svl_d =  (HT11 - HT13) / ht19 * bc_ipc_tot)  
-
-sem2_implant <- sem2_implant %>% 
-  dplyr::mutate(y_pc       =  ht11 / ht19 )                      
-sem2_implant <- sem2_implant %>% 
-  dplyr::mutate(y_pc_svl   =  (ht11 - ht13) / ht19)              
-sem2_implant <- sem2_implant %>% 
-  dplyr::mutate(y_pc_d     =  (ht11 / ht19) * bc_ipc_tot)          
-sem2_implant <- sem2_implant %>% 
-  dplyr::mutate(y_pc_svl_d =  (ht11 - ht13) / ht19 * bc_ipc_tot) 
-
+base <- base %>% 
+  dplyr::mutate(y_pc       =  ht11 / HT19 )                      
+base <- base %>% 
+  dplyr::mutate(y_pc_svl   =  (ht11 - ht13) / HT19)              
+base <- base %>% 
+  dplyr::mutate(y_pc_d     =  (ht11 / HT19) * bc_ipc_tot)         
+base <- base %>% 
+  dplyr::mutate(y_pc_svl_d =  (ht11 - ht13) / HT19 * bc_ipc_tot)  
 
 # Región
 
-sem1 <- sem1 %>% 
+base <- base %>% 
   dplyr::mutate(bd_region = case_when(region_4 == 1 | region_4 == 2 ~ 1,
                                       region_4 == 3 ~ 2,
                                       region_4 == 4 ~ 3))
-
-sem2_implant <- sem2_implant %>% 
-  dplyr::mutate(bd_region = case_when(region_4 == 1 | region_4 == 2 ~ 1,
-                                      region_4 == 3 ~ 2,
-                                      region_4 == 4 ~ 3))
-
-
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 ### Bases a nivel hogar ###                               
 
-sem1_h <- sem1 %>% distinct(numero, .keep_all = TRUE)
-sem2_implant_h <- sem2_implant %>% distinct(ID, .keep_all = TRUE)
+base_h <- base %>% distinct(ID, .keep_all = TRUE)
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 ### Información de muestreo ###
 
-sem1 <- sem1 %>% dplyr::mutate(pesosem = pesomen / 6)
-
-
-sem1_svy           <- srvyr::as_survey_design(sem1, 
-                                              ids = numero, 
-                                              weights = pesomen)
-
-sem1_h_svy         <- srvyr::as_survey_design(sem1_h, 
-                                              ids = numero, 
-                                              weights = pesomen)
-
-sem2_implant_svy   <- srvyr::as_survey_design(sem2_implant, 
+base_svy           <- srvyr::as_survey_design(base, 
                                               ids = ID, 
-                                              weights = w_sem)
+                                              weights = w_ano)
 
-sem2_implant_h_svy <- srvyr::as_survey_design(sem2_implant_h, ids = ID, 
-                                              weights = w_sem)
-
-sem2_panel_svy   <-  srvyr::as_survey_design(sem2_panel, 
-                                             ids = ID, 
-                                             weights = w)
-
-
+base_h_svy         <- srvyr::as_survey_design(base_h, 
+                                              ids = ID, 
+                                              weights = w_ano)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
@@ -748,9 +647,8 @@ sem2_panel_svy   <-  srvyr::as_survey_design(sem2_panel,
 
 
 a_decil <- function(x) {
-  x <- sem1_h_svy %>%
+  x <- base_h_svy %>%
     filter(decilesy_obs == x & bd_region == 1) %>%
-    srvyr::group_by(mes) %>%
     srvyr::summarise(colname = srvyr::survey_mean(y_pc))
   x <- mean(x$colname)
 }       
@@ -761,25 +659,10 @@ for(i in 1:10){
   a_e_decil[i] <- a_decil(x = i)
 }     
 
-b_decil <- function(x) {
-  x <- sem2_implant_svy %>%
-    filter(decilesy_obs == x & bd_region==1) %>%
-    srvyr::summarise(colname = srvyr::survey_mean(y_pc))
-  x <- mean(x$colname)
-}       
+c_decil <- as.data.frame(a_e_decil)
+m133_pu <- c_decil/sum(c_decil)
 
-b_e_decil <- numeric()
-
-for(i in 1:10){
-  b_e_decil[i] <- b_decil(x = i)
-}         
-
-c_decil <- as.data.frame(cbind(a_e_decil, b_e_decil))
-c_decil <- c_decil %>% dplyr::mutate(m_decil = (a_e_decil + b_e_decil)/2)
-c_decil_pu <- c_decil[,c("m_decil")]
-m133_pu <- c_decil_pu/sum(c_decil_pu)
-
-estimacion2021 <- c_decil_pu[10]/c_decil_pu[1]
+estimacion2022 <- c_decil_pu[10,1]/c_decil_pu[1,1]
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
@@ -798,6 +681,13 @@ cita_formatted <- paste(
 ```
 `r cita_formatted` 
 
+```{r}
+nota <- strsplit(paste0("Notas: ", base_fichas [16,"NOTAS1"])," ")[[1]]
+nota_formatted <- paste(
+  text_spec(nota, color = 1, font_size = 12, align =  2),
+  collapse = " ")
+```
+`r nota_formatted`
 <br />
 
 # **Pobreza monetaria**
@@ -807,7 +697,7 @@ cita_formatted <- paste(
 <div style="text-align: justify">
 La medida de pobreza más simple y más ampliamente utilizada es la tasa de recuento, que es el porcentaje de pobres en una población dada. La construcción de la línea de pobreza (LP) se basa en la definición de un umbral de ingresos necesarios para cubrir una Canasta Básica Total (CBT). Para su cálculo, se utilizan índices de precios tanto de bienes alimentarios como no alimentarios. Para determinar la LP se introducen economías de escala en los gastos no alimentarios para los estratos de referencia seleccionados en las diferentes regiones geográficas, tomando en cuenta el tamaño del hogar (INE, 2015). La línea de indigencia refiere al ingreso necesario para cubrir los gastos únicamente alimentarios. 
 
-Los siguientes gráficos muestran la evolución de ambos indicadores como proporción de hogares en condición de pobreza e indigencia y porcentaje de personas que en los mismos residen. Los mismos muestran cómo desde el 2006 la pobreza monetaria ha caído sostenidamente en Uruguay. Si se observasen registros de años anteriores se podría observar cómo, luego de más de una década de aumento en su incidencia, intensidad y severidad, es a partir del año 2005 en que se registra un punto de inflexión en la tendencia (INE, 2011). En un contexto de fuerte expansión económica, el crecimiento del empleo y los ingresos, así como la instauración de un conjunto de políticas redistributivas, han contribuido a la mejora de los indicadores de pobreza (Amarante et al., 2011). En 2020 se observa un aumento de la pobreza y de la indigencia y una posterior disminución en 2021, aunque manteniéndose en niveles superiores a los observados en los últimos 5 años.  
+Los siguientes gráficos muestran la evolución de ambos indicadores como proporción de hogares en condición de pobreza e indigencia y porcentaje de personas que en los mismos residen. Los mismos muestran cómo desde el 2006 la pobreza monetaria ha caído sostenidamente en Uruguay. Si se observasen registros de años anteriores se podría observar cómo, luego de más de una década de aumento en su incidencia, intensidad y severidad, es a partir del año 2005 en que se registra un punto de inflexión en la tendencia (INE, 2011). En un contexto de fuerte expansión económica, el crecimiento del empleo y los ingresos, así como la instauración de un conjunto de políticas redistributivas, han contribuido a la mejora de los indicadores de pobreza (Amarante et al., 2011). En 2020 se observa un aumento de la pobreza y de la indigencia y una posterior disminución, aunque manteniéndose en niveles superiores a los observados en los últimos 5 años.  
 </div>
 
 <br />
@@ -831,7 +721,7 @@ periodo_formatted <- paste(
 
 ```{r, out.width='100%'}
 #===============================================================================
-g1 <- 
+dat <- 
   base %>% 
   filter(NOMINDICADOR =="Hogares en situación de pobreza (% de la población total) (INE)" | NOMINDICADOR =="Personas en situación de pobreza (% de la población total) (INE)", 
          CORTE_NUEVA == "Total", 
@@ -840,26 +730,33 @@ g1 <-
   NOMINDICADOR =="Hogares en situación de pobreza (% de la población total) (INE)" ~ "Hogares",
   NOMINDICADOR =="Personas en situación de pobreza (% de la población total) (INE)" ~ "Personas")) %>%
   mutate(VALOR = round(as.numeric(VALOR)*100,1)) %>% 
-  mutate(ANIO = as.factor(ANIO)) %>% 
-  ggplot(aes(x = ANIO, y = VALOR)) +
-  geom_line(aes(group = 2, color = UNIDAD)) +
-  geom_point(aes(color = UNIDAD)) +
-  scale_color_manual(
+  mutate(ANIO = as.numeric(ANIO)) %>% 
+  mutate(metodo = case_when(ANIO<=2019 ~ "pre", ANIO==2020 ~ "2020", ANIO==2021~ "2021", ANIO>=2022~ "post")) 
+  
+  
+g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, alpha=metodo, color=UNIDAD)) +
+  geom_line(dat = dat %>% filter(ANIO <= 2019),
+            size = 1, alpha = 0.4) +
+  geom_point(size = 2, show.legend = FALSE) +
+  ylim(0, 40) +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        legend.title = element_blank(),
+        axis.text.x =  element_text(size=8),
+legend.text = element_text(size=8)) +
+  scale_alpha_manual(values = c(.8, .8, .8, .4)) +
+    scale_color_manual(
     values = c(639, "#a1dd70"),
     labels = c("Hogares", "Personas")
   ) +
-  ylim(0, 40) +
-  theme_minimal() +
-  labs(
+    labs(
     color = "",
     title = "",
-    caption = "Unidad de Métodos y Acceso a Datos (UMAD)",
+    caption = "",
     x = "",
     y = ""
   )
-ggplotly(g1) %>% 
-  config(displayModeBar = F) %>%
-  layout(margin = list(b = 100), legend = list(x = 0.5, y = -0.1,orientation = "h", xanchor = "center" )) 
+g1
 
 #===============================================================================
 ```
@@ -876,7 +773,7 @@ t1 <-
          URBANORURALUY =="Total País") %>%
   mutate(VALOR = round(as.numeric(VALOR)*100, 1)) %>%
   rename(UNIDAD_GEOGRÁFICA = URBANORURALUY)
-t1 <- t1 [,c("NOMINDICADOR","PAÍS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
+t1 <- t1 [,c("NOMINDICADOR","PAIS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
 
 DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
                                                        buttons = c('copy', 'csv', 'excel', 'print') )
@@ -902,11 +799,21 @@ calc_formatted <- paste(
 ```
 > **Forma de cálculo:** `r calc_formatted`
 
+
+
+```{r}
+adv <- strsplit(paste0(base_fichas [4,"NOTAS2"])," ")[[1]]
+adv_formatted <- paste(
+  text_spec(adv, color = 1, font_size = 16, align =  "justify"),
+  collapse = " ")
+```
+> **Advertencia:** `r adv_formatted`
+
 #### Código en R
 
 ```{r, echo=TRUE, eval=FALSE}
 
-### Estimación de valores 2021 ###
+### Estimación de valores 2022 ###
 
 # Para sintaxix de años anteriores consultar: 
 # https://osf.io/dyzg8/files/osfstorage#
@@ -927,81 +834,39 @@ library(tidyverse)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
-### Descarga bases ECH 2021 (INE) de repositorio UMAD-FCS ###
+### Descarga bases ECH 2022 (INE) de repositorio UMAD-FCS ###
 
-download.file(
-  url = "https://osf.io/dyzg8/files/osfstorage/63da65232781fc021200aab6", 
-  destfile = "ECH2021_sem1.Rdata"
-)
-
-download.file(
-  url = "https://osf.io/dyzg8/files/osfstorage/63da65616946a002027a4652", 
-  destfile = "ECH2021_sem2_implant.Rdata"
-)
-
-
-download.file(
-  url = "https://osf.io/dyzg8/files/osfstorage/63da65276946a001fe7a4630", 
-  destfile = "ECH2021_sem2_panel.Rdata"
-)
+#download.file(
+#  url = "https://osf.io/download/rehz2/", 
+#  destfile = "Base anual 2022.Rdata"
+#)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 ### Carga de bases ###
 
-sem1          <- rio::import("ECH2021_sem1.Rdata")
-sem2_implant  <- rio::import("ECH2021_sem2_implant.Rdata")
-sem2_panel    <- rio::import("ECH2021_sem2_panel.Rdata")
+#load("Base anual 2022.Rdata")
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
-
-
-## Generación de nuevas variables ###
-
-# Pobreza auxiliar
-
-sem1 <- sem1 %>% dplyr::mutate(pobre_aux = case_when(pobre06 == 0 ~ 2,
-                                                     pobre06 == 1 ~ 1))
-                                                   
-sem2_implant <- sem2_implant %>% dplyr::mutate(pobre_aux = case_when(
-  pobre == 0 ~ 2,
-  pobre == 1 ~ 1))
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 ### Bases a nivel hogar ###                               
 
-sem1_h <- sem1 %>% distinct(numero, .keep_all = TRUE)
-sem2_implant_h <- sem2_implant %>% distinct(ID, .keep_all = TRUE)
-
+base_h <- base %>% distinct(ID, .keep_all = TRUE)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 ### Información de muestreo ###
 
-sem1 <- sem1 %>% dplyr::mutate(pesosem = pesomen / 6)
-
-
-sem1_svy           <- srvyr::as_survey_design(sem1, 
-                                              ids = numero, 
-                                              weights = pesomen)
-
-sem1_h_svy         <- srvyr::as_survey_design(sem1_h, 
-                                              ids = numero, 
-                                              weights = pesomen)
-
-sem2_implant_svy   <- srvyr::as_survey_design(sem2_implant, 
+base_svy           <- srvyr::as_survey_design(base, 
                                               ids = ID, 
-                                              weights = w_sem)
+                                              weights = w_ano)
 
-sem2_implant_h_svy <- srvyr::as_survey_design(sem2_implant_h, ids = ID, 
-                                              weights = w_sem)
-
-sem2_panel_svy   <-  srvyr::as_survey_design(sem2_panel, 
-                                             ids = ID, 
-                                             weights = w)
-
+base_h_svy         <- srvyr::as_survey_design(base_h, 
+                                              ids = ID, 
+                                              weights = w_ano)
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
@@ -1012,26 +877,21 @@ sem2_panel_svy   <-  srvyr::as_survey_design(sem2_panel,
 ###  Hogares en situación de pobreza (% de la población total) (INE)
 
 
-a_mes <- sem1_h_svy %>%
-  srvyr::group_by(mes) %>%
-  srvyr::summarise(colname = srvyr::survey_mean(pobre06))
+a_ano <- base_h_svy %>%
+  srvyr::summarise(colname = srvyr::survey_mean(pobre))
 
-a_sem <- mean(as.numeric(a_mes$colname))
-b_sem <- as.numeric(svymean(~pobre, sem2_implant_h_svy))
+a_ano <- mean(as.numeric(a_ano$colname))
 
-estimacion2021 <- mean(c(a_sem, b_sem))
-
+estimacion2022 <- a_ano
 
 ### 	Personas en situación de pobreza (% de la población total) (INE) 
 
-a_mes <- sem1_svy %>%
-  srvyr::group_by(mes) %>%
-  srvyr::summarise(colname = srvyr::survey_mean(pobre06))
+a_ano <- base_svy %>%
+  srvyr::summarise(colname = srvyr::survey_mean(pobre))
 
-a_sem <- mean(as.numeric(a_mes$colname))
-b_sem <- as.numeric(svymean(~pobre, sem2_implant_svy))
+a_ano <- mean(as.numeric(a_ano$colname))
 
-estimacion2021 <- mean(c(a_sem, b_sem))
+estimacion2022 <- a_ano
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
@@ -1051,6 +911,13 @@ cita_formatted <- paste(
 ```
 `r cita_formatted` 
 
+```{r}
+nota <- strsplit(paste0("Notas: ", base_fichas [4,"NOTAS1"])," ")[[1]]
+nota_formatted <- paste(
+  text_spec(nota, color = 1, font_size = 12, align =  2),
+  collapse = " ")
+```
+`r nota_formatted`
 <br />
 
 
@@ -1075,7 +942,7 @@ periodo_formatted <- paste(
 ```{r, out.width='100%'}
 #===============================================================================
 
-g1 <- 
+dat <- 
   base %>% 
   filter(NOMINDICADOR =="Hogares en situación de indigencia (% de la población total) (INE)" | NOMINDICADOR =="Personas en situación de indigencia (% de la población total) (INE)", 
          CORTE_NUEVA == "Total", 
@@ -1084,27 +951,34 @@ g1 <-
   NOMINDICADOR =="Hogares en situación de indigencia (% de la población total) (INE)" ~ "Hogares",
   NOMINDICADOR =="Personas en situación de indigencia (% de la población total) (INE)" ~ "Personas")) %>%
   mutate(VALOR = round(as.numeric(VALOR)*100,1)) %>% 
-  mutate(ANIO = as.factor(ANIO)) %>% 
-  ggplot(aes(x = ANIO, y = VALOR)) +
-  geom_line(aes(group = 2, color = UNIDAD)) +
-  geom_point(aes(color = UNIDAD)) +
-  scale_color_manual(
+   mutate(ANIO = as.numeric(ANIO)) %>% 
+       mutate(metodo = case_when(ANIO<=2019 ~ "pre", ANIO==2020 ~ "2020", ANIO==2021~ "2021", ANIO>=2022~ "post")) 
+  
+  
+g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, alpha=metodo, color=UNIDAD)) +
+  geom_line(dat = dat %>% filter(ANIO <= 2019),
+            size = 1, alpha = 0.4) +
+  geom_point(size = 2, show.legend = FALSE) +
+  ylim(0, 4) +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        legend.title = element_blank(),
+        axis.text.x =  element_text(size=8),
+legend.text = element_text(size=8)) +
+  scale_alpha_manual(values = c(.8, .8, .8, .4)) +
+scale_color_manual(
     values = c(639, "#a1dd70"),
     labels = c("Hogares", "Personas")
   ) +
-  ylim(0, 4) +
-  theme_minimal() +
-  labs(
+    labs(
     color = "",
     title = "",
-    caption = "Unidad de Métodos y Acceso a Datos (UMAD)",
+    caption = "",
     x = "",
     y = ""
   )
-ggplotly(g1) %>% 
-  config(displayModeBar = F) %>%
-  layout(margin = list(b = 100), legend = list(x = 0.5, y = -0.1,orientation = "h", xanchor = "center" )) 
-
+g1
+  
 #===============================================================================
 ```
 
@@ -1119,7 +993,7 @@ t1 <-
   URBANORURALUY =="Total País") %>%
   mutate(VALOR =  round(as.numeric(VALOR)*100, 1)) %>%
   rename(UNIDAD_GEOGRÁFICA = URBANORURALUY)
-t1 <- t1 [,c("NOMINDICADOR","PAÍS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
+t1 <- t1 [,c("NOMINDICADOR","PAIS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
 
 DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
                                                        buttons = c('copy', 'csv', 'excel', 'print') )
@@ -1145,11 +1019,20 @@ calc_formatted <- paste(
 ```
 > **Forma de cálculo:** `r calc_formatted`
 
+
+```{r}
+adv <- strsplit(paste0(base_fichas [6,"NOTAS2"])," ")[[1]]
+adv_formatted <- paste(
+  text_spec(adv, color = 1, font_size = 16, align =  "justify"),
+  collapse = " ")
+```
+> **Advertencia:** `r adv_formatted`
+
 #### Código en R
 
 ```{r, echo=TRUE, eval=FALSE}
 
-### Estimación de valores 2021 ###
+### Estimación de valores 2022 ###
 
 # Para sintaxix de años anteriores consultar: 
 # https://osf.io/dyzg8/files/osfstorage#
@@ -1170,31 +1053,18 @@ library(tidyverse)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
-### Descarga bases ECH 2021 (INE) de repositorio UMAD-FCS ###
+### Descarga bases ECH 2022 (INE) de repositorio UMAD-FCS ###
 
-download.file(
-  url = "https://osf.io/dyzg8/files/osfstorage/63da65232781fc021200aab6", 
-  destfile = "ECH2021_sem1.Rdata"
-)
-
-download.file(
-  url = "https://osf.io/dyzg8/files/osfstorage/63da65616946a002027a4652", 
-  destfile = "ECH2021_sem2_implant.Rdata"
-)
-
-
-download.file(
-  url = "https://osf.io/dyzg8/files/osfstorage/63da65276946a001fe7a4630", 
-  destfile = "ECH2021_sem2_panel.Rdata"
-)
+#download.file(
+#  url = "https://osf.io/download/rehz2/", 
+#  destfile = "Base anual 2022.Rdata"
+#)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 ### Carga de bases ###
 
-sem1          <- rio::import("ECH2021_sem1.Rdata")
-sem2_implant  <- rio::import("ECH2021_sem2_implant.Rdata")
-sem2_panel    <- rio::import("ECH2021_sem2_panel.Rdata")
+#load("Base anual 2022.Rdata")
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
@@ -1203,36 +1073,20 @@ sem2_panel    <- rio::import("ECH2021_sem2_panel.Rdata")
 
 ### Bases a nivel hogar ###                               
 
-sem1_h <- sem1 %>% distinct(numero, .keep_all = TRUE)
-sem2_implant_h <- sem2_implant %>% distinct(ID, .keep_all = TRUE)
+base_h <- base %>% distinct(ID, .keep_all = TRUE)
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 ### Información de muestreo ###
 
-sem1 <- sem1 %>% dplyr::mutate(pesosem = pesomen / 6)
-
-
-sem1_svy           <- srvyr::as_survey_design(sem1, 
-                                              ids = numero, 
-                                              weights = pesomen)
-
-sem1_h_svy         <- srvyr::as_survey_design(sem1_h, 
-                                              ids = numero, 
-                                              weights = pesomen)
-
-sem2_implant_svy   <- srvyr::as_survey_design(sem2_implant, 
+base_svy           <- srvyr::as_survey_design(base, 
                                               ids = ID, 
-                                              weights = w_sem)
+                                              weights = w_ano)
 
-sem2_implant_h_svy <- srvyr::as_survey_design(sem2_implant_h, ids = ID, 
-                                              weights = w_sem)
-
-sem2_panel_svy   <-  srvyr::as_survey_design(sem2_panel, 
-                                             ids = ID, 
-                                             weights = w)
-
+base_h_svy         <- srvyr::as_survey_design(base_h, 
+                                              ids = ID, 
+                                              weights = w_ano)
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
@@ -1243,25 +1097,21 @@ sem2_panel_svy   <-  srvyr::as_survey_design(sem2_panel,
 ### 	Hogares en situación de indigencia (% de la población total) (INE) 
 
 
-a_mes <- sem1_h_svy %>%
-  srvyr::group_by(mes) %>%
-  srvyr::summarise(colname = srvyr::survey_mean(indigente06))
+a_ano <- base_h_svy %>%
+  srvyr::summarise(colname = srvyr::survey_mean(indig))
 
-a_sem <- mean(as.numeric(a_mes$colname))
-b_sem <- as.numeric(svymean(~indig, sem2_implant_h_svy))
+a_ano <- mean(as.numeric(a_ano$colname))
 
-estimacion2021 <- mean(c(a_sem, b_sem))
+estimacion2022 <- a_ano
 
 ### 	Personas en situación de indigencia (% de la población total) (INE) 
 
-a_mes <- sem1_svy %>%
-  srvyr::group_by(mes) %>%
-  srvyr::summarise(colname = srvyr::survey_mean(indigente06))
+a_ano <- base_svy %>%
+  srvyr::summarise(colname = srvyr::survey_mean(indig))
 
-a_sem <- mean(as.numeric(a_mes$colname))
-b_sem <- as.numeric(svymean(~indig, sem2_implant_svy))
+a_ano <- mean(as.numeric(a_ano$colname))
 
-estimacion2021 <- mean(c(a_sem, b_sem))
+estimacion2022 <- a_ano
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
@@ -1280,6 +1130,13 @@ cita_formatted <- paste(
 ```
 `r cita_formatted` 
 
+```{r}
+nota <- strsplit(paste0("Notas: ", base_fichas [6,"NOTAS1"])," ")[[1]]
+nota_formatted <- paste(
+  text_spec(nota, color = 1, font_size = 12, align =  2),
+  collapse = " ")
+```
+`r nota_formatted`
 <br />
 
 
@@ -1348,7 +1205,7 @@ t1 <-
   base %>% filter(NOMINDICADOR == "Severidad de la pobreza", CORTE_NUEVA == "Total") %>%
   mutate(VALOR = round(as.numeric(VALOR),1)) %>%
   rename(UNIDAD_GEOGRÁFICA = URBANORURALUY)
-t1 <- t1 [,c("NOMINDICADOR","PAÍS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
+t1 <- t1 [,c("NOMINDICADOR","PAIS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
 
 DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
                                                        buttons = c('copy', 'csv', 'excel', 'print') )
@@ -1386,7 +1243,7 @@ cita_formatted <- paste(
 ## **Brecha de pobreza**
 
 <div style="text-align: justify">
-La brecha de la pobreza (per cápita), identifica el agregado de la distancia que separa el ingreso de los pobres y el ingreso determinado por la línea de pobreza, medida en unidades de la línea de la pobreza y promediada entre la población. La brecha de la pobreza es sensible a las disminuciones de ingreso entre los pobres y registra un aumento cuando se eleva el déficit de una persona pobre. Es a partir del año 2004 en que es posible observar una disminución en la tendencia de este indicador. 
+La brecha de la pobreza (per cápita), identifica el agregado de la distancia que separa el ingreso de los pobres y el ingreso determinado por la línea de pobreza, medida en unidades de la línea de la pobreza y promediada entre la población. La brecha de la pobreza es sensible a las disminuciones de ingreso entre los pobres y registra un aumento cuando se eleva el déficit de una persona pobre. Es a partir del año 2004 en que es posible observar una disminución en la tendencia de este indicador (a excepción de 2020). 
 </div>
 
 <br />
@@ -1394,7 +1251,7 @@ La brecha de la pobreza (per cápita), identifica el agregado de la distancia qu
 <div style="text-align: center">
 ##### **Brecha de pobreza a usd 3,20 por día (2011 ppp) (%)** 
 ```{r}
-periodo <- base[base$NOMINDICADOR == "Brecha de pobreza a usd 3,20 por día (2011 ppp) (%)",]
+periodo <- base[base$NOMINDICADOR == "Brecha de pobreza a usd 3,20 por día (2011 ppp) (%)"&base$URBANORURALUY=="Total País",]
 max<- max(periodo$ANIO)
 min<- min(periodo$ANIO)
 periodo <- c(min," - ", max)
@@ -1402,7 +1259,7 @@ periodo_formatted <- paste(
   text_spec(periodo, color = 1, font_size = 16, align = "justify"),
   collapse = " ")
 ```
-##### País urbano, `r periodo_formatted`
+##### Total país, `r periodo_formatted`
 </div>
 
 ### {.tabset .tabset-fade .tabset-pills}
@@ -1413,7 +1270,7 @@ periodo_formatted <- paste(
 #===============================================================================
 
 g1 <- 
-  base %>% filter(NOMINDICADOR == "Brecha de pobreza a usd 3,20 por día (2011 ppp) (%)", URBANORURALUY == "Urbano (más de 5.000 habitantes)") %>%
+  base %>% filter(NOMINDICADOR == "Brecha de pobreza a usd 3,20 por día (2011 ppp) (%)", URBANORURALUY == "Total País") %>%
   mutate(VALOR = round(as.numeric(VALOR),3)) %>% 
   mutate(ANIO = as.numeric(ANIO)) %>% 
   ggplot(aes(x = ANIO, y = VALOR)) +
@@ -1424,7 +1281,7 @@ g1 <-
     labels = c("Brecha de pobreza")
   ) +
   ylim(0, 2) +
-  scale_x_continuous(breaks=seq(1992, 2020, 4)) +
+  scale_x_continuous(breaks=seq(2000, 2022, 4)) +
   theme_minimal() +
   labs(
     color = "",
@@ -1445,10 +1302,10 @@ ggplotly(g1) %>%
 
 ```{r}
 t1 <- 
-  base %>% filter(NOMINDICADOR == "Brecha de pobreza a usd 3,20 por día (2011 ppp) (%)", URBANORURALUY == "Urbano (más de 5.000 habitantes)") %>%
+  base %>% filter(NOMINDICADOR == "Brecha de pobreza a usd 3,20 por día (2011 ppp) (%)", URBANORURALUY == "Total País") %>%
   mutate(VALOR = round(as.numeric(VALOR),3)) %>% 
   rename(UNIDAD_GEOGRÁFICA = URBANORURALUY)
-t1 <- t1 [,c("NOMINDICADOR","PAÍS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
+t1 <- t1 [,c("NOMINDICADOR","PAIS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
 
 DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
                                                        buttons = c('copy', 'csv', 'excel', 'print') )
@@ -1520,7 +1377,7 @@ periodo_formatted <- paste(
 
 ```{r, out.width='100%'}
 #===============================================================================
-g1 <- 
+dat <- 
   base %>% 
   filter(NOMINDICADOR =="Hogares con necesidades básicas insatisfechas (met 2011)(% de la población total)" | NOMINDICADOR =="Personas en hogares con necesidades básicas insatisfechas (met 2011) (% de la población total) (INE)", 
          CORTE_NUEVA == "Total", 
@@ -1529,27 +1386,38 @@ g1 <-
   NOMINDICADOR =="Hogares con necesidades básicas insatisfechas (met 2011)(% de la población total)" ~ "Hogares",
   NOMINDICADOR =="Personas en hogares con necesidades básicas insatisfechas (met 2011) (% de la población total) (INE)" ~ "Personas")) %>%
   mutate(VALOR = round(as.numeric(VALOR)*100,1)) %>% 
-  mutate(ANIO = as.factor(ANIO)) %>% 
-  ggplot(aes(x = ANIO, y = VALOR)) +
-  geom_line(aes(group = 2, color = UNIDAD)) +
-  geom_point(aes(color = UNIDAD)) +
-  scale_color_manual(
+  mutate(ANIO = as.numeric(ANIO)) %>% 
+        mutate(metodo = case_when(ANIO<=2019 ~ "pre", ANIO==2020 ~ "2020", ANIO==2021~ "2021", ANIO>=2022~ "post")) 
+  
+  
+g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, alpha=metodo, color=UNIDAD)) +
+  geom_line(dat = dat %>% filter(ANIO <= 2019),
+            size = 1, alpha = 0.4) +
+  geom_point(dat = dat %>% filter(ANIO <= 2019),
+            size = 2, alpha = 0.4) +
+  geom_point(dat = dat %>% filter(ANIO > 2019),
+             size = 2, show.legend = FALSE) +
+  ylim(0, 60) +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        legend.title = element_blank(),
+        axis.text.x =  element_text(size=8),
+legend.text = element_text(size=8)) +
+    scale_x_continuous(breaks=seq(2006, max, 1)) +
+  scale_alpha_manual(values = c(.8, .8, .8, .4)) +
+scale_color_manual(
     values = c(639, "#a1dd70"),
     labels = c("Hogares", "Personas")
   ) +
-  ylim(0, 60) +
-#  scale_x_continuos(breaks=seq(2006, max, 1)) +
-  theme_minimal() +
-  labs(
+    labs(
     color = "",
     title = "",
-    caption = "Unidad de Métodos y Acceso a Datos (UMAD)",
+    caption = "",
     x = "",
     y = ""
   )
-ggplotly(g1) %>% 
-  config(displayModeBar = F) %>%
-  layout(margin = list(b = 100), legend = list(x = 0.5, y = -0.1,orientation = "h", xanchor = "center" )) 
+g1
+  
 
 #===============================================================================
 ```
@@ -1566,7 +1434,7 @@ t1 <-
          URBANORURALUY =="Total País") %>%
   mutate(VALOR = round(as.numeric(VALOR)*100, 1)) %>%
   rename(UNIDAD_GEOGRÁFICA = URBANORURALUY)
-t1 <- t1 [,c("NOMINDICADOR","PAÍS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
+t1 <- t1 [,c("NOMINDICADOR","PAIS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
 
 DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
                                                        buttons = c('copy', 'csv', 'excel', 'print') )
@@ -1592,11 +1460,20 @@ calc_formatted <- paste(
 ```
 > **Forma de cálculo:** `r calc_formatted`
 
+
+```{r}
+adv <- strsplit(paste0(base_fichas [17,"NOTAS2"])," ")[[1]]
+adv_formatted <- paste(
+  text_spec(adv, color = 1, font_size = 16, align =  "justify"),
+  collapse = " ")
+```
+> **Advertencia:** `r adv_formatted`
+
 #### Código en R
 
 ```{r, echo=TRUE, eval=FALSE}
 
-### Estimación de valores 2021 ###
+### Estimación de valores 2022 ###
 
 # Para sintaxix de años anteriores consultar: 
 # https://osf.io/dyzg8/files/osfstorage#
@@ -1617,67 +1494,54 @@ library(tidyverse)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
-### Descarga bases ECH 2021 (INE) de repositorio UMAD-FCS ###
+### Descarga bases ECH 2022 (INE) de repositorio UMAD-FCS ###
 
-download.file(
-  url = "https://osf.io/dyzg8/files/osfstorage/63da65232781fc021200aab6", 
-  destfile = "ECH2021_sem1.Rdata"
-)
-
-download.file(
-  url = "https://osf.io/dyzg8/files/osfstorage/63da65616946a002027a4652", 
-  destfile = "ECH2021_sem2_implant.Rdata"
-)
-
-
-download.file(
-  url = "https://osf.io/dyzg8/files/osfstorage/63da65276946a001fe7a4630", 
-  destfile = "ECH2021_sem2_panel.Rdata"
-)
+#download.file(
+#  url = "https://osf.io/download/rehz2/", 
+#  destfile = "Base anual 2022.Rdata"
+#)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 ### Carga de bases ###
 
-sem1          <- rio::import("ECH2021_sem1.Rdata")
-sem2_implant  <- rio::import("ECH2021_sem2_implant.Rdata")
-sem2_panel    <- rio::import("ECH2021_sem2_panel.Rdata")
+#load("Base anual 2022.Rdata")
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 ## Generación de nuevas variables ###
 
 # NBI - Hacinamiento
-sem2_implant <- sem2_implant %>% 
-  dplyr::mutate(aux1 = ht19/d9, 
-       aux2 = ht19/d10,
+base <- base %>% 
+  dplyr::mutate(aux1 = HT19/d9, 
+       aux2 = HT19/d10,
        bd_hacinamiento1  = ifelse(aux1>2, 1, 0),
        bd_hacinamiento2  = ifelse(aux2>2, 1, 0))
 
 # NBI - Materialidad vivienda
-sem2_implant <- sem2_implant %>% 
+base <- base %>% 
   dplyr::mutate(NBI_materialidad11 = ifelse(c2 == 6 | c3 == 6 | c4 == 5, 1, 0))
 
 
 # NBI - Espacio apropiado para cocinar
-sem2_implant <- sem2_implant %>% 
+base <- base %>% 
   dplyr::mutate(bd_d19 = d19)
-sem2_implant <- sem2_implant %>% 
+base <- base %>% 
   dplyr::mutate(NBI_cocina11 = ifelse(bd_d19 == 3, 1, 0))
 
 
 # NBI - Abastecimiento de agua potable
-sem2_implant <- sem2_implant %>% 
+base <- base %>% 
   dplyr::mutate(bd_d11 = case_when(d11 == 1 ~ 1, 
                                    d11==2 | d11==3 ~ 2, 
                                    d11>=4 & d11<=6 ~ 3))
 
-sem2_implant <- sem2_implant %>% 
+base <- base %>% 
   dplyr::mutate(bd_d12 = case_when(d12 == 1 ~ 1, 
                                    d12 == 2 | d12 == 3 ~ 2, 
                                    d12 == 4 ~ 3))
 
-sem2_implant <- sem2_implant %>% 
+base <- base %>% 
   dplyr::mutate(NBI_agua11 = ifelse((bd_d12 == 2 | 
                                      bd_d12 == 3) | 
                                      bd_d11 == 3, 1, 0))
@@ -1685,19 +1549,19 @@ sem2_implant <- sem2_implant %>%
 
 
 # NBI - Servicio higiénico de calidad
-sem2_implant <- sem2_implant %>% 
+base <- base %>% 
   dplyr::mutate(bd_d13 = as.numeric(d13))
-sem2_implant <- sem2_implant %>% 
+base <- base %>% 
   dplyr::mutate(bd_d14 = as.numeric(d14))
-sem2_implant <- sem2_implant %>% 
+base <- base %>% 
   dplyr::mutate(bd_d15 = as.numeric(d15))
-sem2_implant <- sem2_implant %>% 
+base <- base %>% 
   dplyr::mutate(bd_d16 = as.numeric(case_when(d16 == 0 ~ 0,
                                               d16 == 1 ~ 1, 
                                               d16 == 2 ~ 2, 
                                               d16 >= 3 & d16 <= 4 ~ 3)))
 
-sem2_implant <- sem2_implant %>% 
+base <- base %>% 
   dplyr::mutate(NBI_servhigien11 = case_when(
     bd_d14 == 0 | bd_d15 == 2 | bd_d16 == 3 | bd_d16 == 4  ~ 1, 
     bd_d14 != 0 & bd_d1 == 1 & (bd_d16 == 1 | bd_d16 == 2)  ~ 0,
@@ -1706,29 +1570,29 @@ sem2_implant <- sem2_implant %>%
 
 
 # NBI - Energía eléctrica
-sem2_implant <- sem2_implant %>% 
+base <- base %>% 
   dplyr::mutate(bd_d18 = d18)
-sem2_implant <- sem2_implant %>% 
+base <- base %>% 
   dplyr::mutate(NBI_energia11 = ifelse(bd_d18>2, 1, 0))
 
 
 # NBI - Artefactos básicos de cofnort
-sem2_implant <- sem2_implant %>% 
+base <- base %>% 
   dplyr::mutate(bd_d260 = ifelse(d260 == 6, 2, 1))
-sem2_implant <- sem2_implant %>% 
+base <- base %>% 
   dplyr::mutate(bd_d21_1 = d21_3)
-sem2_implant <- sem2_implant %>% 
+base <- base %>% 
   dplyr::mutate(bd_d21_2 = case_when(d21_1 == 1 | d21_2 == 1 ~ 1,
                                      d21_1 == 2 & d21_2 == 2 ~ 2))
                                                           
 
-sem2_implant <- sem2_implant %>% 
+base <- base %>% 
   dplyr::mutate(
     NBI_artefactos11 = ifelse(bd_d260 == 2 | bd_d21_1 == 2 | bd_d21_ == 2, 1, 0))
 
 
 # NBI - Educación
-sem2_implant <- sem2_implant %>% dplyr::mutate(niños_na = case_when(
+base <- base %>% dplyr::mutate(niños_na = case_when(
   e27 <  4 | e27 >  17 ~ 0,
   e27 >= 4 & e27 <= 17 & e49 == 3 ~ 0,
   e27 >= 4 & e27 <= 17 & (e49 == 1 | e49 == 2) & 
@@ -1737,24 +1601,24 @@ sem2_implant <- sem2_implant %>% dplyr::mutate(niños_na = case_when(
     (e201_1c != 1 & e201_1d != 1) ~ 1))
 
 
-sem2_niños_na <- sem2_implant[,c("ID","niños_na")]
-sem2_niños_na <- sem2_niños_na %>% dplyr::mutate(NBI_educacion11 = niños_na)
-sem2_niños_na <- sem2_niños_na[order(sem2_niños_na$ID, 
-                                     sem2_niños_na$NBI_educacion11, 
+base_niños_na <- base[,c("ID","niños_na")]
+base_niños_na <- base_niños_na %>% dplyr::mutate(NBI_educacion11 = niños_na)
+base_niños_na <- base_niños_na[order(base_niños_na$ID, 
+                                     base_niños_na$NBI_educacion11, 
                                      decreasing = TRUE), ]
-sem2_niños_na <- sem2_niños_na %>% distinct(ID, .keep_all = TRUE)
-sem2_niños_na <- sem2_niños_na[,c("ID","NBI_educacion11")]
+base_niños_na <- base_niños_na %>% distinct(ID, .keep_all = TRUE)
+base_niños_na <- base_niños_na[,c("ID","NBI_educacion11")]
 
-sem2_implant <- merge(sem2_implant, sem2_niños_na, by = "ID")
+base <- merge(base, base_niños_na, by = "ID")
 
 
 
 # NBI Total
-sem2_implant <- sem2_implant %>% 
+base <- base %>% 
   dplyr::mutate(NBI_vivienda11= ifelse(bd_hacinamiento1 == 1 | 
                                          NBI_materialidad11 == 1 | 
                                          NBI_cocina11 == 1, 1, 0))
-sem2_implant <- sem2_implant %>% 
+base <- base %>% 
   dplyr::mutate(NBI_2011= ifelse(NBI_vivienda11 == 1 | 
                                  NBI_agua11 == 1 | 
                                  NBI_servhigien11 == 1 | 
@@ -1762,7 +1626,7 @@ sem2_implant <- sem2_implant %>%
                                  NBI_artefactos11 == 1 | 
                                  NBI_educacion11 == 1, 1, 0))
                                                                                               
-sem2_implant <- sem2_implant %>% 
+base <- base %>% 
   dplyr::mutate(NBI_cant = NBI_vivienda11 + 
                   NBI_agua11 + 
                   NBI_servhigien11 + 
@@ -1772,12 +1636,7 @@ sem2_implant <- sem2_implant %>%
 
 
 # Región
-sem1 <- sem1 %>% 
-  dplyr::mutate(bd_region = case_when(region_4 == 1 | region_4 == 2 ~ 1,
-                                      region_4 == 3 ~ 2,
-                                      region_4 == 4 ~ 3))
-
-sem2_implant <- sem2_implant %>% 
+base <- base %>% 
   dplyr::mutate(bd_region = case_when(region_4 == 1 | region_4 == 2 ~ 1,
                                       region_4 == 3 ~ 2,
                                       region_4 == 4 ~ 3))
@@ -1787,37 +1646,20 @@ sem2_implant <- sem2_implant %>%
 
 ### Bases a nivel hogar ###                               
 
-sem1_h <- sem1 %>% distinct(numero, .keep_all = TRUE)
-sem2_implant_h <- sem2_implant %>% distinct(ID, .keep_all = TRUE)
+base_h <- base %>% distinct(ID, .keep_all = TRUE)
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 ### Información de muestreo ###
 
-sem1 <- sem1 %>% dplyr::mutate(pesosem = pesomen / 6)
-
-
-sem1_svy           <- srvyr::as_survey_design(sem1, 
-                                              ids = numero, 
-                                              weights = pesomen)
-
-sem1_h_svy         <- srvyr::as_survey_design(sem1_h, 
-                                              ids = numero, 
-                                              weights = pesomen)
-
-sem2_implant_svy   <- srvyr::as_survey_design(sem2_implant, 
+base_svy           <- srvyr::as_survey_design(base, 
                                               ids = ID, 
-                                              weights = w_sem)
+                                              weights = w_ano)
 
-sem2_implant_h_svy <- srvyr::as_survey_design(sem2_implant_h, ids = ID, 
-                                              weights = w_sem)
-
-sem2_panel_svy   <-  srvyr::as_survey_design(sem2_panel, 
-                                             ids = ID, 
-                                             weights = w)
-
-
+base_h_svy         <- srvyr::as_survey_design(base_h, 
+                                              ids = ID, 
+                                              weights = w_ano)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
@@ -1825,15 +1667,15 @@ sem2_panel_svy   <-  srvyr::as_survey_design(sem2_panel,
 
 ### Hogares con necesidades básicas insatisfechas (met 2011)(% de la población total 
 
-b_sem <- sem2_implant_h_svy %>%
+a_ano <- base_h_svy %>%
   srvyr::summarise(colname = srvyr::survey_mean(NBI_2011))
-estimacion2021 <- as.numeric(b_sem$colname)
+estimacion2022 <- as.numeric(a_ano$colname)
 
 
-b_sem <- sem2_implant_h_svy %>%
+a_ano <- base_h_svy %>%
   srvyr::filter(bd_region == 1) %>%
   srvyr::summarise(colname = srvyr::survey_mean(NBI_2011))
-estimacion2021_urb <- as.numeric(b_sem$colname)
+estimacion2022_urb <- as.numeric(a_ano$colname)
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
@@ -1853,6 +1695,13 @@ cita_formatted <- paste(
 ```
 `r cita_formatted` 
 
+```{r}
+nota <- strsplit(paste0("Notas: ", base_fichas [17,"NOTAS1"])," ")[[1]]
+nota_formatted <- paste(
+  text_spec(nota, color = 1, font_size = 12, align =  2),
+  collapse = " ")
+```
+`r nota_formatted`
 <br />
 
 ## **Hacinamiento**
@@ -1883,32 +1732,42 @@ periodo_formatted <- paste(
 
 ```{r, out.width='100%'}
 #===============================================================================
-g1 <- 
+dat <- 
   base %>% filter(NOMINDICADOR == "Personas en hogares con hacinamiento (% de la población total) (def. CELADE)", CORTE_NUEVA == "Total") %>%
   mutate(VALOR = as.numeric(VALOR)) %>% 
   mutate(VALOR = round((VALOR)*100,1)) %>% 
   mutate(ANIO = as.numeric(ANIO)) %>% 
-  ggplot(aes(x = ANIO, y = VALOR)) +
-  geom_line(aes(group = 2, color = URBANORURALUY)) +
-  geom_point(aes(color = URBANORURALUY)) +
-  scale_color_manual(
-    values = c(639, "#a1dd70"),
-    labels = c("Total País", "Urbano (más de 5.000 habitantes)")
-  ) +
-  ylim(0, 50) +
-  xlim(1990, 2021) +
+          mutate(metodo = case_when(ANIO<=2019 ~ "pre", ANIO==2020 ~ "2020", ANIO==2021~ "2021", ANIO>=2022~ "post")) 
   
+  
+g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, alpha=metodo, color=URBANORURALUY)) +
+  geom_line(dat = dat %>% filter(ANIO <= 2019),
+            size = 1, alpha = 0.4) +
+  geom_point(dat = dat %>% filter(ANIO <= 2019),
+            size = 2, alpha = 0.4) +
+  geom_point(dat = dat %>% filter(ANIO > 2019),
+             size = 2, show.legend = FALSE) +
+  ylim(0, 50) +
   theme_minimal() +
-  labs(
+  theme(legend.position = "bottom",
+        legend.title = element_blank(),
+        axis.text.x =  element_text(size=8),
+legend.text = element_text(size=8)) +
+      scale_x_continuous(breaks=seq(1990, max, 5)) +
+  scale_alpha_manual(values = c(.8, .8, .8, .4)) +
+scale_color_manual(
+    values = c(639, "#a1dd70"),
+    labels = c("Total país", "Urbano (más de 5.000 habitantes)")
+  ) +
+    labs(
     color = "",
     title = "",
-    caption = "Unidad de Métodos y Acceso a Datos (UMAD)",
+    caption = "",
     x = "",
     y = ""
   )
-ggplotly(g1) %>% 
-  config(displayModeBar = F) %>%
-  layout(margin = list(b = 100), legend = list(x = 0.5, y = -0.1,orientation = "h", xanchor = "center" )) 
+g1
+  
 
 #===============================================================================
 ```
@@ -1922,7 +1781,7 @@ t1 <-
   base %>% filter(NOMINDICADOR == "Personas en hogares con hacinamiento (% de la población total) (def. CELADE)", CORTE_NUEVA == "Total") %>%
   mutate(VALOR = round(as.numeric(VALOR)*100, 1)) %>%
   rename(UNIDAD_GEOGRÁFICA = URBANORURALUY)
-t1 <- t1 [,c("NOMINDICADOR","PAÍS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
+t1 <- t1 [,c("NOMINDICADOR","PAIS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
 
 DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
                                                        buttons = c('copy', 'csv', 'excel', 'print') )
@@ -1948,11 +1807,20 @@ calc_formatted <- paste(
 ```
 > **Forma de cálculo:** `r calc_formatted`
 
+
+```{r}
+adv <- strsplit(paste0(base_fichas [26,"NOTAS2"])," ")[[1]]
+adv_formatted <- paste(
+  text_spec(adv, color = 1, font_size = 16, align =  "justify"),
+  collapse = " ")
+```
+> **Advertencia:** `r adv_formatted`
+
 #### Código en R
 
 ```{r, echo=TRUE, eval=FALSE}
 
-### Estimación de valores 2021 ###
+### Estimación de valores 2022 ###
 
 # Para sintaxix de años anteriores consultar: 
 # https://osf.io/dyzg8/files/osfstorage#
@@ -1973,31 +1841,18 @@ library(tidyverse)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
-### Descarga bases ECH 2021 (INE) de repositorio UMAD-FCS ###
+### Descarga bases ECH 2022 (INE) de repositorio UMAD-FCS ###
 
-download.file(
-  url = "https://osf.io/dyzg8/files/osfstorage/63da65232781fc021200aab6", 
-  destfile = "ECH2021_sem1.Rdata"
-)
-
-download.file(
-  url = "https://osf.io/dyzg8/files/osfstorage/63da65616946a002027a4652", 
-  destfile = "ECH2021_sem2_implant.Rdata"
-)
-
-
-download.file(
-  url = "https://osf.io/dyzg8/files/osfstorage/63da65276946a001fe7a4630", 
-  destfile = "ECH2021_sem2_panel.Rdata"
-)
+#download.file(
+#  url = "https://osf.io/download/rehz2/", 
+#  destfile = "Base anual 2022.Rdata"
+#)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 ### Carga de bases ###
 
-sem1          <- rio::import("ECH2021_sem1.Rdata")
-sem2_implant  <- rio::import("ECH2021_sem2_implant.Rdata")
-sem2_panel    <- rio::import("ECH2021_sem2_panel.Rdata")
+#load("Base anual 2022.Rdata")
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
@@ -2006,59 +1861,36 @@ sem2_panel    <- rio::import("ECH2021_sem2_panel.Rdata")
 
 
 # NBI - Hacinamiento
-sem2_implant <- sem2_implant %>% 
-  dplyr::mutate(aux1 = ht19/d9, 
-       aux2 = ht19/d10,
+base <- base %>% 
+  dplyr::mutate(aux1 = HT19/d9, 
+       aux2 = HT19/d10,
        bd_hacinamiento1  = ifelse(aux1>2, 1, 0),
        bd_hacinamiento2  = ifelse(aux2>2, 1, 0))
 
 # Región
-sem1 <- sem1 %>% 
+base <- base %>% 
   dplyr::mutate(bd_region = case_when(region_4 == 1 | region_4 == 2 ~ 1,
                                       region_4 == 3 ~ 2,
                                       region_4 == 4 ~ 3))
-
-sem2_implant <- sem2_implant %>% 
-  dplyr::mutate(bd_region = case_when(region_4 == 1 | region_4 == 2 ~ 1,
-                                      region_4 == 3 ~ 2,
-                                      region_4 == 4 ~ 3))
-
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 ### Bases a nivel hogar ###                               
 
-sem1_h <- sem1 %>% distinct(numero, .keep_all = TRUE)
-sem2_implant_h <- sem2_implant %>% distinct(ID, .keep_all = TRUE)
+base_h <- base %>% distinct(ID, .keep_all = TRUE)
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 ### Información de muestreo ###
 
-sem1 <- sem1 %>% dplyr::mutate(pesosem = pesomen / 6)
-
-
-sem1_svy           <- srvyr::as_survey_design(sem1, 
-                                              ids = numero, 
-                                              weights = pesomen)
-
-sem1_h_svy         <- srvyr::as_survey_design(sem1_h, 
-                                              ids = numero, 
-                                              weights = pesomen)
-
-sem2_implant_svy   <- srvyr::as_survey_design(sem2_implant, 
+base_svy           <- srvyr::as_survey_design(base, 
                                               ids = ID, 
-                                              weights = w_sem)
+                                              weights = w_ano)
 
-sem2_implant_h_svy <- srvyr::as_survey_design(sem2_implant_h, ids = ID, 
-                                              weights = w_sem)
-
-sem2_panel_svy   <-  srvyr::as_survey_design(sem2_panel, 
-                                             ids = ID, 
-                                             weights = w)
-
-
+base_h_svy         <- srvyr::as_survey_design(base_h, 
+                                              ids = ID, 
+                                              weights = w_ano)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
@@ -2067,14 +1899,14 @@ sem2_panel_svy   <-  srvyr::as_survey_design(sem2_panel,
 
 ### Hogares con hacinamiento (met 2011)(% de la población total)
 
-b_sem <- sem2_implant_h_svy %>%
+a_ano <- base_h_svy %>%
   srvyr::summarise(colname = srvyr::survey_mean(bd_hacinamiento2))
-estimacion2021 <- as.numeric(b_sem$colname)
+estimacion2022 <- as.numeric(a_ano$colname)
 
-b_sem <- sem2_implant_h_svy %>%
+a_ano <- base_h_svy %>%
   srvyr::filter(bd_region == 1) %>%
   srvyr::summarise(colname = srvyr::survey_mean(bd_hacinamiento2))
-estimacion2021_urb <- as.numeric(b_sem$colname)
+estimacion2022_urb <- as.numeric(a_ano$colname)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
@@ -2091,7 +1923,13 @@ cita_formatted <- paste(
 ```
 `r cita_formatted` 
 
-
+```{r}
+nota <- strsplit(paste0("Notas: ", base_fichas [26,"NOTAS1"])," ")[[1]]
+nota_formatted <- paste(
+  text_spec(nota, color = 1, font_size = 12, align =  2),
+  collapse = " ")
+```
+`r nota_formatted`
 
 <br />
 
@@ -2124,32 +1962,42 @@ periodo_formatted <- paste(
 
 ```{r, out.width='100%'}
 #===============================================================================
-g1 <- 
+dat <- 
   base %>% filter(NOMINDICADOR == "Personas en hogares sin agua potable (% de la población total)", CORTE_NUEVA == "Total") %>%
   mutate(VALOR = as.numeric(VALOR)) %>% 
   mutate(VALOR = round(VALOR*100,1)) %>% 
-  mutate(ANIO = as.factor(ANIO)) %>%
-  ggplot(aes(x = ANIO, y = VALOR)) +
-  geom_line(aes(group = 2, color = URBANORURALUY)) +
-  geom_point(aes(color = URBANORURALUY)) +
-  scale_color_manual(
-    values = c(639, "#a1dd70"),
-    labels = c("Total País", "Urbano (más de 5.000 habitantes)")
-  ) +
+  mutate(ANIO = as.numeric(ANIO)) %>%         
+  mutate(metodo = case_when(ANIO<=2019 ~ "pre", ANIO==2020 ~ "2020", ANIO==2021~ "2021", ANIO>=2022~ "post")) 
+  
+  
+g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, alpha=metodo, color=URBANORURALUY)) +
+  geom_line(dat = dat %>% filter(ANIO <= 2019),
+            size = 1, alpha = 0.4) +
+  geom_point(dat = dat %>% filter(ANIO <= 2019),
+            size = 2, alpha = 0.4) +
+  geom_point(dat = dat %>% filter(ANIO > 2019),
+             size = 2, show.legend = FALSE) +
   ylim(0, 15) +
-#    xlim(2006, 2021) +
   theme_minimal() +
-  labs(
+  theme(legend.position = "bottom",
+        legend.title = element_blank(),
+        axis.text.x =  element_text(size=8),
+legend.text = element_text(size=8)) +
+    scale_x_continuous(breaks=seq(2006, max, 1)) +
+  scale_alpha_manual(values = c(.8, .8, .8, .4)) +
+scale_color_manual(
+    values = c(639, "#a1dd70"),
+    labels = c("Total país", "Urbano (más de 5.000 habitantes)")
+  ) +
+    labs(
     color = "",
     title = "",
-    caption = "Unidad de Métodos y Acceso a Datos (UMAD)",
+    caption = "",
     x = "",
     y = ""
   )
-ggplotly(g1) %>% 
-  config(displayModeBar = F) %>%
-  layout(margin = list(b = 100), legend = list(x = 0.5, y = -0.1,orientation = "h", xanchor = "center" )) 
-
+g1
+  
 #===============================================================================
 ```
 
@@ -2161,7 +2009,7 @@ t1 <-
   base %>% filter(NOMINDICADOR == "Personas en hogares sin agua potable (% de la población total)", CORTE_NUEVA == "Total") %>%
   mutate(VALOR = round(as.numeric(VALOR)*100, 1)) %>%
   rename(UNIDAD_GEOGRÁFICA = URBANORURALUY)
-t1 <- t1 [,c("NOMINDICADOR","PAÍS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
+t1 <- t1 [,c("NOMINDICADOR","PAIS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
 
 DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
                                                        buttons = c('copy', 'csv', 'excel', 'print') )
@@ -2187,11 +2035,20 @@ calc_formatted <- paste(
 ```
 > **Forma de cálculo:** `r calc_formatted`
 
+
+```{r}
+adv <- strsplit(paste0(base_fichas [32,"NOTAS2"])," ")[[1]]
+adv_formatted <- paste(
+  text_spec(adv, color = 1, font_size = 16, align =  "justify"),
+  collapse = " ")
+```
+> **Advertencia:** `r adv_formatted`
+
 #### Código en R
 
 ```{r, echo=TRUE, eval=FALSE}
 
-### Estimación de valores 2021 ###
+### Estimación de valores 2022 ###
 
 # Para sintaxix de años anteriores consultar: 
 # https://osf.io/dyzg8/files/osfstorage#
@@ -2212,31 +2069,18 @@ library(tidyverse)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
-### Descarga bases ECH 2021 (INE) de repositorio UMAD-FCS ###
+### Descarga bases ECH 2022 (INE) de repositorio UMAD-FCS ###
 
-download.file(
-  url = "https://osf.io/dyzg8/files/osfstorage/63da65232781fc021200aab6", 
-  destfile = "ECH2021_sem1.Rdata"
-)
-
-download.file(
-  url = "https://osf.io/dyzg8/files/osfstorage/63da65616946a002027a4652", 
-  destfile = "ECH2021_sem2_implant.Rdata"
-)
-
-
-download.file(
-  url = "https://osf.io/dyzg8/files/osfstorage/63da65276946a001fe7a4630", 
-  destfile = "ECH2021_sem2_panel.Rdata"
-)
+#download.file(
+#  url = "https://osf.io/download/rehz2/", 
+#  destfile = "Base anual 2022.Rdata"
+#)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 ### Carga de bases ###
 
-sem1          <- rio::import("ECH2021_sem1.Rdata")
-sem2_implant  <- rio::import("ECH2021_sem2_implant.Rdata")
-sem2_panel    <- rio::import("ECH2021_sem2_panel.Rdata")
+#load("Base anual 2022.Rdata")
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
@@ -2245,17 +2089,17 @@ sem2_panel    <- rio::import("ECH2021_sem2_panel.Rdata")
 
 
 # NBI - Abastecimiento de agua potable
-sem2_implant <- sem2_implant %>% 
+base <- base %>% 
   dplyr::mutate(bd_d11 = case_when(d11 == 1 ~ 1, 
                                    d11==2 | d11==3 ~ 2, 
                                    d11>=4 & d11<=6 ~ 3))
 
-sem2_implant <- sem2_implant %>% 
+base <- base %>% 
   dplyr::mutate(bd_d12 = case_when(d12 == 1 ~ 1, 
                                    d12 == 2 | d12 == 3 ~ 2, 
                                    d12 == 4 ~ 3))
 
-sem2_implant <- sem2_implant %>% 
+base <- base %>% 
   dplyr::mutate(NBI_agua11 = ifelse((bd_d12 == 2 | 
                                      bd_d12 == 3) | 
                                      bd_d11 == 3, 1, 0))
@@ -2266,37 +2110,20 @@ sem2_implant <- sem2_implant %>%
 
 ### Bases a nivel hogar ###                               
 
-sem1_h <- sem1 %>% distinct(numero, .keep_all = TRUE)
-sem2_implant_h <- sem2_implant %>% distinct(ID, .keep_all = TRUE)
+base_h <- base %>% distinct(ID, .keep_all = TRUE)
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 ### Información de muestreo ###
 
-sem1 <- sem1 %>% dplyr::mutate(pesosem = pesomen / 6)
-
-
-sem1_svy           <- srvyr::as_survey_design(sem1, 
-                                              ids = numero, 
-                                              weights = pesomen)
-
-sem1_h_svy         <- srvyr::as_survey_design(sem1_h, 
-                                              ids = numero, 
-                                              weights = pesomen)
-
-sem2_implant_svy   <- srvyr::as_survey_design(sem2_implant, 
+base_svy           <- srvyr::as_survey_design(base, 
                                               ids = ID, 
-                                              weights = w_sem)
+                                              weights = w_ano)
 
-sem2_implant_h_svy <- srvyr::as_survey_design(sem2_implant_h, ids = ID, 
-                                              weights = w_sem)
-
-sem2_panel_svy   <-  srvyr::as_survey_design(sem2_panel, 
-                                             ids = ID, 
-                                             weights = w)
-
-
+base_h_svy         <- srvyr::as_survey_design(base_h, 
+                                              ids = ID, 
+                                              weights = w_ano)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
@@ -2305,9 +2132,9 @@ sem2_panel_svy   <-  srvyr::as_survey_design(sem2_panel,
 
 ### Hogares sin acceso a agua potable (met 2011)(% de la población total)
 
-b_sem <- sem2_implant_h_svy %>%
+a_ano <- base_h_svy %>%
   srvyr::summarise(colname = srvyr::survey_mean(NBI_agua11))
-estimacion2021 <- as.numeric(b_sem$colname)
+estimacion2022 <- as.numeric(a_ano$colname)
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
@@ -2327,12 +2154,19 @@ cita_formatted <- paste(
 ```
 `r cita_formatted` 
 
+```{r}
+nota <- strsplit(paste0("Notas: ", base_fichas [32,"NOTAS1"])," ")[[1]]
+nota_formatted <- paste(
+  text_spec(nota, color = 1, font_size = 12, align =  2),
+  collapse = " ")
+```
+`r nota_formatted`
 <br />
 
 ## **Artefactos básicos de confort**
 
 <div style="text-align: justify">
-La tenencia de algunos bienes en el hogar son indicativos de la calidad de vida de las personas. Se considera que la persona posee una privación en términos de acceso a artefactos básicos de confort en base a la ausencia de medios de calefacción, para refrigerar alimentos o para disponer de agua caliente en el baño. La evolución de este indicador desde 2006 al 2021 muestra una tendencia decreciente, evidenciando una mejora en la calidad de vida de las personas durante el período.
+La tenencia de algunos bienes en el hogar son indicativos de la calidad de vida de las personas. Se considera que la persona posee una privación en términos de acceso a artefactos básicos de confort en base a la ausencia de medios de calefacción, para refrigerar alimentos o para disponer de agua caliente en el baño. La evolución de este indicador desde 2006 muestra una tendencia decreciente, evidenciando una mejora en la calidad de vida de las personas durante el período.
 
 
 <br />
@@ -2356,32 +2190,42 @@ periodo_formatted <- paste(
 
 ```{r, out.width='100%'}
 #===============================================================================
-g1 <- 
+dat <- 
   base %>% filter(NOMINDICADOR == "Personas en hogares sin artefactos básicos de confort(% de la población total)", CORTE_NUEVA == "Total") %>%
   mutate(VALOR = as.numeric(VALOR)) %>% 
   mutate(VALOR = round(VALOR*100,1)) %>% 
-  mutate(ANIO = as.factor(ANIO)) %>%
-  ggplot(aes(x = ANIO, y = VALOR)) +
-  geom_line(aes(group = 2, color = URBANORURALUY)) +
-  geom_point(aes(color = URBANORURALUY)) +
-  scale_color_manual(
-    values = c(639, "#a1dd70"),
-    labels = c("Total País", "Urbano (más de 5.000 habitantes)")
-  ) +
+   mutate(ANIO = as.numeric(ANIO)) %>% 
+  mutate(metodo = case_when(ANIO<=2019 ~ "pre", ANIO==2020 ~ "2020", ANIO==2021~ "2021", ANIO>=2022~ "post")) 
+  
+  
+g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, alpha=metodo, color=URBANORURALUY)) +
+  geom_line(dat = dat %>% filter(ANIO <= 2019),
+            size = 1, alpha = 0.4) +
+  geom_point(dat = dat %>% filter(ANIO <= 2019),
+            size = 2, alpha = 0.4) +
+  geom_point(dat = dat %>% filter(ANIO > 2019),
+             size = 2, show.legend = FALSE) +
   ylim(0, 35) +
-#  xlim(2006, 2021) +
   theme_minimal() +
-  labs(
+  theme(legend.position = "bottom",
+        legend.title = element_blank(),
+        axis.text.x =  element_text(size=8),
+legend.text = element_text(size=8)) +
+      scale_x_continuous(breaks=seq(2006, max, 1)) +
+  scale_alpha_manual(values = c(.8, .8, .8, .4)) +
+scale_color_manual(
+    values = c(639, "#a1dd70"),
+    labels = c("Total país", "Urbano (más de 5.000 habitantes)")
+  ) +
+    labs(
     color = "",
     title = "",
-    caption = "Unidad de Métodos y Acceso a Datos (UMAD)",
+    caption = "",
     x = "",
     y = ""
   )
-ggplotly(g1) %>% 
-  config(displayModeBar = F) %>%
-  layout(margin = list(b = 100), legend = list(x = 0.5, y = -0.1,orientation = "h", xanchor = "center" )) 
-
+g1
+  
 #===============================================================================
 ```
 
@@ -2393,7 +2237,7 @@ t1 <-
   base %>% filter(NOMINDICADOR == "Personas en hogares sin artefactos básicos de confort(% de la población total)", CORTE_NUEVA == "Total") %>%
   mutate(VALOR = round(as.numeric(VALOR)*100, 1)) %>%
   rename(UNIDAD_GEOGRÁFICA = URBANORURALUY)
-t1 <- t1 [,c("NOMINDICADOR","PAÍS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
+t1 <- t1 [,c("NOMINDICADOR","PAIS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
 
 DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
                                                        buttons = c('copy', 'csv', 'excel', 'print') )
@@ -2419,11 +2263,20 @@ calc_formatted <- paste(
 ```
 > **Forma de cálculo:** `r calc_formatted`
 
+
+```{r}
+adv <- strsplit(paste0(base_fichas [36,"NOTAS2"])," ")[[1]]
+adv_formatted <- paste(
+  text_spec(adv, color = 1, font_size = 16, align =  "justify"),
+  collapse = " ")
+```
+> **Advertencia:** `r adv_formatted`
+
 #### Código en R
 
 ```{r, echo=TRUE, eval=FALSE}
 
-### Estimación de valores 2021 ###
+### Estimación de valores 2022 ###
 
 # Para sintaxix de años anteriores consultar: 
 # https://osf.io/dyzg8/files/osfstorage#
@@ -2444,31 +2297,18 @@ library(tidyverse)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
-### Descarga bases ECH 2021 (INE) de repositorio UMAD-FCS ###
+### Descarga bases ECH 2022 (INE) de repositorio UMAD-FCS ###
 
-download.file(
-  url = "https://osf.io/dyzg8/files/osfstorage/63da65232781fc021200aab6", 
-  destfile = "ECH2021_sem1.Rdata"
-)
-
-download.file(
-  url = "https://osf.io/dyzg8/files/osfstorage/63da65616946a002027a4652", 
-  destfile = "ECH2021_sem2_implant.Rdata"
-)
-
-
-download.file(
-  url = "https://osf.io/dyzg8/files/osfstorage/63da65276946a001fe7a4630", 
-  destfile = "ECH2021_sem2_panel.Rdata"
-)
+#download.file(
+#  url = "https://osf.io/download/rehz2/", 
+#  destfile = "Base anual 2022.Rdata"
+#)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 ### Carga de bases ###
 
-sem1          <- rio::import("ECH2021_sem1.Rdata")
-sem2_implant  <- rio::import("ECH2021_sem2_implant.Rdata")
-sem2_panel    <- rio::import("ECH2021_sem2_panel.Rdata")
+#load("Base anual 2022.Rdata")
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
@@ -2477,16 +2317,16 @@ sem2_panel    <- rio::import("ECH2021_sem2_panel.Rdata")
 
 
 # NBI - Artefactos básicos de cofnort
-sem2_implant <- sem2_implant %>% 
+base <- base %>% 
   dplyr::mutate(bd_d260 = ifelse(d260 == 6, 2, 1))
-sem2_implant <- sem2_implant %>% 
+base <- base %>% 
   dplyr::mutate(bd_d21_1 = d21_3)
-sem2_implant <- sem2_implant %>% 
+base <- base %>% 
   dplyr::mutate(bd_d21_2 = case_when(d21_1 == 1 | d21_2 == 1 ~ 1,
                                      d21_1 == 2 & d21_2 == 2 ~ 2))
                                                           
 
-sem2_implant <- sem2_implant %>% 
+base <- base %>% 
   dplyr::mutate(
     NBI_artefactos11 = ifelse(bd_d260 == 2 | bd_d21_1 == 2 | bd_d21_ == 2, 1, 0))
 
@@ -2496,37 +2336,20 @@ sem2_implant <- sem2_implant %>%
 
 ### Bases a nivel hogar ###                               
 
-sem1_h <- sem1 %>% distinct(numero, .keep_all = TRUE)
-sem2_implant_h <- sem2_implant %>% distinct(ID, .keep_all = TRUE)
+base_h <- base %>% distinct(ID, .keep_all = TRUE)
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 ### Información de muestreo ###
 
-sem1 <- sem1 %>% dplyr::mutate(pesosem = pesomen / 6)
-
-
-sem1_svy           <- srvyr::as_survey_design(sem1, 
-                                              ids = numero, 
-                                              weights = pesomen)
-
-sem1_h_svy         <- srvyr::as_survey_design(sem1_h, 
-                                              ids = numero, 
-                                              weights = pesomen)
-
-sem2_implant_svy   <- srvyr::as_survey_design(sem2_implant, 
+base_svy           <- srvyr::as_survey_design(base, 
                                               ids = ID, 
-                                              weights = w_sem)
+                                              weights = w_ano)
 
-sem2_implant_h_svy <- srvyr::as_survey_design(sem2_implant_h, ids = ID, 
-                                              weights = w_sem)
-
-sem2_panel_svy   <-  srvyr::as_survey_design(sem2_panel, 
-                                             ids = ID, 
-                                             weights = w)
-
-
+base_h_svy         <- srvyr::as_survey_design(base_h, 
+                                              ids = ID, 
+                                              weights = w_ano)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
@@ -2535,9 +2358,9 @@ sem2_panel_svy   <-  srvyr::as_survey_design(sem2_panel,
 
 ### Hogares sin artefactos básicos de confort (met 2011)(% de la población total 
 
-b_sem <- sem2_implant_h_svy %>%
+a_ano <- base_h_svy %>%
   srvyr::summarise(colname = srvyr::survey_mean(NBI_artefactos11))
-estimacion2021 <- as.numeric(b_sem$colname)
+estimacion2022 <- as.numeric(a_ano$colname)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
@@ -2555,12 +2378,19 @@ cita_formatted <- paste(
 ```
 `r cita_formatted` 
 
+```{r}
+nota <- strsplit(paste0("Notas: ", base_fichas [36,"NOTAS1"])," ")[[1]]
+nota_formatted <- paste(
+  text_spec(nota, color = 1, font_size = 12, align =  2),
+  collapse = " ")
+```
+`r nota_formatted`
 <br />
 
 ## **Acceso a la educación**
 
 <div style="text-align: justify">
-La educación constituye un requerimiento mínimo para que las personas puedan incorporarse adecuadamente a la vida productiva y social. En Uruguay, se establece como obligatoria la asistencia a algún centro educativo entre los 4 años y hasta la educación media superior. Se considera que un hogar presenta una carencia en el acceso a la educación si al menos un integrante del hogar con edad comprendida entre los 4 y los 17 años no se encuentra asistiendo a un centro educativo formal, no habiendo finalizado enseñanza secundaria. Desde la década del ochenta, la proporción de hogares con una carencia en este indicador disminuye significativamente y alcanza un valor de 2,8% en 2021. 
+La educación constituye un requerimiento mínimo para que las personas puedan incorporarse adecuadamente a la vida productiva y social. En Uruguay, se establece como obligatoria la asistencia a algún centro educativo entre los 4 años y hasta la educación media superior. Se considera que un hogar presenta una carencia en el acceso a la educación si al menos un integrante del hogar con edad comprendida entre los 4 y los 17 años no se encuentra asistiendo a un centro educativo formal, no habiendo finalizado enseñanza secundaria. Desde la década del ochenta, la proporción de hogares con una carencia en este indicador disminuye sustancialmente. 
 </div>
 
 <br />
@@ -2586,32 +2416,42 @@ periodo_formatted <- paste(
 
 ```{r, out.width='100%'}
 #===============================================================================
-g1 <- 
+dat <- 
   base %>% filter(NOMINDICADOR == "Personas en hogares con miembros de 4 a 17 años que no asisten a centros educativos (% de la población total)", CORTE_NUEVA == "Total") %>%
   mutate(VALOR = as.numeric(VALOR)) %>% 
   mutate(VALOR = round(VALOR*100,1)) %>% 
   mutate(ANIO = as.numeric(ANIO)) %>% 
-  ggplot(aes(x = ANIO, y = VALOR)) +
-  geom_line(aes(group = 2, color = URBANORURALUY)) +
-  geom_point(aes(color = URBANORURALUY)) +
-  scale_color_manual(
-    values = c(639, "#a1dd70"),
-    labels = c("Total País", "Urbano (más de 5.000 habitantes)")
-  ) +
-  ylim(0, 30) +
-  xlim(1980, 2021) +
+  mutate(metodo = case_when(ANIO<=2019 ~ "pre", ANIO==2020 ~ "2020", ANIO==2021~ "2021", ANIO>=2022~ "post")) 
   
+  
+g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, alpha=metodo, color=URBANORURALUY)) +
+  geom_line(dat = dat %>% filter(ANIO <= 2019),
+            size = 1, alpha = 0.4) +
+  geom_point(dat = dat %>% filter(ANIO <= 2019),
+            size = 2, alpha = 0.4) +
+  geom_point(dat = dat %>% filter(ANIO > 2019),
+             size = 2, show.legend = FALSE) +
+  ylim(0, 30) +
   theme_minimal() +
-  labs(
+  theme(legend.position = "bottom",
+        legend.title = element_blank(),
+        axis.text.x =  element_text(size=8),
+legend.text = element_text(size=8)) +
+      scale_x_continuous(breaks=seq(1980, max, 5)) +
+scale_color_manual(
+    values = c(639, "#a1dd70"),
+    labels = c("Total país", "Urbano (más de 5.000 habitantes)")
+  ) +
+  scale_alpha_manual(values = c(.8, .8, .8, .4)) +
+    labs(
     color = "",
     title = "",
-    caption = "Unidad de Métodos y Acceso a Datos (UMAD)",
+    caption = "",
     x = "",
     y = ""
   )
-ggplotly(g1) %>% 
-  config(displayModeBar = F) %>%
-  layout(margin = list(b = 100), legend = list(x = 0.5, y = -0.1,orientation = "h", xanchor = "center" )) 
+g1
+  
 
 #===============================================================================
 ```
@@ -2624,7 +2464,7 @@ t1 <-
   base %>% filter(NOMINDICADOR == "Personas en hogares con miembros de 4 a 17 años que no asisten a centros educativos (% de la población total)", CORTE_NUEVA == "Total") %>%
   mutate(VALOR = round(as.numeric(VALOR)*100, 1)) %>%
   rename(UNIDAD_GEOGRÁFICA = URBANORURALUY)
-t1 <- t1 [,c("NOMINDICADOR","PAÍS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
+t1 <- t1 [,c("NOMINDICADOR","PAIS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
 
 DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
                                                        buttons = c('copy', 'csv', 'excel', 'print') )
@@ -2650,11 +2490,20 @@ calc_formatted <- paste(
 ```
 > **Forma de cálculo:** `r calc_formatted`
 
+
+```{r}
+adv <- strsplit(paste0(base_fichas [38,"NOTAS2"])," ")[[1]]
+adv_formatted <- paste(
+  text_spec(adv, color = 1, font_size = 16, align =  "justify"),
+  collapse = " ")
+```
+> **Advertencia:** `r adv_formatted`
+
 #### Código en R
 
 ```{r, echo=TRUE, eval=FALSE}
 
-### Estimación de valores 2021 ###
+### Estimación de valores 2022 ###
 
 # Para sintaxix de años anteriores consultar: 
 # https://osf.io/dyzg8/files/osfstorage#
@@ -2675,31 +2524,18 @@ library(tidyverse)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
-### Descarga bases ECH 2021 (INE) de repositorio UMAD-FCS ###
+### Descarga bases ECH 2022 (INE) de repositorio UMAD-FCS ###
 
-download.file(
-  url = "https://osf.io/dyzg8/files/osfstorage/63da65232781fc021200aab6", 
-  destfile = "ECH2021_sem1.Rdata"
-)
-
-download.file(
-  url = "https://osf.io/dyzg8/files/osfstorage/63da65616946a002027a4652", 
-  destfile = "ECH2021_sem2_implant.Rdata"
-)
-
-
-download.file(
-  url = "https://osf.io/dyzg8/files/osfstorage/63da65276946a001fe7a4630", 
-  destfile = "ECH2021_sem2_panel.Rdata"
-)
+#download.file(
+#  url = "https://osf.io/download/rehz2/", 
+#  destfile = "Base anual 2022.Rdata"
+#)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 ### Carga de bases ###
 
-sem1          <- rio::import("ECH2021_sem1.Rdata")
-sem2_implant  <- rio::import("ECH2021_sem2_implant.Rdata")
-sem2_panel    <- rio::import("ECH2021_sem2_panel.Rdata")
+#load("Base anual 2022.Rdata")
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
@@ -2708,7 +2544,7 @@ sem2_panel    <- rio::import("ECH2021_sem2_panel.Rdata")
 
 
 # NBI - Educación
-sem2_implant <- sem2_implant %>% dplyr::mutate(niños_na = case_when(
+base <- base %>% dplyr::mutate(niños_na = case_when(
   e27 <  4 | e27 >  17 ~ 0,
   e27 >= 4 & e27 <= 17 & e49 == 3 ~ 0,
   e27 >= 4 & e27 <= 17 & (e49 == 1 | e49 == 2) & 
@@ -2717,64 +2553,40 @@ sem2_implant <- sem2_implant %>% dplyr::mutate(niños_na = case_when(
     (e201_1c != 1 & e201_1d != 1) ~ 1))
 
 
-sem2_niños_na <- sem2_implant[,c("ID","niños_na")]
-sem2_niños_na <- sem2_niños_na %>% dplyr::mutate(NBI_educacion11 = niños_na)
-sem2_niños_na <- sem2_niños_na[order(sem2_niños_na$ID, 
-                                     sem2_niños_na$NBI_educacion11, 
+base_niños_na <- base[,c("ID","niños_na")]
+base_niños_na <- base_niños_na %>% dplyr::mutate(NBI_educacion11 = niños_na)
+base_niños_na <- base_niños_na[order(base_niños_na$ID, 
+                                     base_niños_na$NBI_educacion11, 
                                      decreasing = TRUE), ]
-sem2_niños_na <- sem2_niños_na %>% distinct(ID, .keep_all = TRUE)
-sem2_niños_na <- sem2_niños_na[,c("ID","NBI_educacion11")]
+base_niños_na <- base_niños_na %>% distinct(ID, .keep_all = TRUE)
+base_niños_na <- base_niños_na[,c("ID","NBI_educacion11")]
 
-sem2_implant <- merge(sem2_implant, sem2_niños_na, by = "ID")
+base <- merge(base, base_niños_na, by = "ID")
 
 
 # Región
-sem1 <- sem1 %>% 
+base <- base %>% 
   dplyr::mutate(bd_region = case_when(region_4 == 1 | region_4 == 2 ~ 1,
                                       region_4 == 3 ~ 2,
                                       region_4 == 4 ~ 3))
-
-sem2_implant <- sem2_implant %>% 
-  dplyr::mutate(bd_region = case_when(region_4 == 1 | region_4 == 2 ~ 1,
-                                      region_4 == 3 ~ 2,
-                                      region_4 == 4 ~ 3))
-
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 ### Bases a nivel hogar ###                               
 
-sem1_h <- sem1 %>% distinct(numero, .keep_all = TRUE)
-sem2_implant_h <- sem2_implant %>% distinct(ID, .keep_all = TRUE)
-
+base_h <- base %>% distinct(ID, .keep_all = TRUE)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 ### Información de muestreo ###
 
-sem1 <- sem1 %>% dplyr::mutate(pesosem = pesomen / 6)
-
-
-sem1_svy           <- srvyr::as_survey_design(sem1, 
-                                              ids = numero, 
-                                              weights = pesomen)
-
-sem1_h_svy         <- srvyr::as_survey_design(sem1_h, 
-                                              ids = numero, 
-                                              weights = pesomen)
-
-sem2_implant_svy   <- srvyr::as_survey_design(sem2_implant, 
+base_svy           <- srvyr::as_survey_design(base, 
                                               ids = ID, 
-                                              weights = w_sem)
+                                              weights = w_ano)
 
-sem2_implant_h_svy <- srvyr::as_survey_design(sem2_implant_h, ids = ID, 
-                                              weights = w_sem)
-
-sem2_panel_svy   <-  srvyr::as_survey_design(sem2_panel, 
-                                             ids = ID, 
-                                             weights = w)
-
-
+base_h_svy         <- srvyr::as_survey_design(base_h, 
+                                              ids = ID, 
+                                              weights = w_ano)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
@@ -2783,14 +2595,14 @@ sem2_panel_svy   <-  srvyr::as_survey_design(sem2_panel,
 
 ### Hogares sin acceso a educación (met 2011)(% de la población total 
 
-b_sem <- sem2_implant_h_svy %>%
+a_ano <- base_h_svy %>%
   srvyr::summarise(colname = srvyr::survey_mean(NBI_educacion11))
-estimacion2021 <- as.numeric(b_sem$colname)
+estimacion2022 <- as.numeric(a_ano$colname)
 
-b_sem <- sem2_implant_h_svy %>%
+a_ano <- base_h_svy %>%
   srvyr::filter(bd_region == 1) %>%
   srvyr::summarise(colname = srvyr::survey_mean(NBI_educacion11))
-estimacion2021_urb <- as.numeric(b_sem$colname)
+estimacion2022_urb <- as.numeric(a_ano$colname)
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
@@ -2808,6 +2620,14 @@ cita_formatted <- paste(
   collapse = " ")
 ```
 `r cita_formatted` 
+
+```{r}
+nota <- strsplit(paste0("Notas: ", base_fichas [38,"NOTAS1"])," ")[[1]]
+nota_formatted <- paste(
+  text_spec(nota, color = 1, font_size = 12, align =  2),
+  collapse = " ")
+```
+`r nota_formatted`
 </div>	
 
 
