@@ -6912,5 +6912,4 @@ Base_Motor_Pobreza_15122022  <- rbind(Base_Motor_Pobreza, motor_2021)
 
 write.xlsx(Base_Motor_Pobreza_15122022, "Base_Motor_Pobreza_15122022.xlsx")
 
-
 #rio::export(Base_Motor_Pobreza_15062022, "Bases/Data_Umad/Base_Motor_Pobreza_15062022.xlsx" )
