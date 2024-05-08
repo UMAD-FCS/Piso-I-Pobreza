@@ -346,7 +346,7 @@ periodo_formatted <- paste(
   text_spec(periodo, color = 1, font_size = 16, align = "justify"),
   collapse = " ")
 ```
-##### País Urbano, `r periodo_formatted`
+##### Total país, `r periodo_formatted`
 </div>
 
 ### {.tabset .tabset-fade .tabset-pills}
@@ -356,32 +356,46 @@ periodo_formatted <- paste(
 ```{r, out.width='100%'}
 #===============================================================================
 
-g1 <- 
+dat <- 
   base %>% filter(NOMINDICADOR == "Índice de Gini", CORTE_NUEVA == "Total") %>%
   mutate(VALOR = round(as.numeric(VALOR),1)) %>% 
   mutate(ANIO = as.numeric(ANIO)) %>% 
-  ggplot(aes(x = ANIO, y = VALOR)) +
-  geom_point(aes(color = NOMINDICADOR)) +
-  geom_line(aes(color = NOMINDICADOR)) +
-  scale_color_manual(
-    values = c("#a1dd70"),
-    labels = c("Índice de Gini")
-  ) +
+  mutate(metodo = case_when(ANIO<=2019 ~ "pre", ANIO==2020 ~ "2020", ANIO==2021~   "2021", ANIO>=2022~ "post"))
+
+
+
+g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, alpha=metodo)) +
+  geom_line(dat = dat %>% filter(ANIO <= 2019),
+            size = 1, alpha = 0.4, color = "#a1dd70") +
+  
+  geom_line(dat = dat %>% filter(ANIO >= 2022),
+            size = 1, alpha = 0.8, color = "#a1dd70") +
+  
+  geom_point(size = 2, show.legend = FALSE, color = "#a1dd70") +
   ylim(0, 100) +
-  scale_x_continuous(breaks=seq(2006, 2021, 1)) +
   theme_minimal() +
-  labs(
+
+  theme(legend.position = "bottom",
+        legend.title = element_blank(),
+        axis.text.x =  element_text(size=8),
+  legend.text = element_text(size=8)) +
+  scale_x_continuous(breaks=seq(2006, max, 1)) +
+  scale_alpha_manual(values = c(.8, .8, .8, .4)) +
+  scale_color_manual(values ="#a1dd70") +
+  
+    labs(
     color = "",
     title = "",
-    caption = "Unidad de Métodos y Acceso a Datos (UMAD)",
+    caption = "",
     x = "",
     y = ""
   )
 
 
-ggplotly(g1) %>% 
-  config(displayModeBar = F) %>%
-  layout(margin = list(b = 100), legend = list(x = 0.5, y = -0.1,orientation = "h", xanchor = "center" )) 
+g1
+
+
+
 
 #===============================================================================
 ```
@@ -422,6 +436,13 @@ calc_formatted <- paste(
 ```
 > **Forma de cálculo:** `r calc_formatted`
 
+```{r}
+adv <- strsplit(paste0(base_fichas [12,"NOTAS2"])," ")[[1]]
+adv_formatted <- paste(
+  text_spec(adv, color = 1, font_size = 16, align =  "justify"),
+  collapse = " ")
+```
+> **Advertencia:** `r adv_formatted`
 
 ## {.toc-ignore .unlisted .unnumbered}
 
@@ -433,6 +454,14 @@ cita_formatted <- paste(
   collapse = " ")
 ```
 `r cita_formatted` 
+
+```{r}
+nota <- strsplit(paste0("Notas: ", base_fichas [12,"NOTAS1"])," ")[[1]]
+nota_formatted <- paste(
+  text_spec(nota, color = 1, font_size = 12, align =  2),
+  collapse = " ")
+```
+`r nota_formatted`
 
 <br />
 
@@ -931,7 +960,7 @@ nota_formatted <- paste(
 ```
 `r nota_formatted`
 <br />
-
+<br />
 
 <div style="text-align: center">
 ##### **Hogares y personas en situación de indigencia (met. 2006) (% de la población total)** 
@@ -1185,30 +1214,43 @@ periodo_formatted <- paste(
 ```{r, out.width='100%'}
 #===============================================================================
 
-g1 <- 
+dat <- 
   base %>% filter(NOMINDICADOR == "Severidad de la pobreza", CORTE_NUEVA == "Total") %>%
   mutate(VALOR = round(as.numeric(VALOR),1)) %>% 
-  mutate(ANIO = as.factor(ANIO)) %>% 
-  ggplot(aes(x = ANIO, y = VALOR)) +
-  geom_line(aes(group = 1, color = NOMINDICADOR)) +
-  geom_point(aes(color = NOMINDICADOR)) +
-  scale_color_manual(
-    values = c("#a1dd70"),
-    labels = c("Severidad de la pobreza")
-  ) +
+  mutate(ANIO = as.numeric(ANIO)) %>% 
+  mutate(metodo = case_when(ANIO<=2019 ~ "pre", ANIO==2020 ~ "2020", ANIO==2021~   "2021", ANIO>=2022~ "post"))
+
+
+
+g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, alpha=metodo)) +
+  geom_line(dat = dat %>% filter(ANIO <= 2019),
+            size = 1, alpha = 0.4, color = "#a1dd70") +
   
+  geom_line(dat = dat %>% filter(ANIO >= 2022),
+            size = 1, alpha = 0.8, color = "#a1dd70") +
+  
+  geom_point(size = 2, show.legend = FALSE, color = "#a1dd70") +
   ylim(0, 5) +
   theme_minimal() +
-  labs(
+
+  theme(legend.position = "bottom",
+        legend.title = element_blank(),
+        axis.text.x =  element_text(size=8),
+  legend.text = element_text(size=8)) +
+  scale_x_continuous(breaks=seq(2006, max, 1)) +
+  scale_alpha_manual(values = c(.8, .8, .8, .4)) +
+  scale_color_manual(values ="#a1dd70") +
+  
+    labs(
     color = "",
     title = "",
-    caption = "Unidad de Métodos y Acceso a Datos (UMAD)",
+    caption = "",
     x = "",
     y = ""
   )
-ggplotly(g1) %>% 
-  config(displayModeBar = F) %>%
-  layout(margin = list(b = 100), legend = list(x = 0.5, y = -0.1,orientation = "h", xanchor = "center" ))  
+
+
+g1
 
 #===============================================================================
 ```
@@ -1238,7 +1280,13 @@ def_formatted <- paste(
 ```
 > **Definición:** `r def_formatted`
 
-
+```{r}
+adv <- strsplit(paste0(base_fichas [8,"NOTAS2"])," ")[[1]]
+adv_formatted <- paste(
+  text_spec(adv, color = 1, font_size = 16, align =  "justify"),
+  collapse = " ")
+```
+> **Advertencia:** `r adv_formatted`
 
 ## {.toc-ignore .unlisted .unnumbered}
 
@@ -1252,115 +1300,18 @@ cita_formatted <- paste(
 ```
 `r cita_formatted` 
 
+```{r}
+nota <- strsplit(paste0("Notas: ", base_fichas [8,"NOTAS1"])," ")[[1]]
+nota_formatted <- paste(
+  text_spec(nota, color = 1, font_size = 12, align =  2),
+  collapse = " ")
+```
+`r nota_formatted`
+
 <br />
 
 
 
-## **Brecha de pobreza**
-
-<div style="text-align: justify">
-La brecha de la pobreza (per cápita), identifica el agregado de la distancia que separa el ingreso de los pobres y el ingreso determinado por la línea de pobreza, medida en unidades de la línea de la pobreza y promediada entre la población. La brecha de la pobreza es sensible a las disminuciones de ingreso entre los pobres y registra un aumento cuando se eleva el déficit de una persona pobre. Es a partir del año 2004 en que es posible observar una disminución en la tendencia de este indicador (a excepción de 2020). 
-</div>
-
-<br />
-
-<div style="text-align: center">
-##### **Brecha de pobreza a usd 3,20 por día (2011 ppp) (%)** 
-```{r}
-periodo <- base[base$NOMINDICADOR == "Brecha de pobreza a usd 3,20 por día (2011 ppp) (%)"&base$URBANORURALUY=="Total País",]
-max<- max(periodo$ANIO)
-min<- min(periodo$ANIO)
-periodo <- c(min," - ", max)
-periodo_formatted <- paste(
-  text_spec(periodo, color = 1, font_size = 16, align = "justify"),
-  collapse = " ")
-```
-##### Total país, `r periodo_formatted`
-</div>
-
-### {.tabset .tabset-fade .tabset-pills}
-#### Gráfico
-
-
-```{r, out.width='100%'}
-#===============================================================================
-
-g1 <- 
-  base %>% filter(NOMINDICADOR == "Brecha de pobreza a usd 3,20 por día (2011 ppp) (%)", URBANORURALUY == "Total País") %>%
-  mutate(VALOR = round(as.numeric(VALOR),3)) %>% 
-  mutate(ANIO = as.numeric(ANIO)) %>% 
-  ggplot(aes(x = ANIO, y = VALOR)) +
-  geom_line(aes(group = 1, color = NOMINDICADOR)) +
-  geom_point(aes(color = NOMINDICADOR)) +
-  scale_color_manual(
-    values = c("#a1dd70"),
-    labels = c("Brecha de pobreza")
-  ) +
-  ylim(0, 2) +
-  scale_x_continuous(breaks=seq(2000, 2022, 4)) +
-  theme_minimal() +
-  labs(
-    color = "",
-    title = "",
-    caption = "Unidad de Métodos y Acceso a Datos (UMAD)",
-    x = "",
-    y = ""
-  )
-ggplotly(g1) %>% 
-  config(displayModeBar = F) %>%
-  layout(margin = list(b = 100), legend = list(x = 0.5, y = -0.1,orientation = "h", xanchor = "center" ))  
-
-#===============================================================================
-```
-
-#### Tabla
-
-
-```{r}
-t1 <- 
-  base %>% filter(NOMINDICADOR == "Brecha de pobreza a usd 3,20 por día (2011 ppp) (%)", URBANORURALUY == "Total País") %>%
-  mutate(VALOR = round(as.numeric(VALOR),3)) %>% 
-  rename(UNIDAD_GEOGRÁFICA = URBANORURALUY)
-t1 <- t1 [,c("NOMINDICADOR","PAIS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
-
-DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
-                                                       buttons = c('copy', 'csv', 'excel', 'print') )
-) 
-```
-
-
-#### Ficha Técnica
-
-```{r}
-def <- strsplit(paste0(base_fichas [10,"DEFINICION"])," ")[[1]]
-def_formatted <- paste(
-  text_spec(def, color = 1, font_size = 16, align = "justify"),
-  collapse = " ")
-```
-> **Definición:** `r def_formatted`
-
-
-```{r}
-calc <- strsplit(paste0(base_fichas [10,"CALCULO"])," ")[[1]]
-calc_formatted <- paste(
-  text_spec(calc, color = 1, font_size = 16, align = "justify"),
-  collapse = " ")
-```
-> **Forma de cálculo:** `r calc_formatted`
-
-## {.toc-ignore .unlisted .unnumbered}
-
-
-
-```{r}
-cita <- strsplit(paste0("Fuente: ", base_fichas [10,"CITA"])," ")[[1]]
-cita_formatted <- paste(
-  text_spec(cita, color = 1, font_size = 12, align = 2),
-  collapse = " ")
-```
-`r cita_formatted` 
-
-<br />
 
 # **Necesidades básicas**
 
