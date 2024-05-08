@@ -34,7 +34,7 @@ suppressPackageStartupMessages(library(kableExtra))
 #suppressPackageStartupMessages(library(downloadthis))
 
 
-base        <- readxl::read_excel("Data/Base_Motor_Pobreza.xlsx")
+base        <- readxl::read_excel("Data/Base_Motor_Pobreza_08052024.xlsx")
 base_fichas <- readxl::read_excel("Data/Base_Fichas_Técnicas.xls")
 base_fichas <- base_fichas[order(base_fichas$ID),]
 
@@ -101,6 +101,10 @@ dat <-
 g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, alpha=metodo, color=UNIDAD)) +
   geom_line(dat = dat %>% filter(ANIO <= 2019),
             size = 1, alpha = 0.4) +
+  
+  geom_line(dat = dat %>% filter(ANIO >= 2022),
+            size = 1, alpha = 0.8) +
+  
   geom_point(size = 2, show.legend = FALSE) +
   ylim(0, 15000) +
   #  xlim(2004, max) +
@@ -470,6 +474,10 @@ dat <-
 g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, alpha=metodo, color=URBANORURALUY)) +
   geom_line(dat = dat %>% filter(ANIO <= 2019),
             size = 1, alpha = 0.4) +
+    
+  geom_line(dat = dat %>% filter(ANIO >= 2022),
+            size = 1, alpha = 0.8) +
+  
   geom_point(size = 2, show.legend = FALSE) +
   ylim(0, 15) +
   #  xlim(2004, max) +
@@ -737,6 +745,10 @@ dat <-
 g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, alpha=metodo, color=UNIDAD)) +
   geom_line(dat = dat %>% filter(ANIO <= 2019),
             size = 1, alpha = 0.4) +
+    
+  geom_line(dat = dat %>% filter(ANIO >= 2022),
+            size = 1, alpha = 0.8) +
+  
   geom_point(size = 2, show.legend = FALSE) +
   ylim(0, 40) +
   theme_minimal() +
@@ -958,6 +970,10 @@ dat <-
 g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, alpha=metodo, color=UNIDAD)) +
   geom_line(dat = dat %>% filter(ANIO <= 2019),
             size = 1, alpha = 0.4) +
+  
+  geom_line(dat = dat %>% filter(ANIO >= 2022),
+            size = 1, alpha = 0.8) +
+  
   geom_point(size = 2, show.legend = FALSE) +
   ylim(0, 4) +
   theme_minimal() +
@@ -1393,6 +1409,8 @@ dat <-
 g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, alpha=metodo, color=UNIDAD)) +
   geom_line(dat = dat %>% filter(ANIO <= 2019),
             size = 1, alpha = 0.4) +
+  geom_line(dat = dat %>% filter(ANIO >= 2022),
+            size = 1, alpha = 0.8) +
   geom_point(dat = dat %>% filter(ANIO <= 2019),
             size = 2, alpha = 0.4) +
   geom_point(dat = dat %>% filter(ANIO > 2019),
@@ -1743,6 +1761,10 @@ dat <-
 g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, alpha=metodo, color=URBANORURALUY)) +
   geom_line(dat = dat %>% filter(ANIO <= 2019),
             size = 1, alpha = 0.4) +
+    
+  geom_line(dat = dat %>% filter(ANIO >= 2022),
+            size = 1, alpha = 0.8) +
+  
   geom_point(dat = dat %>% filter(ANIO <= 2019),
             size = 2, alpha = 0.4) +
   geom_point(dat = dat %>% filter(ANIO > 2019),
@@ -1973,6 +1995,10 @@ dat <-
 g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, alpha=metodo, color=URBANORURALUY)) +
   geom_line(dat = dat %>% filter(ANIO <= 2019),
             size = 1, alpha = 0.4) +
+    
+  geom_line(dat = dat %>% filter(ANIO >= 2022),
+            size = 1, alpha = 0.8) +
+  
   geom_point(dat = dat %>% filter(ANIO <= 2019),
             size = 2, alpha = 0.4) +
   geom_point(dat = dat %>% filter(ANIO > 2019),
@@ -2201,6 +2227,10 @@ dat <-
 g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, alpha=metodo, color=URBANORURALUY)) +
   geom_line(dat = dat %>% filter(ANIO <= 2019),
             size = 1, alpha = 0.4) +
+    
+  geom_line(dat = dat %>% filter(ANIO >= 2022),
+            size = 1, alpha = 0.8) +
+  
   geom_point(dat = dat %>% filter(ANIO <= 2019),
             size = 2, alpha = 0.4) +
   geom_point(dat = dat %>% filter(ANIO > 2019),
@@ -2427,6 +2457,10 @@ dat <-
 g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, alpha=metodo, color=URBANORURALUY)) +
   geom_line(dat = dat %>% filter(ANIO <= 2019),
             size = 1, alpha = 0.4) +
+    
+  geom_line(dat = dat %>% filter(ANIO >= 2022),
+            size = 1, alpha = 0.8) +
+  
   geom_point(dat = dat %>% filter(ANIO <= 2019),
             size = 2, alpha = 0.4) +
   geom_point(dat = dat %>% filter(ANIO > 2019),
