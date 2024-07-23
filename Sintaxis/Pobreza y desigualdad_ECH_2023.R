@@ -340,7 +340,7 @@ RESPONSABLE  <- "JIMENA PANDOLFI"
 m111_pu <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY, PAIS,	ANIO,	VALOR,	RESPONSABLE)	
 
 
-## Total país
+## Total País
 
 
 # Total
@@ -514,19 +514,19 @@ QUINTIL      <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos")
-URBANORURALUY<- c("Total país",
+URBANORURALUY<- c("Total País",
                   "Urbano (más de 5.000 habitantes)",
                   "Urbano (menos de 5.000 habitantes)",
                   "Rural disperso",
-                  "Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país")
+                  "Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País")
 PAIS         <- "Uruguay"
 ANIO         <- 2023
 VALOR        <- c(c_ano, a_e_region, a_e_quintil, a_e_pobreza, a_e_jefe)
@@ -686,7 +686,7 @@ RESPONSABLE  <- "JIMENA PANDOLFI"
 m113_pu <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY,	PAIS,	ANIO,	VALOR,	RESPONSABLE)	
 
 
-## Total país
+## Total País
 
 
 # Total
@@ -859,19 +859,19 @@ QUINTIL      <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos")
-URBANORURALUY<- c("Total país",
+URBANORURALUY<- c("Total País",
                   "Urbano (más de 5.000 habitantes)",
                   "Urbano (menos de 5.000 habitantes)",
                   "Rural disperso",
-                  "Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país")
+                  "Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País")
 PAIS         <- "Uruguay"
 ANIO         <- 2023
 VALOR        <- c(c_ano, a_e_region, a_e_quintil, a_e_pobreza, a_e_jefe)
@@ -1495,7 +1495,7 @@ m124 <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REG
 
 ### 126	Brecha de pobreza a usd 1,90 por día (2011 ppp) (%)
 
-#Total país
+#Total País
 #m126_bm_tp  <- banco_mundial %>% filter(`Area Sp`== "Nacional" & `Countryname Sp` == "Uruguay" & `Indicator Sp` == "Brecha de pobreza" & `Pline Sp` == "Pobreza $1.9 (2011 PPP)")
 
 # Base motor
@@ -1535,7 +1535,7 @@ m124 <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REG
 # 
 # 
 # #País urbano
-# #Total país
+# #Total País
 # m126_bm_pu  <- banco_mundial %>% filter(`Area Sp`== "Urbano" & `Countryname Sp` == "Uruguay" & `Indicator Sp` == "Brecha de pobreza" & `Pline Sp` == "Pobreza $1.9 (2011 PPP)")
 # 
 # # Base motor
@@ -1815,11 +1815,11 @@ PESTAÑA      <- c("País Urbano",
                   "País Urbano",
                   "País Urbano",
                   "País Urbano",
-                  "Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país")
+                  "Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País")
 CORTE <- "Quintil de ingreso y región"
 CORTE_NUEVA <- "Quintil de ingreso"
 REGION       <- c("Urbano (más de 5.000 habitantes)",
@@ -1827,21 +1827,21 @@ REGION       <- c("Urbano (más de 5.000 habitantes)",
                   "Urbano (más de 5.000 habitantes)",
                   "Urbano (más de 5.000 habitantes)",
                   "Urbano (más de 5.000 habitantes)",
-                  "Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país")
+                  "Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País")
 URBANORURALUY       <- c("Urbano (más de 5.000 habitantes)",
                          "Urbano (más de 5.000 habitantes)",
                          "Urbano (más de 5.000 habitantes)",
                          "Urbano (más de 5.000 habitantes)",
                          "Urbano (más de 5.000 habitantes)",
-                         "Total país",
-                         "Total país",
-                         "Total país",
-                         "Total país",
-                         "Total país")
+                         "Total País",
+                         "Total País",
+                         "Total País",
+                         "Total País",
+                         "Total País")
 POBREZA      <- c("Todos")
 QUINTIL      <- c("Quintil 1",
                   "Quintil 2",
@@ -1855,7 +1855,7 @@ QUINTIL      <- c("Quintil 1",
                   "Quintil 5")
 PAIS         <- "Uruguay"
 ANIO         <- 2023
-VALOR        <- c(m132_pu, m132_tp)
+VALOR        <- c(m132_pu, m132_tp)*100
 RESPONSABLE  <- "JIMENA PANDOLFI"
 
 
@@ -1925,38 +1925,38 @@ RESPONSABLE  <- ""
 CODIND       <- 133
 NOMINDICADOR <- "Ingreso total acumulado apropiado según decil"
 CATEGORIA    <- "Ingresos y desigualdad"
-PESTAÑA      <- c("Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país")
+PESTAÑA      <- c("Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País")
 CORTE <- "Decil de ingreso"
 CORTE_NUEVA <- "Decil de ingreso"
-REGION       <- c("Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país",
-                  "Total país")
-URBANORURALUY       <- c("Total país",
-                         "Total país",
-                         "Total país",
-                         "Total país",
-                         "Total país",
-                         "Total país",
-                         "Total país",
-                         "Total país",
-                         "Total país",
-                         "Total país")
+REGION       <- c("Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País",
+                  "Total País")
+URBANORURALUY       <- c("Total País",
+                         "Total País",
+                         "Total País",
+                         "Total País",
+                         "Total País",
+                         "Total País",
+                         "Total País",
+                         "Total País",
+                         "Total País",
+                         "Total País")
 DECIL      <- c("Decil 1",
                 "Decil 2",
                 "Decil 3",
@@ -2005,13 +2005,13 @@ RESPONSABLE  <- ""
 CODIND       <- 134
 NOMINDICADOR <- "Relación entre el Ingreso medio per cápita del primer y décimo decil"
 CATEGORIA    <- "Ingresos y desigualdad"
-PESTAÑA      <- c("Total país",
+PESTAÑA      <- c("Total País",
                   "País Urbano")
 CORTE <- "Región"
 CORTE_NUEVA <- "Total"
-REGION       <- c("Total país",
+REGION       <- c("Total País",
                   "Urbano (más de 5.000 habitantes)")
-URBANORURALUY       <- c("Total país",
+URBANORURALUY       <- c("Total País",
                          "Urbano (más de 5.000 habitantes)")
 PAIS         <- "Uruguay"
 ANIO         <- 2023
@@ -2052,13 +2052,13 @@ RESPONSABLE  <- ""
 CODIND       <- 135
 NOMINDICADOR <- "Relación entre el Ingreso medio per cápita del primer y quinto quintil"
 CATEGORIA    <- "Ingresos y desigualdad"
-PESTAÑA      <- c("Total país",
+PESTAÑA      <- c("Total País",
                   "País Urbano")
 CORTE <- "Región"
 CORTE_NUEVA <- "Total"
-REGION       <- c("Total país",
+REGION       <- c("Total País",
                   "Urbano (más de 5.000 habitantes)")
-URBANORURALUY       <- c("Total país",
+URBANORURALUY       <- c("Total País",
                          "Urbano (más de 5.000 habitantes)")
 PAIS         <- "Uruguay"
 ANIO         <- 2023
@@ -2070,7 +2070,7 @@ m135 <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REG
 
 ### 141	Hogares con necesidades básicas insatisfechas (met 2011)(% de la población total) ------------------
 
-## Total país
+## Total País
 
 # Total
 
@@ -2212,7 +2212,7 @@ m141 <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REG
 ### 142	Personas en hogares con necesidades básicas insatisfechas (met 2011) (% de la población total) (INE)------------------
 
 
-## Total país
+## Total País
 
 # Total
 
@@ -2744,7 +2744,7 @@ m145 <- rbind(m145_pu, m145_tp)
 ### 146	Personas en hogares con hacinamiento (% de la población total) (def. CELADE) ---------------------------------------------
 
 
-## Total país
+## Total País
 
 # Total
 
@@ -3427,7 +3427,7 @@ m147 <- rbind(m147_pu, m147_tp)
 ### 148	Personas en hogares con hacinamiento (% de la población total) (def. INE) --------------------------------------------------------
 
 
-## Total país
+## Total País
 
 # Total
 
@@ -3885,7 +3885,7 @@ m148 <- rbind(m148_pu, m148_tp)
 
 ### 149	Hogares residiendo en viviendas con paredes o techos de desecho o piso de tierra (% de la población total) -----------------------
 
-## Total país
+## Total País
 
 # Total
 
@@ -4026,7 +4026,7 @@ m149 <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REG
 
 ### 150	Personas residiendo en viviendas con paredes o techos de desecho o piso de tierra (% de la población total) ----------------------
 
-## Total país
+## Total País
 
 # Total
 
@@ -4465,7 +4465,7 @@ m151 <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REG
 
 ### 152	Personas en hogares sin agua potable (% de la población total) -------------------------------------------------------------------
 
-## Total país
+## Total País
 
 # Total
 
@@ -4906,7 +4906,7 @@ m153 <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REG
 ### 154	Personas en hogares sin servicio higiénico de calidad(% de la población total) ---------------------------------------------------
 
 
-## Total país
+## Total País
 
 # Total
 
@@ -5347,7 +5347,7 @@ m155 <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REG
 
 ### 156	Personas en hogares sin artefactos básicos de confort(% de la población total) ---------------------------------------------------
 
-## Total país
+## Total País
 
 # Total
 
@@ -5867,7 +5867,7 @@ m157 <- rbind(m157_pu, m157_tp)
 ### 158	Personas en hogares con miembros de 4 a 17 años que no asisten a centros educativos (% de la población total) --------------------
 
 
-## Total país
+## Total País
 
 # Total
 

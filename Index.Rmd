@@ -34,7 +34,10 @@ suppressPackageStartupMessages(library(kableExtra))
 #suppressPackageStartupMessages(library(downloadthis))
 
 
-base        <- readxl::read_excel("Data/Base_Motor_Pobreza_08052024.xlsx")
+base        <- readxl::read_excel("Data/Base_Motor_Pobreza.xlsx")
+base <-   base %>% mutate(PAIS = PAÍS)
+
+
 base_fichas <- readxl::read_excel("Data/Base_Fichas_Técnicas.xls")
 base_fichas <- base_fichas[order(base_fichas$ID),]
 
@@ -340,7 +343,7 @@ Al analizar la evolución de este indicador en Uruguay, se observa una disminuci
 ```{r}
 periodo <- base[base$NOMINDICADOR == "Índice de Gini",]
 max<- max(periodo$ANIO)
-min<- min(periodo$ANIO)
+min<- 2006
 periodo <- c(min," - ", max)
 periodo_formatted <- paste(
   text_spec(periodo, color = 1, font_size = 16, align = "justify"),
@@ -357,7 +360,7 @@ periodo_formatted <- paste(
 #===============================================================================
 
 dat <- 
-  base %>% filter(NOMINDICADOR == "Índice de Gini", CORTE_NUEVA == "Total") %>%
+  base %>% filter(NOMINDICADOR == "Índice de Gini", CORTE_NUEVA == "Total", ANIO>2005) %>%
   mutate(VALOR = round(as.numeric(VALOR),1)) %>% 
   mutate(ANIO = as.numeric(ANIO)) %>% 
   mutate(metodo = case_when(ANIO<=2019 ~ "pre", ANIO==2020 ~ "2020", ANIO==2021~   "2021", ANIO>=2022~ "post"))
@@ -405,7 +408,7 @@ g1
 
 ```{r}
 t1 <- 
-  base %>% filter(NOMINDICADOR == "Índice de Gini", CORTE_NUEVA == "Total") %>%
+  base %>% filter(NOMINDICADOR == "Índice de Gini", CORTE_NUEVA == "Total", ANIO>2005) %>%
   mutate(VALOR = round(as.numeric(VALOR),1)) %>%
   rename(UNIDAD_GEOGRÁFICA = URBANORURALUY)
 t1 <- t1 [,c("NOMINDICADOR","PAIS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
