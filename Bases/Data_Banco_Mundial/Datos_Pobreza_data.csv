@@ -1,0 +1,793 @@
+﻿Area;País;Línea Pobreza;Tipo;Indicador;Año;Tasa
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2004;1
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2005;0,9
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2003;0,8
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2000;0,7
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2006;0,6
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2002;0,6
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2001;0,5
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2007;0,4
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2009;0,3
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2022;0,2
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2020;0,2
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2014;0,2
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2013;0,2
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2012;0,2
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2010;0,2
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2008;0,2
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2005;0,2
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2004;0,2
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2003;0,2
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2023;0,1
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2021;0,1
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2020;0,1
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2019;0,1
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2018;0,1
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2017;0,1
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2016;0,1
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2015;0,1
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2011;0,1
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2010;0,1
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2009;0,1
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2008;0,1
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2007;0,1
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2006;0,1
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2006;0,1
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2005;0,1
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2004;0,1
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2003;0,1
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2002;0,1
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2001;0,1
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2000;0,1
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2023;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2023;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2022;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2022;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2021;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2021;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2020;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2019;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2019;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2018;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2018;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2017;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2017;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2016;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2016;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2015;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2015;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2014;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2014;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2013;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2013;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2012;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2012;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2011;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2011;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2010;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2009;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2008;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2007;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2002;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2001;0
+Nacional;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2000;0
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2004;6,5
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2005;5,8
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2003;5,1
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2006;4,5
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2002;3,9
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2007;3,6
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2001;2,8
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2000;2,4
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2009;2,2
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2008;2,2
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2010;1,6
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2004;1,5
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2012;1,3
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2011;1,3
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2005;1,3
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2003;1,2
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2013;1,1
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2023;0,9
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2020;0,9
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2006;0,9
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2002;0,9
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2022;0,8
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2021;0,8
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2015;0,8
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2014;0,8
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2016;0,7
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2007;0,7
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2001;0,7
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2000;0,6
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2019;0,5
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2017;0,5
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2008;0,5
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2005;0,5
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2004;0,5
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2018;0,4
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2009;0,4
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2003;0,4
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2012;0,3
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2011;0,3
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2010;0,3
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2006;0,3
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2002;0,3
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2000;0,3
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2023;0,2
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2022;0,2
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2020;0,2
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2015;0,2
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2014;0,2
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2013;0,2
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2009;0,2
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2008;0,2
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2007;0,2
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2001;0,2
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2023;0,1
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2022;0,1
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2021;0,1
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2021;0,1
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2020;0,1
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2019;0,1
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2019;0,1
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2018;0,1
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2017;0,1
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2016;0,1
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2016;0,1
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2015;0,1
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2014;0,1
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2013;0,1
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2012;0,1
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2011;0,1
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2010;0,1
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2018;0
+Nacional;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2017;0
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2004;25,1
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2003;24,5
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2005;22,7
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2006;22,3
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2007;19,6
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2002;18,5
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2008;14,7
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2001;14,1
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2009;13,6
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2000;12,5
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2010;12
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2011;8,5
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2004;8,1
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2012;7,8
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2013;7,4
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2005;7,3
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2003;7,3
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2020;7,2
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2023;6,7
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2021;6,7
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2006;6,6
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2022;6,4
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2014;6,3
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2015;6
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2016;5,6
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2007;5,6
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2002;5,5
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2019;5,1
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2018;4,9
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2017;4,6
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2001;4,1
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2008;3,9
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2009;3,7
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2004;3,6
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2000;3,6
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2005;3,2
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2010;3,1
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2003;3,1
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2006;2,7
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2007;2,3
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2002;2,3
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2011;2,2
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2012;2,1
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2013;1,9
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2020;1,7
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2001;1,7
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2023;1,6
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2021;1,6
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2014;1,6
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2022;1,5
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2015;1,5
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2009;1,5
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2008;1,5
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2000;1,5
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2016;1,3
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2010;1,2
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2019;1,1
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2018;1,1
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2017;1,1
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2011;0,9
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2012;0,8
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2013;0,7
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2023;0,6
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2022;0,6
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2021;0,6
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2020;0,6
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2015;0,6
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2014;0,6
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2016;0,5
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2019;0,4
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2018;0,4
+Nacional;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2017;0,4
+Nacional;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2003;33,1
+Nacional;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2006;32,4
+Nacional;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2004;31,9
+Nacional;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2005;31,8
+Nacional;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2007;31,3
+Nacional;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2008;30,2
+Nacional;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2002;30
+Nacional;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2001;29
+Nacional;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2010;28,4
+Nacional;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2009;28,3
+Nacional;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2000;27,4
+Nacional;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2011;25,4
+Nacional;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2021;24,2
+Nacional;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2020;24
+Nacional;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2012;23,9
+Nacional;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2022;22,5
+Nacional;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2013;22,4
+Nacional;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2023;22
+Nacional;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2019;21,8
+Nacional;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2018;21,1
+Nacional;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2016;21
+Nacional;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2015;20,8
+Nacional;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2014;20,7
+Nacional;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2017;20,3
+Nacional;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2017;71,1
+Nacional;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2018;70,1
+Nacional;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2016;69,7
+Nacional;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2019;69,4
+Nacional;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2015;69,3
+Nacional;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2014;69,3
+Nacional;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2023;67,7
+Nacional;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2022;67,3
+Nacional;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2013;66,9
+Nacional;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2021;65,8
+Nacional;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2020;65,8
+Nacional;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2012;65,5
+Nacional;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2011;62,8
+Nacional;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2000;57,4
+Nacional;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2010;56,3
+Nacional;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2009;54,9
+Nacional;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2001;53,8
+Nacional;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2008;52,3
+Nacional;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2002;49,2
+Nacional;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2007;46,7
+Nacional;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2005;44
+Nacional;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2006;43,3
+Nacional;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2004;41,4
+Nacional;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2003;41
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2004;1
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2005;0,9
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2003;0,8
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2000;0,7
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2002;0,6
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2006;0,5
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2001;0,5
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2007;0,4
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2009;0,3
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2020;0,2
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2013;0,2
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2012;0,2
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2010;0,2
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2008;0,2
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2005;0,2
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2004;0,2
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2003;0,2
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2023;0,1
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2022;0,1
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2021;0,1
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2020;0,1
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2019;0,1
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2018;0,1
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2017;0,1
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2016;0,1
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2015;0,1
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2014;0,1
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2011;0,1
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2010;0,1
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2009;0,1
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2007;0,1
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2006;0,1
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2005;0,1
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2004;0,1
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2003;0,1
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2002;0,1
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2001;0,1
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2000;0,1
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2023;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2023;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2022;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2022;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2021;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2021;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2020;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2019;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2019;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2018;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2018;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2017;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2017;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2016;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2016;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2015;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2015;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2014;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2014;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2013;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2013;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2012;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2012;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2011;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2011;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2010;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2009;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2008;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2008;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2007;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2006;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2002;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2001;0
+Urbano;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2000;0
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2004;6,5
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2005;5,8
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2003;5,1
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2006;4,4
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2002;3,9
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2007;3,6
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2001;2,8
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2000;2,4
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2008;2,3
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2009;2,2
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2010;1,6
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2004;1,5
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2012;1,3
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2011;1,3
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2005;1,3
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2003;1,2
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2013;1,1
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2023;0,9
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2020;0,9
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2006;0,9
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2002;0,9
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2022;0,8
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2021;0,8
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2015;0,8
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2014;0,8
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2016;0,7
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2007;0,7
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2001;0,7
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2000;0,6
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2019;0,5
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2017;0,5
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2008;0,5
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2005;0,5
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2004;0,5
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2018;0,4
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2009;0,4
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2003;0,4
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2013;0,3
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2012;0,3
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2011;0,3
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2010;0,3
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2007;0,3
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2006;0,3
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2002;0,3
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2000;0,3
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2023;0,2
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2022;0,2
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2020;0,2
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2015;0,2
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2014;0,2
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2001;0,2
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2023;0,1
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2022;0,1
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2021;0,1
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2021;0,1
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2020;0,1
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2019;0,1
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2019;0,1
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2018;0,1
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2017;0,1
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2016;0,1
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2015;0,1
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2014;0,1
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2013;0,1
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2012;0,1
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2011;0,1
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2010;0,1
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2009;0,1
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2008;0,1
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2018;0
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2017;0
+Urbano;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2016;0
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2004;25,1
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2003;24,5
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2005;22,7
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2006;22,2
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2007;19,6
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2002;18,5
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2008;14,8
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2001;14,1
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2009;13,6
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2000;12,5
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2010;12,2
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2011;8,5
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2004;8,1
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2012;7,8
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2013;7,5
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2005;7,3
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2003;7,3
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2020;7,1
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2021;6,8
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2023;6,7
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2022;6,5
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2006;6,5
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2014;6,2
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2015;6
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2016;5,6
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2007;5,6
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2002;5,5
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2019;5,1
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2018;5
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2017;4,6
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2001;4,1
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2008;3,9
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2009;3,7
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2004;3,6
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2000;3,6
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2005;3,2
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2010;3,1
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2003;3,1
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2006;2,7
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2007;2,3
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2002;2,3
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2011;2,2
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2012;2,1
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2013;1,9
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2020;1,7
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2001;1,7
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2023;1,6
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2022;1,6
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2021;1,6
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2015;1,5
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2014;1,5
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2009;1,5
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2008;1,5
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2000;1,5
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2016;1,3
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2010;1,2
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2019;1,1
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2018;1,1
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2017;1,1
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2011;0,9
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2013;0,8
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2012;0,8
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2023;0,6
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2022;0,6
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2021;0,6
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2020;0,6
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2015;0,6
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2014;0,6
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2016;0,5
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2019;0,4
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2018;0,4
+Urbano;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2017;0,4
+Urbano;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2003;33,1
+Urbano;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2006;31,9
+Urbano;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2004;31,9
+Urbano;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2005;31,8
+Urbano;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2007;30,7
+Urbano;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2002;30
+Urbano;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2008;29,6
+Urbano;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2001;29
+Urbano;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2010;28
+Urbano;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2009;27,7
+Urbano;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2000;27,4
+Urbano;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2011;24,9
+Urbano;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2021;23,8
+Urbano;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2020;23,8
+Urbano;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2012;23,3
+Urbano;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2022;22,2
+Urbano;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2023;22
+Urbano;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2013;22
+Urbano;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2019;21,5
+Urbano;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2018;20,8
+Urbano;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2016;20,6
+Urbano;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2015;20,6
+Urbano;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2014;20,5
+Urbano;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2017;20
+Urbano;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2017;71,2
+Urbano;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2018;70,2
+Urbano;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2016;70
+Urbano;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2019;69,5
+Urbano;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2015;69,4
+Urbano;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2014;69,4
+Urbano;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2023;67,5
+Urbano;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2022;67,4
+Urbano;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2013;67,2
+Urbano;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2020;66
+Urbano;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2012;66
+Urbano;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2021;65,9
+Urbano;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2011;63,3
+Urbano;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2000;57,4
+Urbano;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2010;56,7
+Urbano;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2009;55,4
+Urbano;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2001;53,8
+Urbano;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2008;52,8
+Urbano;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2002;49,2
+Urbano;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2007;47,2
+Urbano;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2006;44
+Urbano;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2005;44
+Urbano;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2004;41,4
+Urbano;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2003;41
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2006;0,8
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2014;0,5
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2007;0,5
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2023;0,4
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2022;0,4
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2015;0,4
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2020;0,3
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2019;0,3
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2016;0,3
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2010;0,3
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2009;0,3
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2008;0,3
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2020;0,2
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2016;0,2
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2013;0,2
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2012;0,2
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2006;0,2
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2023;0,1
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2021;0,1
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2020;0,1
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2019;0,1
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2019;0,1
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2018;0,1
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2018;0,1
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2018;0,1
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2016;0,1
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2015;0,1
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2015;0,1
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2014;0,1
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2013;0,1
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2012;0,1
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2012;0,1
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2010;0,1
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2010;0,1
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2009;0,1
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2009;0,1
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2008;0,1
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2008;0,1
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2007;0,1
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2006;0,1
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2023;0
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2022;0
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2022;0
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2021;0
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2021;0
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2017;0
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2017;0
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2017;0
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2014;0
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2013;0
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2011;0
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2011;0
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2011;0
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2007;0
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2005;
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2005;
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2005;
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2004;
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2004;
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2004;
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2003;
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2003;
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2003;
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2002;
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2002;
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2002;
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2001;
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2001;
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2001;
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Severidad de la pobreza;2000;
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Brecha de pobreza;2000;
+Rural;Uruguay;Pobreza $2.15 (2017 PPP);Ingreso;Tasa de pobreza;2000;
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2006;4,9
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2007;3,1
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2008;1,9
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2009;1,8
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2010;1,6
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2011;1,5
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2014;1,4
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2015;1,3
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2012;1,2
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2019;1,1
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2006;1,1
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2020;1
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2022;0,8
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2016;0,7
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2023;0,6
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2013;0,6
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2007;0,6
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2021;0,5
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2018;0,5
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2010;0,5
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2008;0,5
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2015;0,4
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2014;0,4
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2009;0,4
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2006;0,4
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2023;0,3
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2020;0,3
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2017;0,3
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2016;0,3
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2012;0,3
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2022;0,2
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2020;0,2
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2019;0,2
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2016;0,2
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2015;0,2
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2014;0,2
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2013;0,2
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2011;0,2
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2010;0,2
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2009;0,2
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2008;0,2
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2007;0,2
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2023;0,1
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2022;0,1
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2021;0,1
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2021;0,1
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2019;0,1
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2018;0,1
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2018;0,1
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2017;0,1
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2013;0,1
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2012;0,1
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2011;0,1
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2017;0
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2005;
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2005;
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2005;
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2004;
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2004;
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2004;
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2003;
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2003;
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2003;
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2002;
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2002;
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2002;
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2001;
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2001;
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2001;
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Severidad de la pobreza;2000;
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Brecha de pobreza;2000;
+Rural;Uruguay;Pobreza $3.65 (2017 PPP);Ingreso;Tasa de pobreza;2000;
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2006;24,6
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2007;19,7
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2008;13,7
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2009;12,9
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2010;10,3
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2011;9,3
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2020;8,3
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2014;8
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2012;7,9
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2006;7,3
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2022;6
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2016;5,9
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2013;5,9
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2015;5,7
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2023;5,6
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2019;5,5
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2021;5,2
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2007;5,1
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2018;4,6
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2017;4,1
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2008;3,6
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2009;3,3
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2006;3,1
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2010;2,8
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2011;2,4
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2020;2,1
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2014;2
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2007;2
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2012;1,9
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2022;1,5
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2019;1,5
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2016;1,4
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2015;1,4
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2013;1,4
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2008;1,4
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2009;1,3
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2010;1,2
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2023;1
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2018;1
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2021;0,9
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2020;0,9
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2017;0,9
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2011;0,9
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2014;0,8
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2012;0,8
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2015;0,7
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2022;0,6
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2019;0,6
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2016;0,6
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2013;0,5
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2023;0,4
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2018;0,4
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2021;0,3
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2017;0,3
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2005;
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2005;
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2005;
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2004;
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2004;
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2004;
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2003;
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2003;
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2003;
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2002;
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2002;
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2002;
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2001;
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2001;
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2001;
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Severidad de la pobreza;2000;
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Brecha de pobreza;2000;
+Rural;Uruguay;Pobreza $6.85 (2017 PPP);Ingreso;Tasa de pobreza;2000;
+Rural;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2006;40,8
+Rural;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2007;39,5
+Rural;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2008;38,9
+Rural;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2009;37,2
+Rural;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2010;35,9
+Rural;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2012;32,4
+Rural;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2011;30,9
+Rural;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2021;30,6
+Rural;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2013;29
+Rural;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2020;27,4
+Rural;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2019;27,2
+Rural;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2022;26,8
+Rural;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2016;26,7
+Rural;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2017;25,7
+Rural;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2018;25,4
+Rural;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2015;25
+Rural;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2014;23,8
+Rural;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2023;22
+Rural;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2005;
+Rural;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2004;
+Rural;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2003;
+Rural;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2002;
+Rural;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2001;
+Rural;Uruguay;Vulnerable $6.85-$14 (2017 PPP);Ingreso;Tasa de pobreza;2000;
+Rural;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2023;71,7
+Rural;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2018;69,1
+Rural;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2017;69,1
+Rural;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2015;67,6
+Rural;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2014;67
+Rural;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2019;66,3
+Rural;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2022;65,9
+Rural;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2016;65,8
+Rural;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2021;63,1
+Rural;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2013;63,1
+Rural;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2020;62,6
+Rural;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2012;58,5
+Rural;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2011;57,9
+Rural;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2010;51,4
+Rural;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2009;48,3
+Rural;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2008;45,7
+Rural;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2007;39,6
+Rural;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2006;33,5
+Rural;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2005;
+Rural;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2004;
+Rural;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2003;
+Rural;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2002;
+Rural;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2001;
+Rural;Uruguay;Clase media $14-$81 (2017 PPP);Ingreso;Tasa de pobreza;2000;

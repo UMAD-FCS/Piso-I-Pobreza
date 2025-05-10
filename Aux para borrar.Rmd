@@ -1,0 +1,1035 @@
+
+# **Vivienda** 
+
+<div style="text-align: justify">
+
+El derecho a la vivienda es un componente esencial de las políticas públicas orientadas a garantizar un nivel de vida adecuado para toda la población. A través de estas políticas, el Estado busca no solo asegurar el acceso a una vivienda digna, sino también promover la equidad y la no discriminación en el acceso a este derecho fundamental. La vivienda adecuada es clave para el disfrute pleno de otros derechos y constituye un pilar central del bienestar general de la población.
+
+
+## **Esfuerzo económico**
+
+
+<div style="text-align: justify">
+
+Los indicadores relacionados con las políticas públicas y el esfuerzo económico permiten evaluar la capacidad del Estado para traducir sus políticas en acciones concretas y resultados tangibles. Estos indicadores, también conocidos como indicadores de proceso, proporcionan una visión del compromiso del Estado para cumplir con sus objetivos en áreas clave. El gasto público es una manifestación concreta del esfuerzo económico que realiza el Estado para cumplir con sus funciones esenciales, como ofrecer bienes y servicios públicos a la ciudadanía. En este contexto, se utilizan cuatro indicadores: prioridad macroeconómica, prioridad fiscal, prioridad en el gasto público social y gasto público per cápita. 
+
+La prioridad macroeconómica mide el porcentaje del gasto público en vivienda en relación con el Producto Interno Bruto (PIB), lo que permite observar la relevancia que las políticas públicas asignan a la vivienda dentro del contexto económico general del país. 
+
+</div>
+
+<br />
+
+
+<div style="text-align: center">
+#### **Gasto público en vivienda, medio ambiente, agua y saneamiento como porcentaje del producto bruto interno** 
+```{r}
+periodo <- base[base$CODINDICADOR == 220101,]
+max<- max(periodo$ANIO)
+min<- min(periodo$ANIO)
+periodo <- c(min," - ", max)
+periodo_formatted <- paste(
+  text_spec(periodo, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+##### `r periodo_formatted`
+</div>
+
+### {.tabset .tabset-fade .tabset-pills}
+#### Gráfico
+
+
+```{r, out.width='100%'}
+#===============================================================================
+dat <- 
+  base %>% filter(CODINDICADOR == 220101) %>%
+  mutate(UNIDAD = case_when(Metodologia_mides== "DINEM - MIDES" ~ "DINEM - MIDES", 
+                            Metodologia_mides== "MIDES-MEF-OPP" ~ "MIDES-MEF-OPP")) %>%
+  mutate(VALOR = round(as.numeric(VALOR),1)) %>% 
+  mutate(ANIO = as.numeric(ANIO)) 
+
+g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, color=UNIDAD)) +
+  geom_line(dat = dat, size = 1, alpha = 0.4) +
+  geom_point(size = 2, show.legend = FALSE) +
+  ylim(0, 7.5) +
+  #xlim(1985, max) +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        legend.title = element_blank(),
+        axis.text.x =  element_text(size=8),
+legend.text = element_text(size=8)) +
+  scale_color_manual(
+    values = c(639, "#a1dd70"),
+    labels = c("DINEM - MIDES", "MIDES-MEF-OPP")
+  ) +
+    labs(
+    color = "",
+    title = "",
+    caption = "",
+    x = "",
+    y = ""
+  )
+g1
+
+#===============================================================================
+```
+
+
+#### Tabla
+
+
+```{r}
+t1 <-     base %>% filter(CODINDICADOR == 220101) %>%
+  mutate(UNIDAD = Metodologia_mides) %>%
+  mutate(VALOR = round(as.numeric(VALOR),1)) %>% 
+  mutate(ANIO = as.numeric(ANIO)) 
+t1 <- t1 [,c("NOMINDICADOR","Metodologia_mides","ANIO","VALOR")]
+
+t1 <- rename(t1, `Nombre del indicador` = NOMINDICADOR, 
+                 `Metodología` = Metodologia_mides,
+                  Año = ANIO,
+                  Valor = VALOR)
+
+DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
+                                                       buttons = c('copy', 'csv', 'excel', 'print') )
+) 
+```
+
+
+
+#### Ficha Técnica
+
+
+```{r}
+
+ficha <- base_fichas %>% filter(CODINDICADOR == 220101) 
+
+def <- strsplit(paste0(ficha [1,"DEFINICION"])," ")[[1]]
+def_formatted <- paste(
+  text_spec(def, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Definición:** `r def_formatted`
+
+
+```{r}
+calc <- strsplit(paste0(ficha [1,"CALCULO"])," ")[[1]]
+calc_formatted <- paste(
+  text_spec(calc, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Forma de cálculo:** `r calc_formatted`
+
+```{r}
+obs <- strsplit(paste0(ficha [1,"OBSERVACIONES"])," ")[[1]]
+obs_formatted <- paste(
+  text_spec(obs, color = 1, font_size = 16, align =  "justify"),
+  collapse = " ")
+```
+> **Observaciones:** `r obs_formatted`
+
+
+## {.toc-ignore .unlisted .unnumbered}
+
+
+```{r}
+cita <- strsplit(paste0("Fuente: ", ficha [1,"CITA"])," ")[[1]]
+cita_formatted <- paste(
+  text_spec(cita, color = 1, font_size = 12, align = 2),
+  collapse = " ")
+```
+`r cita_formatted` 
+
+
+<div style="text-align: justify">
+  
+La prioridad fiscal mide el peso del gasto público en vivienda en relación con el gasto público total del Estado. Este indicador refleja la proporción de los recursos estatales destinados a la vivienda en comparación con otras áreas prioritarias de inversión pública.
+
+</div>
+  
+  <br />
+  
+  
+<div style="text-align: center">
+
+#### **Gasto público en vivienda, medio ambiente, agua y saneamiento como porcentaje del gasto público total** 
+```{r}
+  periodo <- base[base$CODINDICADOR == 220102,]
+  max<- max(periodo$ANIO)
+  min<- min(periodo$ANIO)
+  periodo <- c(min," - ", max)
+  periodo_formatted <- paste(
+    text_spec(periodo, color = 1, font_size = 16, align = "justify"),
+    collapse = " ")
+```
+##### `r periodo_formatted`
+</div>
+    
+### {.tabset .tabset-fade .tabset-pills}
+#### Gráfico
+    
+    
+```{r, out.width='100%'} 
+dat <- 
+    base %>% filter(CODINDICADOR == 220102) %>%
+    mutate(VALOR = round(as.numeric(VALOR),1)) %>% 
+    mutate(ANIO = as.numeric(ANIO)) 
+  
+g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, color=NOMINDICADOR)) +
+    geom_line(dat = dat, size = 1, alpha = 0.4) +
+    geom_point(size = 2, show.legend = FALSE) +
+    ylim(0, 20) +
+    #xlim(1985, max) +
+    theme_minimal() +
+    theme(legend.position = "bottom",
+          legend.title = element_blank(),
+          axis.text.x =  element_text(size=8),
+          legend.text = element_text(size=8)) +
+    scale_color_manual(
+      values = c(639)
+    ) +
+    labs(
+      color = "",
+      title = "",
+      caption = "",
+      x = "",
+      y = ""
+    )
+g1
+#===============================================================================
+```
+  
+  
+#### Tabla
+  
+  
+```{r}
+t1 <-     base %>% filter(CODINDICADOR == 220102) %>%
+    mutate(VALOR = round(as.numeric(VALOR),1)) %>% 
+    mutate(ANIO = as.numeric(ANIO)) 
+t1 <- t1 [,c("NOMINDICADOR","ANIO","VALOR")]
+  
+t1 <- rename(t1, `Nombre del indicador` = NOMINDICADOR, 
+               Año = ANIO,
+               Valor = VALOR)
+  
+DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip', buttons = c('copy', 'csv', 'excel', 'print'))) 
+```
+  
+  
+  
+#### Ficha Técnica
+  
+  
+```{r}
+  
+ficha <- base_fichas %>% filter(CODINDICADOR == 220102) 
+  
+def <- strsplit(paste0(ficha [1,"DEFINICION"])," ")[[1]]
+def_formatted <- paste(
+    text_spec(def, color = 1, font_size = 16, align = "justify"),
+    collapse = " ")
+```
+> **Definición:** `r def_formatted`
+  
+  
+```{r}
+calc <- strsplit(paste0(ficha [1,"CALCULO"])," ")[[1]]
+calc_formatted <- paste(
+text_spec(calc, color = 1, font_size = 16, align = "justify"),
+collapse = " ")
+```
+> **Forma de cálculo:** `r calc_formatted`
+  
+## {.toc-ignore .unlisted .unnumbered}
+  
+  
+```{r}
+cita <- strsplit(paste0("Fuente: ", ficha [1,"CITA"])," ")[[1]]
+cita_formatted <- paste(
+text_spec(cita, color = 1, font_size = 12, align = 2),
+collapse = " ")
+```
+`r cita_formatted` 
+
+<div style="text-align: justify">
+  
+El gasto público social se refiere al conjunto de políticas destinadas a mejorar el bienestar general de la población. Dentro de este marco, el siguiente indicador mide la proporción del gasto en vivienda en relación con el gasto público social total, reflejando la prioridad a este ámbito dentro de las políticas sociales.
+
+</div>
+  
+<br />
+  
+  
+<div style="text-align: center">
+
+#### **Gasto público en vivienda, medio ambiente, agua y saneamiento como porcentaje del gasto público social**
+
+```{r}
+  periodo <- base[base$CODINDICADOR == 220103,]
+  max<- max(periodo$ANIO)
+  min<- min(periodo$ANIO)
+  periodo <- c(min," - ", max)
+  periodo_formatted <- paste(
+    text_spec(periodo, color = 1, font_size = 16, align = "justify"),
+    collapse = " ")
+```
+##### `r periodo_formatted`
+</div>
+    
+### {.tabset .tabset-fade .tabset-pills}
+#### Gráfico
+    
+    
+```{r, out.width='100%'} 
+dat <- 
+    base %>% filter(CODINDICADOR == 220103) %>%
+    mutate(VALOR = round(as.numeric(VALOR),1)) %>% 
+    mutate(ANIO = as.numeric(ANIO)) 
+  
+g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, color=NOMINDICADOR)) +
+    geom_line(dat = dat, size = 1, alpha = 0.4) +
+    geom_point(size = 2, show.legend = FALSE) +
+    ylim(0, 20) +
+    #xlim(1985, max) +
+    theme_minimal() +
+    theme(legend.position = "bottom",
+          legend.title = element_blank(),
+          axis.text.x =  element_text(size=8),
+          legend.text = element_text(size=8)) +
+    scale_color_manual(
+      values = c(639)
+    ) +
+    labs(
+      color = "",
+      title = "",
+      caption = "",
+      x = "",
+      y = ""
+    )
+g1
+#===============================================================================
+```
+  
+  
+#### Tabla
+  
+  
+```{r}
+t1 <-     base %>% filter(CODINDICADOR == 220103) %>%
+    mutate(VALOR = round(as.numeric(VALOR),1)) %>% 
+    mutate(ANIO = as.numeric(ANIO)) 
+t1 <- t1 [,c("NOMINDICADOR","ANIO","VALOR")]
+  
+t1 <- rename(t1, `Nombre del indicador` = NOMINDICADOR, 
+               Año = ANIO,
+               Valor = VALOR)
+  
+DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip', buttons = c('copy', 'csv', 'excel', 'print'))) 
+```
+  
+  
+  
+#### Ficha Técnica
+  
+  
+```{r}
+  
+ficha <- base_fichas %>% filter(CODINDICADOR == 220103) 
+  
+def <- strsplit(paste0(ficha [1,"DEFINICION"])," ")[[1]]
+def_formatted <- paste(
+    text_spec(def, color = 1, font_size = 16, align = "justify"),
+    collapse = " ")
+```
+> **Definición:** `r def_formatted`
+  
+  
+```{r}
+calc <- strsplit(paste0(ficha [1,"CALCULO"])," ")[[1]]
+calc_formatted <- paste(
+text_spec(calc, color = 1, font_size = 16, align = "justify"),
+collapse = " ")
+```
+> **Forma de cálculo:** `r calc_formatted`
+  
+## {.toc-ignore .unlisted .unnumbered}
+  
+  
+```{r}
+cita <- strsplit(paste0("Fuente: ", ficha [1,"CITA"])," ")[[1]]
+cita_formatted <- paste(
+text_spec(cita, color = 1, font_size = 12, align = 2),
+collapse = " ")
+```
+`r cita_formatted` 
+
+
+<div style="text-align: justify">
+  
+Por último, el gasto público per cápita es una medida que evalúa la inversión promedio por persona en vivienda, asumiendo que el gasto se distribuye de manera equitativa entre la población.  
+
+</div>
+  
+<br />
+  
+  
+<div style="text-align: center">
+
+#### **Gasto público anual per cápita en vivienda, medio ambiente, agua y saneamiento (en USD constantes de 2010)**
+
+```{r}
+  periodo <- base[base$CODINDICADOR == 220104,]
+  max<- max(periodo$ANIO)
+  min<- min(periodo$ANIO)
+  periodo <- c(min," - ", max)
+  periodo_formatted <- paste(
+    text_spec(periodo, color = 1, font_size = 16, align = "justify"),
+    collapse = " ")
+```
+##### `r periodo_formatted`
+</div>
+    
+### {.tabset .tabset-fade .tabset-pills}
+#### Gráfico
+    
+    
+```{r, out.width='100%'} 
+dat <- 
+    base %>% filter(CODINDICADOR == 220104) %>%
+    mutate(VALOR = round(as.numeric(VALOR),1)) %>% 
+    mutate(ANIO = as.numeric(ANIO)) 
+  
+g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, color=NOMINDICADOR)) +
+    geom_line(dat = dat, size = 1, alpha = 0.4) +
+    geom_point(size = 2, show.legend = FALSE) +
+    ylim(0, 1000) +
+    #xlim(1985, max) +
+    theme_minimal() +
+    theme(legend.position = "bottom",
+          legend.title = element_blank(),
+          axis.text.x =  element_text(size=8),
+          legend.text = element_text(size=8)) +
+    scale_color_manual(
+      values = c(639)
+    ) +
+    labs(
+      color = "",
+      title = "",
+      caption = "",
+      x = "",
+      y = ""
+    )
+g1
+#===============================================================================
+```
+  
+  
+#### Tabla
+  
+  
+```{r}
+t1 <-     base %>% filter(CODINDICADOR == 220104) %>%
+    mutate(VALOR = round(as.numeric(VALOR),1)) %>% 
+    mutate(ANIO = as.numeric(ANIO)) 
+t1 <- t1 [,c("NOMINDICADOR","ANIO","VALOR")]
+  
+t1 <- rename(t1, `Nombre del indicador` = NOMINDICADOR, 
+               Año = ANIO,
+               Valor = VALOR)
+  
+DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip', buttons = c('copy', 'csv', 'excel', 'print'))) 
+```
+  
+  
+  
+#### Ficha Técnica
+  
+  
+```{r}
+  
+ficha <- base_fichas %>% filter(CODINDICADOR == 220104) 
+  
+def <- strsplit(paste0(ficha [1,"DEFINICION"])," ")[[1]]
+def_formatted <- paste(
+    text_spec(def, color = 1, font_size = 16, align = "justify"),
+    collapse = " ")
+```
+> **Definición:** `r def_formatted`
+  
+  
+```{r}
+calc <- strsplit(paste0(ficha [1,"CALCULO"])," ")[[1]]
+calc_formatted <- paste(
+text_spec(calc, color = 1, font_size = 16, align = "justify"),
+collapse = " ")
+```
+> **Forma de cálculo:** `r calc_formatted`
+  
+## {.toc-ignore .unlisted .unnumbered}
+  
+  
+```{r}
+cita <- strsplit(paste0("Fuente: ", ficha [1,"CITA"])," ")[[1]]
+cita_formatted <- paste(
+text_spec(cita, color = 1, font_size = 12, align = 2),
+collapse = " ")
+```
+`r cita_formatted` 
+
+
+## **Resultados**
+
+
+<div style="text-align: justify">
+
+Los indicadores de resultados en el área de vivienda permiten conocer cómo las políticas públicas se traducen en la garantía del acceso a una vivienda digna y segura. En Uruguay, todas las personas deben disfrutar de seguridad en la tenencia de la vivienda, lo que implica protección legal contra el desahucio, el hostigamiento y otras amenazas. Los propietarios de la vivienda y el terreno en que residen, los inquilinos o arrendatarios, los miembros de cooperativas de vivienda, y algunos ocupantes con permiso del Banco de Previsión Social (BPS) cuentan con estas garantías. Sin embargo, la tenencia insegura se presenta en situaciones como tener la propiedad de la vivienda sin el terreno, la ocupación sin permiso del propietario o del BPS y la ocupación en dependencia directa del propietario. El porcentaje de personas que viven en hogares con tenencia insegura refleja la proporción de la población cuyo derecho a la seguridad jurídica de la vivienda está vulnerado.
+
+
+</div>
+
+<br />
+
+
+<div style="text-align: center">
+
+#### **Porcentaje de personas en hogares con tenencia insegura**
+
+```{r}
+periodo <- base[base$CODINDICADOR == 230101,]
+max<- max(periodo$ANIO)
+min<- min(periodo$ANIO)
+periodo <- c(min," - ", max)
+periodo_formatted <- paste(
+  text_spec(periodo, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+##### `r periodo_formatted`
+</div>
+
+### {.tabset .tabset-fade .tabset-pills}
+#### Gráfico
+
+
+```{r, out.width='100%'}
+#===============================================================================
+dat <- 
+  base %>% filter(CODINDICADOR == 230101, CORTE == "Total") %>%
+  mutate(VALOR = round(as.numeric(VALOR),1)) %>% 
+  mutate(ANIO = as.numeric(ANIO)) %>% 
+  mutate(metodo = case_when(ANIO<=2019 ~ "pre", ANIO==2020 ~ "2020", ANIO==2021~   "2021", ANIO>=2022~ "post"))
+
+g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, alpha=metodo)) +
+  geom_line(dat = dat %>% filter(ANIO <= 2019),
+            size = 1, alpha = 0.4, color = "#a1dd70") +
+  geom_line(dat = dat %>% filter(ANIO >= 2022),
+            size = 1, alpha = 0.8, color = "#a1dd70") +
+  geom_point(size = 2, show.legend = FALSE, color = "#a1dd70") +
+  ylim(0, 15) +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        legend.title = element_blank(),
+        axis.text.x =  element_text(size=8),
+  legend.text = element_text(size=8)) +
+  scale_x_continuous(breaks=seq(2006, max, 1)) +
+  scale_alpha_manual(values = c(.8, .8, .8, .4)) +
+  scale_color_manual(values ="#a1dd70") +
+  labs(
+    color = "",
+    title = "",
+    caption = "",
+    x = "",
+    y = ""
+  )
+g1
+
+#===============================================================================
+```
+
+
+#### Tabla
+
+
+```{r}
+t1 <-     base %>% filter(CODINDICADOR == 230101, CORTE == "Total") %>%
+  mutate(VALOR = round(as.numeric(VALOR),1)) %>% 
+  mutate(ANIO = as.numeric(ANIO)) 
+t1 <- t1 [,c("NOMINDICADOR", "ANIO","VALOR")]
+
+t1 <- rename(t1, `Nombre del indicador` = NOMINDICADOR, 
+                  Año = ANIO,
+                  Valor = VALOR)
+
+DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
+                                                       buttons = c('copy', 'csv', 'excel', 'print') )
+) 
+```
+
+
+
+#### Ficha Técnica
+
+
+```{r}
+
+ficha <- base_fichas %>% filter(CODINDICADOR == 230101) 
+
+def <- strsplit(paste0(ficha [1,"DEFINICION"])," ")[[1]]
+def_formatted <- paste(
+  text_spec(def, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Definición:** `r def_formatted`
+
+
+```{r}
+calc <- strsplit(paste0(ficha [1,"CALCULO"])," ")[[1]]
+calc_formatted <- paste(
+  text_spec(calc, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Forma de cálculo:** `r calc_formatted`
+
+```{r}
+obs <- strsplit(paste0(ficha [1,"OBSERVACIONES"])," ")[[1]]
+obs_formatted <- paste(
+  text_spec(obs, color = 1, font_size = 16, align =  "justify"),
+  collapse = " ")
+```
+> **Observaciones:** `r obs_formatted`
+
+
+## {.toc-ignore .unlisted .unnumbered}
+
+
+```{r}
+cita <- strsplit(paste0("Fuente: ", ficha [1,"CITA"])," ")[[1]]
+cita_formatted <- paste(
+  text_spec(cita, color = 1, font_size = 12, align = 2),
+  collapse = " ")
+```
+`r cita_formatted` 
+
+
+```{r}
+nota <- strsplit(paste0(ficha [1,"NOTA"])," ")[[1]]
+nota_formatted <- paste(
+  text_spec(nota, color = 1, font_size = 12, align = 2),
+  collapse = " ")
+```
+`r nota_formatted` 
+
+
+<div style="text-align: justify">
+
+La imposibilidad de cubrir los costos básicos de un hogar debido al pago de alquiler o hipoteca es otro indicador clave respecto a los resultados en vivienda. Si el costo de la vivienda impide el acceso a una canasta básica de bienes y servicios, se considera que los derechos de los integrantes del hogar están siendo vulnerados. El porcentaje de personas que viven en hogares con ingresos insuficientes después de cubrir los gastos de vivienda (alquiler o hipoteca) mide la proporción de la población cuyo gasto en vivienda no es sostenible.
+
+</div>
+
+<br />
+
+
+<div style="text-align: center">
+
+#### **Porcentaje de personas que residen en hogares con ingreso bajo la línea de pobreza luego de pagar los gastos en vivienda (alquiler o cuota de compra)**
+
+```{r}
+periodo <- base[base$CODINDICADOR == 230301,]
+max<- max(periodo$ANIO)
+min<- min(periodo$ANIO)
+periodo <- c(min," - ", max)
+periodo_formatted <- paste(
+  text_spec(periodo, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+##### `r periodo_formatted`
+</div>
+
+### {.tabset .tabset-fade .tabset-pills}
+#### Gráfico
+
+
+```{r, out.width='100%'}
+#===============================================================================
+dat <- 
+  base %>% filter(CODINDICADOR == 230301, CORTE == "Total") %>%
+  mutate(VALOR = round(as.numeric(VALOR),1)) %>% 
+  mutate(ANIO = as.numeric(ANIO)) %>% 
+  mutate(metodo = case_when(ANIO<=2019 ~ "pre", ANIO==2020 ~ "2020", ANIO==2021~   "2021", ANIO>=2022~ "post"))
+
+g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, alpha=metodo)) +
+  geom_line(dat = dat %>% filter(ANIO <= 2019),
+            size = 1, alpha = 0.4, color = "#a1dd70") +
+  geom_line(dat = dat %>% filter(ANIO >= 2022),
+            size = 1, alpha = 0.8, color = "#a1dd70") +
+  geom_point(size = 2, show.legend = FALSE, color = "#a1dd70") +
+  ylim(0, 20) +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        legend.title = element_blank(),
+        axis.text.x =  element_text(size=8),
+  legend.text = element_text(size=8)) +
+  scale_x_continuous(breaks=seq(2006, max, 1)) +
+  scale_alpha_manual(values = c(.8, .8, .8, .4)) +
+  scale_color_manual(values ="#a1dd70") +
+  labs(
+    color = "",
+    title = "",
+    caption = "",
+    x = "",
+    y = ""
+  )
+g1
+
+#===============================================================================
+```
+
+
+#### Tabla
+
+
+```{r}
+t1 <-     base %>% filter(CODINDICADOR == 230301, CORTE == "Total") %>%
+  mutate(VALOR = round(as.numeric(VALOR),1)) %>% 
+  mutate(ANIO = as.numeric(ANIO)) 
+t1 <- t1 [,c("NOMINDICADOR", "ANIO","VALOR")]
+
+t1 <- rename(t1, `Nombre del indicador` = NOMINDICADOR, 
+                  Año = ANIO,
+                  Valor = VALOR)
+
+DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
+                                                       buttons = c('copy', 'csv', 'excel', 'print') )
+) 
+```
+
+
+
+#### Ficha Técnica
+
+
+```{r}
+
+ficha <- base_fichas %>% filter(CODINDICADOR == 230301) 
+
+def <- strsplit(paste0(ficha [1,"DEFINICION"])," ")[[1]]
+def_formatted <- paste(
+  text_spec(def, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Definición:** `r def_formatted`
+
+
+```{r}
+calc <- strsplit(paste0(ficha [1,"CALCULO"])," ")[[1]]
+calc_formatted <- paste(
+  text_spec(calc, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Forma de cálculo:** `r calc_formatted`
+
+```{r}
+obs <- strsplit(paste0(ficha [1,"OBSERVACIONES"])," ")[[1]]
+obs_formatted <- paste(
+  text_spec(obs, color = 1, font_size = 16, align =  "justify"),
+  collapse = " ")
+```
+> **Observaciones:** `r obs_formatted`
+
+
+## {.toc-ignore .unlisted .unnumbered}
+
+
+```{r}
+cita <- strsplit(paste0("Fuente: ", ficha [1,"CITA"])," ")[[1]]
+cita_formatted <- paste(
+  text_spec(cita, color = 1, font_size = 12, align = 2),
+  collapse = " ")
+```
+`r cita_formatted` 
+
+
+```{r}
+nota <- strsplit(paste0(ficha [1,"NOTA"])," ")[[1]]
+nota_formatted <- paste(
+  text_spec(nota, color = 1, font_size = 12, align = 2),
+  collapse = " ")
+```
+`r nota_formatted` 
+
+
+<div style="text-align: justify">
+
+Una vivienda adecuada debe proteger a sus habitantes de amenazas como el frío, la humedad, el calor, la lluvia y el viento, así como de riesgos estructurales y vectores de enfermedad. El hacinamiento plantea problemas de salubridad y afecta la calidad de vida de los integrantes del hogar. El porcentaje de personas que viven en condiciones de hacinamiento es un indicador que refleja la proporción de personas que no residen en viviendas habitables, lo que señala la necesidad de políticas públicas que promuevan condiciones habitacionales adecuadas.
+
+</div>
+
+<br />
+
+
+<div style="text-align: center">
+
+#### **Porcentaje de personas que residen en viviendas con hacinamiento según definición del INE**
+
+```{r}
+periodo <- base[base$CODINDICADOR == 230401,]
+max<- max(periodo$ANIO)
+min<- min(periodo$ANIO)
+periodo <- c(min," - ", max)
+periodo_formatted <- paste(
+  text_spec(periodo, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+##### `r periodo_formatted`
+</div>
+
+### {.tabset .tabset-fade .tabset-pills}
+#### Gráfico
+
+
+```{r, out.width='100%'}
+#===============================================================================
+dat <- 
+  base %>% filter(CODINDICADOR == 230401, CORTE == "Total") %>%
+  mutate(VALOR = round(as.numeric(VALOR),1)) %>% 
+  mutate(ANIO = as.numeric(ANIO)) %>% 
+  mutate(metodo = case_when(ANIO<=2019 ~ "pre", ANIO==2020 ~ "2020", ANIO==2021~   "2021", ANIO>=2022~ "post"))
+
+g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, alpha=metodo)) +
+  geom_line(dat = dat %>% filter(ANIO <= 2019),
+            size = 1, alpha = 0.4, color = "#a1dd70") +
+  geom_line(dat = dat %>% filter(ANIO >= 2022),
+            size = 1, alpha = 0.8, color = "#a1dd70") +
+  geom_point(size = 2, show.legend = FALSE, color = "#a1dd70") +
+  ylim(0, 100) +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        legend.title = element_blank(),
+        axis.text.x =  element_text(size=8),
+  legend.text = element_text(size=8)) +
+  scale_x_continuous(breaks=seq(2006, max, 1)) +
+  scale_alpha_manual(values = c(.8, .8, .8, .4)) +
+  scale_color_manual(values ="#a1dd70") +
+  labs(
+    color = "",
+    title = "",
+    caption = "",
+    x = "",
+    y = ""
+  )
+g1
+
+#===============================================================================
+```
+
+
+#### Tabla
+
+
+```{r}
+t1 <-     base %>% filter(CODINDICADOR == 230401, CORTE == "Total") %>%
+  mutate(VALOR = round(as.numeric(VALOR),1)) %>% 
+  mutate(ANIO = as.numeric(ANIO)) 
+t1 <- t1 [,c("NOMINDICADOR", "ANIO","VALOR")]
+
+t1 <- rename(t1, `Nombre del indicador` = NOMINDICADOR, 
+                  Año = ANIO,
+                  Valor = VALOR)
+
+DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
+                                                       buttons = c('copy', 'csv', 'excel', 'print') )
+) 
+```
+
+
+
+#### Ficha Técnica
+
+
+```{r}
+
+ficha <- base_fichas %>% filter(CODINDICADOR == 230401) 
+
+def <- strsplit(paste0(ficha [1,"DEFINICION"])," ")[[1]]
+def_formatted <- paste(
+  text_spec(def, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Definición:** `r def_formatted`
+
+
+```{r}
+calc <- strsplit(paste0(ficha [1,"CALCULO"])," ")[[1]]
+calc_formatted <- paste(
+  text_spec(calc, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Forma de cálculo:** `r calc_formatted`
+
+```{r}
+obs <- strsplit(paste0(ficha [1,"OBSERVACIONES"])," ")[[1]]
+obs_formatted <- paste(
+  text_spec(obs, color = 1, font_size = 16, align =  "justify"),
+  collapse = " ")
+```
+> **Observaciones:** `r obs_formatted`
+
+
+## {.toc-ignore .unlisted .unnumbered}
+
+
+```{r}
+cita <- strsplit(paste0("Fuente: ", ficha [1,"CITA"])," ")[[1]]
+cita_formatted <- paste(
+  text_spec(cita, color = 1, font_size = 12, align = 2),
+  collapse = " ")
+```
+`r cita_formatted` 
+
+
+```{r}
+nota <- strsplit(paste0(ficha [1,"NOTA"])," ")[[1]]
+nota_formatted <- paste(
+  text_spec(nota, color = 1, font_size = 12, align = 2),
+  collapse = " ")
+```
+`r nota_formatted` 
+
+
+<div style="text-align: justify">
+
+Finalmente, una vivienda adecuada debe estar situada en un lugar que permita el acceso a servicios esenciales como empleo, atención médica, centros de cuidado infantil, escuelas y otros servicios sociales. Las viviendas no deben estar ubicadas en zonas contaminadas o cerca de fuentes de contaminación que amenacen la salud de sus habitantes. Los asentamientos irregulares suelen carecer de servicios básicos de infraestructura urbana y presentan dificultades de acceso a servicios sociales. El porcentaje de personas que viven en asentamientos irregulares es un indicador de la falta de acceso a una vivienda adecuada.
+
+</div>
+
+<br />
+
+
+<div style="text-align: center">
+
+#### **Porcentaje de personas que viven en asentamientos**
+
+```{r}
+periodo <- base[base$CODINDICADOR == 230501,]
+max<- max(periodo$ANIO)
+min<- min(periodo$ANIO)
+periodo <- c(min," - ", max)
+periodo_formatted <- paste(
+  text_spec(periodo, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+##### `r periodo_formatted`
+</div>
+
+### {.tabset .tabset-fade .tabset-pills}
+#### Gráfico
+
+
+```{r, out.width='100%'}
+#===============================================================================
+dat <- 
+  base %>% filter(CODINDICADOR == 230501, CORTE == "Total") %>%
+  mutate(VALOR = round(as.numeric(VALOR),1)) %>% 
+  mutate(ANIO = as.numeric(ANIO)) %>% 
+  mutate(metodo = case_when(ANIO<=2019 ~ "pre", ANIO==2020 ~ "2020", ANIO==2021~   "2021", ANIO>=2022~ "post"))
+
+g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, alpha=metodo)) +
+  geom_line(dat = dat %>% filter(ANIO <= 2019),
+            size = 1, alpha = 0.4, color = "#a1dd70") +
+  geom_line(dat = dat %>% filter(ANIO >= 2022),
+            size = 1, alpha = 0.8, color = "#a1dd70") +
+  geom_point(size = 2, show.legend = FALSE, color = "#a1dd70") +
+  ylim(0, 5) +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        legend.title = element_blank(),
+        axis.text.x =  element_text(size=8),
+  legend.text = element_text(size=8)) +
+  scale_x_continuous(breaks=seq(min, max, 1)) +
+  scale_alpha_manual(values = c(.8, .8, .8, .4)) +
+  scale_color_manual(values ="#a1dd70") +
+  labs(
+    color = "",
+    title = "",
+    caption = "",
+    x = "",
+    y = ""
+  )
+g1
+
+#===============================================================================
+```
+
+
+#### Tabla
+
+
+```{r}
+t1 <-     base %>% filter(CODINDICADOR == 230501, CORTE == "Total") %>%
+  mutate(VALOR = round(as.numeric(VALOR),1)) %>% 
+  mutate(ANIO = as.numeric(ANIO)) 
+t1 <- t1 [,c("NOMINDICADOR", "ANIO","VALOR")]
+
+t1 <- rename(t1, `Nombre del indicador` = NOMINDICADOR, 
+                  Año = ANIO,
+                  Valor = VALOR)
+
+DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
+                                                       buttons = c('copy', 'csv', 'excel', 'print') )
+) 
+```
+
+
+
+#### Ficha Técnica
+
+
+```{r}
+
+ficha <- base_fichas %>% filter(CODINDICADOR == 230501) 
+
+def <- strsplit(paste0(ficha [1,"DEFINICION"])," ")[[1]]
+def_formatted <- paste(
+  text_spec(def, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Definición:** `r def_formatted`
+
+
+```{r}
+calc <- strsplit(paste0(ficha [1,"CALCULO"])," ")[[1]]
+calc_formatted <- paste(
+  text_spec(calc, color = 1, font_size = 16, align = "justify"),
+  collapse = " ")
+```
+> **Forma de cálculo:** `r calc_formatted`
+
+```{r}
+obs <- strsplit(paste0(ficha [1,"OBSERVACIONES"])," ")[[1]]
+obs_formatted <- paste(
+  text_spec(obs, color = 1, font_size = 16, align =  "justify"),
+  collapse = " ")
+```
+> **Observaciones:** `r obs_formatted`
+
+
+## {.toc-ignore .unlisted .unnumbered}
+
+
+```{r}
+cita <- strsplit(paste0("Fuente: ", ficha [1,"CITA"])," ")[[1]]
+cita_formatted <- paste(
+  text_spec(cita, color = 1, font_size = 12, align = 2),
+  collapse = " ")
+```
+`r cita_formatted` 
+
+
+```{r}
+nota <- strsplit(paste0(ficha [1,"NOTA"])," ")[[1]]
+nota_formatted <- paste(
+  text_spec(nota, color = 1, font_size = 12, align = 2),
+  collapse = " ")
+```
+`r nota_formatted` 
+
+<br />
