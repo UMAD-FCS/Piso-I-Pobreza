@@ -737,15 +737,18 @@ nota_formatted <- paste(
 <div style="text-align: justify">
 La medida de pobreza más simple y más ampliamente utilizada es la tasa de recuento, que es el porcentaje de pobres en una población dada. La construcción de la línea de pobreza (LP) se basa en la definición de un umbral de ingresos necesarios para cubrir una Canasta Básica Total (CBT). Para su cálculo, se utilizan índices de precios tanto de bienes alimentarios como no alimentarios. Para determinar la LP se introducen economías de escala en los gastos no alimentarios para los estratos de referencia seleccionados en las diferentes regiones geográficas, tomando en cuenta el tamaño del hogar (INE, 2015). La línea de indigencia refiere al ingreso necesario para cubrir los gastos únicamente alimentarios. 
 
-Los siguientes gráficos muestran la evolución de ambos indicadores como proporción de hogares en condición de pobreza e indigencia y porcentaje de personas que en los mismos residen. Los mismos muestran cómo desde el 2006 la pobreza monetaria ha caído sostenidamente en Uruguay. Si se observasen registros de años anteriores se podría observar cómo, luego de más de una década de aumento en su incidencia, intensidad y severidad, es a partir del año 2005 en que se registra un punto de inflexión en la tendencia (INE, 2011). En un contexto de fuerte expansión económica, el crecimiento del empleo y los ingresos, así como la instauración de un conjunto de políticas redistributivas, han contribuido a la mejora de los indicadores de pobreza (Amarante et al., 2011). En 2020 se observa un aumento de la pobreza y de la indigencia y una posterior disminución, aunque manteniéndose en niveles superiores a los observados en los últimos 5 años.  
+Los siguientes gráficos muestran la evolución de ambos indicadores como proporción de hogares en condición de pobreza e indigencia y porcentaje de personas que en los mismos residen. Los mismos muestran cómo desde el 2006 la pobreza monetaria ha caído sostenidamente en Uruguay. Si se observasen registros de años anteriores se podría observar cómo, luego de más de una década de aumento en su incidencia, intensidad y severidad, es a partir del año 2005 en que se registra un punto de inflexión en la tendencia (INE, 2011). En un contexto de fuerte expansión económica, el crecimiento del empleo y los ingresos, así como la instauración de un conjunto de políticas redistributivas, han contribuido a la mejora de los indicadores de pobreza (Amarante et al., 2011). En 2020 se observa un aumento de la pobreza y de la indigencia y una posterior disminución, aunque manteniéndose en niveles superiores a los observados en los últimos 5 años.
+
+Para 2024, se incorpora también la prevalencia de la pobreza según la metodología del INE-2017.
+
 </div>
 
 <br />
 
 <div style="text-align: center">
-##### **Hogares y personas en situación de pobreza (met. 2006) (% de la población total)** 
+##### **Hogares y personas en situación de pobreza (met. 2006 y met.2017) (% de la población total)** 
 ```{r}
-periodo <- base[base$NOMINDICADOR == "Hogares en situación de pobreza (% de la población total) (INE)",]
+periodo <- base[base$NOMINDICADOR == "Hogares en situación de pobreza (% de la población total) (INE)"|base$NOMINDICADOR == "Hogares en situación de pobreza (% de la población total) (INE-Met 2017)",]
 max<- max(periodo$ANIO)
 min<- min(periodo$ANIO)
 periodo <- c(min," - ", max)
@@ -763,12 +766,15 @@ periodo_formatted <- paste(
 #===============================================================================
 dat <- 
   base %>% 
-  filter(NOMINDICADOR =="Hogares en situación de pobreza (% de la población total) (INE)" | NOMINDICADOR =="Personas en situación de pobreza (% de la población total) (INE)", 
+  filter(NOMINDICADOR =="Hogares en situación de pobreza (% de la población total) (INE)" | NOMINDICADOR =="Personas en situación de pobreza (% de la población total) (INE)"|
+           NOMINDICADOR =="Hogares en situación de pobreza (% de la población total) (INE-Met 2017)" | NOMINDICADOR =="Personas en situación de pobreza (% de la población total) (INE-Met 2017)", 
          CORTE_NUEVA == "Total", 
          URBANORURALUY =="Total País") %>%
   mutate(UNIDAD = case_when(
-  NOMINDICADOR =="Hogares en situación de pobreza (% de la población total) (INE)" ~ "Hogares",
-  NOMINDICADOR =="Personas en situación de pobreza (% de la población total) (INE)" ~ "Personas")) %>%
+  NOMINDICADOR =="Hogares en situación de pobreza (% de la población total) (INE)" ~ "Hogares - Met 2006",
+  NOMINDICADOR =="Personas en situación de pobreza (% de la población total) (INE)" ~ "Personas- Met 2006",
+  NOMINDICADOR =="Hogares en situación de pobreza (% de la población total) (INE-Met 2017)" ~ "Hogares - Met 2017",
+  NOMINDICADOR =="Personas en situación de pobreza (% de la población total) (INE-Met 2017)" ~ "Personas- Met 2017")) %>%
   mutate(VALOR = round(as.numeric(VALOR)*100,1)) %>% 
   mutate(ANIO = as.numeric(ANIO)) %>% 
   mutate(metodo = case_when(ANIO<=2019 ~ "pre", ANIO==2020 ~ "2020", ANIO==2021~ "2021", ANIO>=2022~ "post")) 
@@ -790,8 +796,9 @@ g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, alpha=metodo, color=UNIDAD)) +
 legend.text = element_text(size=8)) +
   scale_alpha_manual(values = c(.8, .8, .8, .4)) +
     scale_color_manual(
-    values = c(639, "#a1dd70"),
-    labels = c("Hogares", "Personas")
+    values = c(639, "#a1dd70","#f5b000", "#5a9e3d"),
+    labels = c("Hogares - Met 2006", "Personas - Met 2006",
+               "Hogares - Met 2017", "Personas - Met 2017")
   ) +
     labs(
     color = "",
@@ -812,12 +819,18 @@ g1
 ```{r}
 t1 <- 
   base %>% 
-  filter(NOMINDICADOR =="Hogares en situación de pobreza (% de la población total) (INE)" | NOMINDICADOR =="Personas en situación de pobreza (% de la población total) (INE)", 
+  filter(NOMINDICADOR =="Hogares en situación de pobreza (% de la población total) (INE)" | NOMINDICADOR =="Personas en situación de pobreza (% de la población total) (INE)"|
+           NOMINDICADOR =="Hogares en situación de pobreza (% de la población total) (INE-Met 2017)" | NOMINDICADOR =="Personas en situación de pobreza (% de la población total) (INE-Met 2017)", 
          CORTE_NUEVA == "Total", 
          URBANORURALUY =="Total País") %>%
+    mutate(UNIDAD = case_when(
+  NOMINDICADOR =="Hogares en situación de pobreza (% de la población total) (INE)" ~ "Porcentaje de hogares en situación de pobreza - Met 2006",
+  NOMINDICADOR =="Personas en situación de pobreza (% de la población total) (INE)" ~ "Porcentaje de personas en situación de pobreza - Met 2006",
+  NOMINDICADOR =="Hogares en situación de pobreza (% de la población total) (INE-Met 2017)" ~ "Porcentaje de hogares en situación de pobreza - Met 2017",
+  NOMINDICADOR =="Personas en situación de pobreza (% de la población total) (INE-Met 2017)" ~ "Porcentaje de personas en situación de pobreza - Met 2017")) %>%
   mutate(VALOR = round(as.numeric(VALOR)*100, 1)) %>%
   rename(UNIDAD_GEOGRÁFICA = URBANORURALUY)
-t1 <- t1 [,c("NOMINDICADOR","PAIS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
+t1 <- t1 [,c("UNIDAD","PAIS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
 
 DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
                                                        buttons = c('copy', 'csv', 'excel', 'print') )
@@ -988,12 +1001,15 @@ periodo_formatted <- paste(
 
 dat <- 
   base %>% 
-  filter(NOMINDICADOR =="Hogares en situación de indigencia (% de la población total) (INE)" | NOMINDICADOR =="Personas en situación de indigencia (% de la población total) (INE)", 
+  filter(NOMINDICADOR =="Hogares en situación de indigencia (% de la población total) (INE)" | NOMINDICADOR =="Personas en situación de indigencia (% de la población total) (INE)"|
+           NOMINDICADOR =="Hogares en situación de indigencia (% de la población total) (INE-Met 2017)" | NOMINDICADOR =="Personas en situación de indigencia (% de la población total) (INE-Met 2017)", 
          CORTE_NUEVA == "Total", 
          URBANORURALUY =="Total País") %>%
   mutate(UNIDAD = case_when(
-  NOMINDICADOR =="Hogares en situación de indigencia (% de la población total) (INE)" ~ "Hogares",
-  NOMINDICADOR =="Personas en situación de indigencia (% de la población total) (INE)" ~ "Personas")) %>%
+  NOMINDICADOR =="Hogares en situación de indigencia (% de la población total) (INE)" ~ "Hogares - Met 2006",
+  NOMINDICADOR =="Personas en situación de indigencia (% de la población total) (INE)" ~ "Personas - Met 2006",
+    NOMINDICADOR =="Hogares en situación de indigencia (% de la población total) (INE-Met 2017)" ~ "Hogares - Met 2017",
+  NOMINDICADOR =="Personas en situación de indigencia (% de la población total) (INE-Met 2017)" ~ "Personas - Met 2017")) %>%
   mutate(VALOR = round(as.numeric(VALOR)*100,1)) %>% 
    mutate(ANIO = as.numeric(ANIO)) %>% 
        mutate(metodo = case_when(ANIO<=2019 ~ "pre", ANIO==2020 ~ "2020", ANIO==2021~ "2021", ANIO>=2022~ "post")) 
@@ -1015,8 +1031,9 @@ g1<-  ggplot(dat, aes(x = ANIO, y = VALOR, alpha=metodo, color=UNIDAD)) +
 legend.text = element_text(size=8)) +
   scale_alpha_manual(values = c(.8, .8, .8, .4)) +
 scale_color_manual(
-    values = c(639, "#a1dd70"),
-    labels = c("Hogares", "Personas")
+    values = c(639, "#a1dd70","#f5b000", "#5a9e3d"),
+    labels = c("Hogares - Met 2006", "Personas - Met 2006",
+               "Hogares - Met 2017", "Personas - Met 2017")
   ) +
     labs(
     color = "",
@@ -1036,12 +1053,19 @@ g1
 ```{r}
 t1 <- 
   base %>% 
-  filter(NOMINDICADOR =="Hogares en situación de indigencia (% de la población total) (INE)" | NOMINDICADOR =="Personas en situación de indigencia (% de la población total) (INE)", 
+  filter(NOMINDICADOR =="Hogares en situación de indigencia (% de la población total) (INE)" | NOMINDICADOR =="Personas en situación de indigencia (% de la población total) (INE)"|
+NOMINDICADOR =="Hogares en situación de indigencia (% de la población total) (INE-Met 2017)" | NOMINDICADOR =="Personas en situación de indigencia (% de la población total) (INE-Met 2017)", 
   CORTE_NUEVA == "Total", 
   URBANORURALUY =="Total País") %>%
+    mutate(UNIDAD = case_when(
+  NOMINDICADOR =="Hogares en situación de indigencia (% de la población total) (INE)" ~ "Porcentaje de hogares en situación de indigencia - Met 2006",
+  NOMINDICADOR =="Personas en situación de indigencia (% de la población total) (INE)" ~ "Porcentaje de personas en situación de indigencia - Met 2006",
+    NOMINDICADOR =="Hogares en situación de indigencia (% de la población total) (INE-Met 2017)" ~ "Porcentaje de hogares en situación de indigencia  - Met 2017",
+  NOMINDICADOR =="Personas en situación de indigencia (% de la población total) (INE-Met 2017)" ~ "Porcentaje de personas en situación de indigencia - Met 2017")) %>%
+
   mutate(VALOR =  round(as.numeric(VALOR)*100, 1)) %>%
   rename(UNIDAD_GEOGRÁFICA = URBANORURALUY)
-t1 <- t1 [,c("NOMINDICADOR","PAIS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
+t1 <- t1 [,c("UNIDAD","PAIS","UNIDAD_GEOGRÁFICA","ANIO","VALOR")]
 
 DT::datatable(t1, extensions =  'Buttons', options =  list(dom = 'Bfrtip',
                                                        buttons = c('copy', 'csv', 'excel', 'print') )

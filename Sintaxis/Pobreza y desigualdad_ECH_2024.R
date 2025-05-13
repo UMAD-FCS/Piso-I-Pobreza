@@ -65,9 +65,14 @@ ech <- ech %>% dplyr::mutate(decilesy_obs = statar::xtile(y_pc, n=10, wt = W_ANO
 
 
 # Pobreza auxiliar
+#Metodología 2006
 ech <- ech %>% dplyr::mutate(pobre_aux = case_when(pobre06 == 0 ~ 2,
                                                    pobre06 == 1 ~ 1))
                                                    
+#Metodología 2017
+ech <- ech %>% dplyr::mutate(pobre_aux2 = case_when(pobre17 == 0 ~ 2,
+                                                   pobre17 == 1 ~ 1))
+
 # Región
 ech <- ech %>% dplyr::mutate(bd_region = case_when(REGION_4 == 1 | REGION_4 == 2 ~ 1,
                                                    REGION_4 == 3 ~ 2,
@@ -403,8 +408,11 @@ for(i in 1:5){
 
 c_quintil <- as.data.frame(a_e_quintil)
 
+
+
 # Situación de pobreza del hogar
 
+#Metodología 2006
 a_pobreza <- function(x) {
   x <- ech_h_svy %>%
     filter(pobre_aux == x) %>%
@@ -419,6 +427,22 @@ for(i in 1:2){
 }     
 
 c_pobreza <- as.data.frame(a_e_pobreza)
+
+#Metodología 2017
+a_pobreza <- function(x) {
+  x <- ech_h_svy %>%
+    filter(pobre_aux2 == x) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(y_pc_d))
+  x <- mean(x$colname)
+}       
+
+a_e_pobreza2 <- numeric()
+
+for(i in 1:2){
+  a_e_pobreza2[i] <- a_pobreza(x = i)
+}     
+
+c_pobreza2 <- as.data.frame(a_e_pobreza2)
 
 # Base motor
 
@@ -457,8 +481,10 @@ CORTE_NUEVA  <- c("Total",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
-                  "Pobreza",
-                  "Pobreza",
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2017",
+                  "Pobreza - Met 2017",
                   "Sexo del jefe(a)",
                   "Sexo del jefe(a)")
 REGION       <- c("Todos",
@@ -473,8 +499,12 @@ REGION       <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
+                  "Todos",
+                  "Todos",
                   "Todos")
 SEXOJEFATURA <-c("Todos",
+                 "Todos",
+                 "Todos",
                  "Todos",
                  "Todos",
                  "Todos",
@@ -496,8 +526,10 @@ POBREZA      <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
-                  "Pobre",
-                  "No pobre",
+                  "Pobre - met 2006",
+                  "No pobre - met 2006",
+                  "Pobre - met 2017",
+                  "No pobre - met 2017",
                   "Todos",
                   "Todos")
 QUINTIL      <- c("Todos",
@@ -509,6 +541,8 @@ QUINTIL      <- c("Todos",
                   "Quintil 3",
                   "Quintil 4",
                   "Quintil 5",
+                  "Todos",
+                  "Todos",
                   "Todos",
                   "Todos",
                   "Todos",
@@ -525,10 +559,12 @@ URBANORURALUY<- c("Total País",
                   "Total País",
                   "Total País",
                   "Total País",
+                  "Total País",
+                  "Total País",
                   "Total País")
 PAIS         <- "Uruguay"
 ANIO         <- 2024
-VALOR        <- c(c_ano, a_e_region, a_e_quintil, a_e_pobreza, a_e_jefe)
+VALOR        <- c(c_ano, a_e_region, a_e_quintil, a_e_pobreza,a_e_pobreza2, a_e_jefe)
 RESPONSABLE  <- "JIMENA PANDOLFI"
 
 ASCENDENCIA   <- c("")
@@ -750,6 +786,7 @@ c_quintil <- as.data.frame(a_e_quintil)
 
 # Situación de pobreza del hogar
 
+#Metodología 2006
 a_pobreza <- function(x) {
   x <- ech_h_svy %>%
     filter(pobre_aux == x) %>%
@@ -764,6 +801,22 @@ for(i in 1:2){
 }     
 
 c_pobreza <- as.data.frame(a_e_pobreza)
+
+#Metodología 2017
+a_pobreza <- function(x) {
+  x <- ech_h_svy %>%
+    filter(pobre_aux2 == x) %>%
+    srvyr::summarise(colname = srvyr::survey_median(y_pc_d))
+  x <- mean(x$colname)
+}       
+
+a_e_pobreza2 <- numeric()
+
+for(i in 1:2){
+  a_e_pobreza2[i] <- a_pobreza(x = i)
+}     
+
+c_pobreza2 <- as.data.frame(a_e_pobreza2)
 
 # Base motor
 
@@ -802,8 +855,10 @@ CORTE_NUEVA  <- c("Total",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
-                  "Pobreza",
-                  "Pobreza",
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2017",
+                  "Pobreza - Met 2017",
                   "Sexo del jefe(a)",
                   "Sexo del jefe(a)")
 REGION       <- c("Todos",
@@ -818,8 +873,12 @@ REGION       <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
+                  "Todos",
+                  "Todos",
                   "Todos")
 SEXOJEFATURA <-c("Todos",
+                 "Todos",
+                 "Todos",
                  "Todos",
                  "Todos",
                  "Todos",
@@ -841,8 +900,10 @@ POBREZA      <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
-                  "Pobre",
-                  "No pobre",
+                  "Pobre - Met 2006",
+                  "No pobre - Met 2006",
+                  "Pobre - Met 2017",
+                  "No pobre - Met 2017",
                   "Todos",
                   "Todos")
 QUINTIL      <- c("Todos",
@@ -854,6 +915,8 @@ QUINTIL      <- c("Todos",
                   "Quintil 3",
                   "Quintil 4",
                   "Quintil 5",
+                  "Todos",
+                  "Todos",
                   "Todos",
                   "Todos",
                   "Todos",
@@ -870,10 +933,12 @@ URBANORURALUY<- c("Total País",
                   "Total País",
                   "Total País",
                   "Total País",
+                  "Total País",
+                  "Total País",
                   "Total País")
 PAIS         <- "Uruguay"
 ANIO         <- 2024
-VALOR        <- c(c_ano, a_e_region, a_e_quintil, a_e_pobreza, a_e_jefe)
+VALOR        <- c(c_ano, a_e_region, a_e_quintil, a_e_pobreza, a_e_pobreza2, a_e_jefe)
 RESPONSABLE  <- "JIMENA PANDOLFI"
 
 ASCENDENCIA   <- c("")
@@ -2113,6 +2178,7 @@ for(i in 1:5){
 
 # Situación de pobreza del hogar
 
+#Metodología 2006
 a_pobreza <- function(x) {
   x <- ech_h_svy %>%
     filter(pobre_aux == x) %>%
@@ -2126,6 +2192,19 @@ for(i in 1:2){
   a_e_pobreza[i] <- a_pobreza(x = i)
 }         
 
+#Metodología 2017
+a_pobreza <- function(x) {
+  x <- ech_h_svy %>%
+    filter(pobre_aux2 == x) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(NBI_2011))
+  x <- mean(x$colname)
+}       
+
+a_e_pobreza2 <- numeric()
+
+for(i in 1:2){
+  a_e_pobreza2[i] <- a_pobreza(x = i)
+}         
 
 # Base motor
 
@@ -2163,12 +2242,16 @@ CORTE_NUEVA  <- c("Total",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
-                  "Pobreza",
-                  "Pobreza")
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2017",
+                  "Pobreza - Met 2017")
 REGION       <- c("Todos",
                   "Urbano (más de 5.000 habitantes)",
                   "Urbano (menos de 5.000 habitantes)",
                   "Rural disperso",
+                  "Todos",
+                  "Todos",
                   "Todos",
                   "Todos",
                   "Todos",
@@ -2185,8 +2268,10 @@ POBREZA      <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
-                  "Pobre",
-                  "No pobre")
+                  "Pobre - Met 2006",
+                  "No pobre - Met 2006",
+                  "Pobre - Met 2017",
+                  "No pobre - Met 2017")
 QUINTIL      <- c("Todos",
                   "Todos",
                   "Todos",
@@ -2197,10 +2282,12 @@ QUINTIL      <- c("Todos",
                   "Quintil 4",
                   "Quintil 5",
                   "Todos",
+                  "Todos",
+                  "Todos",
                   "Todos")
 PAIS         <- "Uruguay"
 ANIO         <- 2024
-VALOR        <- c(a_ano, a_e_region, a_e_quintil, a_e_pobreza)
+VALOR        <- c(a_ano, a_e_region, a_e_quintil, a_e_pobreza, a_e_pobreza2)
 RESPONSABLE  <- "JIMENA PANDOLFI"
 
 
@@ -2255,6 +2342,7 @@ for(i in 1:5){
 
 # Situación de pobreza del hogar
 
+#Metodoloía 2006
 a_pobreza <- function(x) {
   x <- ech_svy %>%
     filter(pobre_aux == x) %>%
@@ -2268,6 +2356,19 @@ for(i in 1:2){
   a_e_pobreza[i] <- a_pobreza(x = i)
 }         
 
+#Metodoloía 2017
+a_pobreza <- function(x) {
+  x <- ech_svy %>%
+    filter(pobre_aux2 == x) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(NBI_2011))
+  x <- mean(x$colname)
+}       
+
+a_e_pobreza2 <- numeric()
+
+for(i in 1:2){
+  a_e_pobreza2[i] <- a_pobreza(x = i)
+}         
 
 # Tramo de edad
 
@@ -2352,8 +2453,10 @@ CORTE_NUEVA  <- c("Total",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
-                  "Pobreza",
-                  "Pobreza",
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2017",
+                  "Pobreza - Met 2017",
                   "Tramo de edad",
                   "Tramo de edad",
                   "Tramo de edad",
@@ -2386,6 +2489,8 @@ REGION       <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
+                  "Todos",
+                  "Todos",
                   "Todos")
 POBREZA      <- c("Todos",
                   "Todos",
@@ -2396,8 +2501,10 @@ POBREZA      <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
-                  "Pobre",
-                  "No pobre",
+                  "Pobre - Met 2006",
+                  "No pobre - Met 2006",
+                  "Pobre - Met 2017",
+                  "No pobre - Met 2017",
                   "Todos",
                   "Todos",
                   "Todos",
@@ -2430,8 +2537,12 @@ QUINTIL      <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
+                  "Todos",
+                  "Todos",
                   "Todos")
 TRAMO        <- c("Todos",
+                  "Todos",
+                  "Todos",
                   "Todos",
                   "Todos",
                   "Todos",
@@ -2454,6 +2565,8 @@ TRAMO        <- c("Todos",
                   "Todos",
                   "Todos")
 SEXO          <- c("Todos",
+                  "Todos",
+                  "Todos",
                   "Todos",
                   "Todos",
                   "Todos",
@@ -2495,11 +2608,13 @@ ASCENDENCIA   <- c("Todos",
                    "Todos",
                    "Todos",
                    "Todos",
+                   "Todos",
+                   "Todos",
                    "Afro",
                    "No afro")
 PAIS         <- "Uruguay"
 ANIO         <- 2024
-VALOR        <- c(a_ano, a_e_region, a_e_quintil, a_e_pobreza, a_e_edad, a_e_sexo, a_e_afro)
+VALOR        <- c(a_ano, a_e_region, a_e_quintil, a_e_pobreza, a_e_pobreza2, a_e_edad, a_e_sexo, a_e_afro)
 RESPONSABLE  <- "JIMENA PANDOLFI"
 
 
@@ -2564,6 +2679,7 @@ for(i in 1:5){
 
 # Situación de pobreza del hogar
 
+#Metodología 2006
 a_pobreza <- function(x) {
   x <- ech_h_svy %>%
     filter(pobre_aux == x) %>%
@@ -2577,6 +2693,19 @@ for(i in 1:2){
   a_e_pobreza[i] <- a_pobreza(x = i)
 }         
 
+#Metodología 2017
+a_pobreza <- function(x) {
+  x <- ech_h_svy %>%
+    filter(pobre_aux2 == x) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(bd_hacinamiento2))
+  x <- mean(x$colname)
+}       
+
+a_e_pobreza2 <- numeric()
+
+for(i in 1:2){
+  a_e_pobreza2[i] <- a_pobreza(x = i)
+}         
 
 # Base motor
 
@@ -2614,12 +2743,16 @@ CORTE_NUEVA  <- c("Total",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
-                  "Pobreza",
-                  "Pobreza")
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2017",
+                  "Pobreza - Met 2017")
 REGION       <- c("Todos",
                   "Urbano (más de 5.000 habitantes)",
                   "Urbano (menos de 5.000 habitantes)",
                   "Rural disperso",
+                  "Todos",
+                  "Todos",
                   "Todos",
                   "Todos",
                   "Todos",
@@ -2636,8 +2769,10 @@ POBREZA      <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
-                  "Pobre",
-                  "No pobre")
+                  "Pobre - Met 2006",
+                  "No pobre - Met 2006",
+                  "Pobre - Met 2017",
+                  "No pobre - Met 2017")
 QUINTIL      <- c("Todos",
                   "Todos",
                   "Todos",
@@ -2648,10 +2783,12 @@ QUINTIL      <- c("Todos",
                   "Quintil 4",
                   "Quintil 5",
                   "Todos",
+                  "Todos",
+                  "Todos",
                   "Todos")
 PAIS         <- "Uruguay"
 ANIO         <- 2024
-VALOR        <- c(a_ano, a_e_region, a_e_quintil, a_e_pobreza)
+VALOR        <- c(a_ano, a_e_region, a_e_quintil, a_e_pobreza, a_e_pobreza2)
 RESPONSABLE  <- "JIMENA PANDOLFI"
 
 
@@ -2787,6 +2924,7 @@ for(i in 1:5){
 
 # Situación de pobreza del hogar
 
+#Metodología 2006
 a_pobreza <- function(x) {
   x <- ech_svy %>%
     filter(pobre_aux == x) %>%
@@ -2798,6 +2936,20 @@ a_e_pobreza <- numeric()
 
 for(i in 1:2){
   a_e_pobreza[i] <- a_pobreza(x = i)
+}         
+
+#Metodología 2017
+a_pobreza <- function(x) {
+  x <- ech_svy %>%
+    filter(pobre_aux2 == x) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(bd_hacinamiento2))
+  x <- mean(x$colname)
+}       
+
+a_e_pobreza2 <- numeric()
+
+for(i in 1:2){
+  a_e_pobreza2[i] <- a_pobreza(x = i)
 }         
 
 
@@ -2884,8 +3036,10 @@ CORTE_NUEVA  <- c("Total",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
-                  "Pobreza",
-                  "Pobreza",
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2017",
+                  "Pobreza - Met 2017",
                   "Tramo de edad",
                   "Tramo de edad",
                   "Tramo de edad",
@@ -2918,6 +3072,8 @@ REGION       <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
+                  "Todos",
+                  "Todos",
                   "Todos")
 POBREZA      <- c("Todos",
                   "Todos",
@@ -2928,8 +3084,10 @@ POBREZA      <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
-                  "Pobre",
-                  "No pobre",
+                  "Pobre - Met 2006",
+                  "No pobre - Met 2006",
+                  "Pobre - Met 2017",
+                  "No pobre - Met 2017",
                   "Todos",
                   "Todos",
                   "Todos",
@@ -2974,6 +3132,8 @@ TRAMO        <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
+                  "Todos",
+                  "Todos",
                   "De 0 a 5 años",
                   "De 6 a 12 años",
                   "De 13 a 18 años",
@@ -2986,6 +3146,8 @@ TRAMO        <- c("Todos",
                   "Todos",
                   "Todos")
 SEXO          <- c("Todos",
+                   "Todos",
+                   "Todos",
                    "Todos",
                    "Todos",
                    "Todos",
@@ -3027,11 +3189,13 @@ ASCENDENCIA   <- c("Todos",
                    "Todos",
                    "Todos",
                    "Todos",
+                   "Todos",
+                   "Todos",
                    "Afro",
                    "No afro")
 PAIS         <- "Uruguay"
 ANIO         <- 2024
-VALOR        <- c(a_ano, a_e_region, a_e_quintil, a_e_pobreza, a_e_edad, a_e_sexo, a_e_afro)
+VALOR        <- c(a_ano, a_e_region, a_e_quintil, a_e_pobreza, a_e_pobreza2, a_e_edad, a_e_sexo, a_e_afro)
 RESPONSABLE  <- "JIMENA PANDOLFI"
 
 m146_tp <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY,	PAIS,	ANIO,	VALOR,	RESPONSABLE)	
@@ -3248,6 +3412,7 @@ for(i in 1:5){
 
 # Situación de pobreza del hogar
 
+#Metodología 2006
 a_pobreza <- function(x) {
   x <- ech_h_svy %>%
     filter(pobre_aux == x) %>%
@@ -3259,6 +3424,20 @@ a_e_pobreza <- numeric()
 
 for(i in 1:2){
   a_e_pobreza[i] <- a_pobreza(x = i)
+}         
+
+#Metodología 2017
+a_pobreza <- function(x) {
+  x <- ech_h_svy %>%
+    filter(pobre_aux2 == x) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(bd_hacinamiento1))
+  x <- mean(x$colname)
+}       
+
+a_e_pobreza2 <- numeric()
+
+for(i in 1:2){
+  a_e_pobreza2[i] <- a_pobreza(x = i)
 }         
 
 
@@ -3298,12 +3477,16 @@ CORTE_NUEVA  <- c("Total",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
-                  "Pobreza",
-                  "Pobreza")
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2017",
+                  "Pobreza - Met 2017")
 REGION       <- c("Todos",
                   "Urbano (más de 5.000 habitantes)",
                   "Urbano (menos de 5.000 habitantes)",
                   "Rural disperso",
+                  "Todos",
+                  "Todos",
                   "Todos",
                   "Todos",
                   "Todos",
@@ -3320,8 +3503,10 @@ POBREZA      <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
-                  "Pobre",
-                  "No pobre")
+                  "Pobre - Met 2006",
+                  "No pobre - Met 2006",
+                  "Pobre - Met 2017",
+                  "No pobre - Met 2017")
 QUINTIL      <- c("Todos",
                   "Todos",
                   "Todos",
@@ -3332,10 +3517,12 @@ QUINTIL      <- c("Todos",
                   "Quintil 4",
                   "Quintil 5",
                   "Todos",
+                  "Todos",
+                  "Todos",
                   "Todos")
 PAIS         <- "Uruguay"
 ANIO         <- 2024
-VALOR        <- c(a_ano, a_e_region, a_e_quintil, a_e_pobreza)
+VALOR        <- c(a_ano, a_e_region, a_e_quintil, a_e_pobreza, a_e_pobreza2)
 RESPONSABLE  <- "JIMENA PANDOLFI"
 
 
@@ -3470,6 +3657,7 @@ for(i in 1:5){
 
 # Situación de pobreza del hogar
 
+#Metodología 2006
 a_pobreza <- function(x) {
   x <- ech_svy %>%
     filter(pobre_aux == x) %>%
@@ -3483,6 +3671,19 @@ for(i in 1:2){
   a_e_pobreza[i] <- a_pobreza(x = i)
 }         
 
+#Metodología 2017
+a_pobreza <- function(x) {
+  x <- ech_svy %>%
+    filter(pobre_aux2 == x) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(bd_hacinamiento1))
+  x <- mean(x$colname)
+}       
+
+a_e_pobreza2 <- numeric()
+
+for(i in 1:2){
+  a_e_pobreza2[i] <- a_pobreza(x = i)
+}         
 
 # Tramo de edad
 
@@ -3567,8 +3768,10 @@ CORTE_NUEVA  <- c("Total",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
-                  "Pobreza",
-                  "Pobreza",
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2017",
+                  "Pobreza - Met 2017",
                   "Tramo de edad",
                   "Tramo de edad",
                   "Tramo de edad",
@@ -3611,8 +3814,10 @@ POBREZA      <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
-                  "Pobre",
-                  "No pobre",
+                  "Pobre - Met 2006",
+                  "No pobre - Met 2006",
+                  "Pobre - Met 2017",
+                  "No pobre - Met 2017",
                   "Todos",
                   "Todos",
                   "Todos",
@@ -3645,8 +3850,12 @@ QUINTIL      <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
+                  "Todos",
+                  "Todos",
                   "Todos")
 TRAMO        <- c("Todos",
+                  "Todos",
+                  "Todos",
                   "Todos",
                   "Todos",
                   "Todos",
@@ -3669,6 +3878,8 @@ TRAMO        <- c("Todos",
                   "Todos",
                   "Todos")
 SEXO          <- c("Todos",
+                   "Todos",
+                   "Todos",
                    "Todos",
                    "Todos",
                    "Todos",
@@ -3710,11 +3921,13 @@ ASCENDENCIA   <- c("Todos",
                    "Todos",
                    "Todos",
                    "Todos",
+                   "Todos",
+                   "Todos",
                    "Afro",
                    "No afro")
 PAIS         <- "Uruguay"
 ANIO         <- 2024
-VALOR        <- c(a_ano, a_e_region, a_e_quintil, a_e_pobreza, a_e_edad, a_e_sexo, a_e_afro)
+VALOR        <- c(a_ano, a_e_region, a_e_quintil, a_e_pobreza, a_e_pobreza2, a_e_edad, a_e_sexo, a_e_afro)
 RESPONSABLE  <- "JIMENA PANDOLFI"
 
 
@@ -3928,6 +4141,7 @@ for(i in 1:5){
 
 # Situación de pobreza del hogar
 
+#Metodología 2006
 a_pobreza <- function(x) {
   x <- ech_h_svy %>%
     filter(pobre_aux == x) %>%
@@ -3941,6 +4155,19 @@ for(i in 1:2){
   a_e_pobreza[i] <- a_pobreza(x = i)
 }         
 
+#Metodología 2017
+a_pobreza <- function(x) {
+  x <- ech_h_svy %>%
+    filter(pobre_aux2 == x) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(NBI_materialidad11))
+  x <- mean(x$colname)
+}       
+
+a_e_pobreza2 <- numeric()
+
+for(i in 1:2){
+  a_e_pobreza2[i] <- a_pobreza(x = i)
+}         
 
 # Base motor
 
@@ -3978,12 +4205,16 @@ CORTE_NUEVA  <- c("Total",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
-                  "Pobreza",
-                  "Pobreza")
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2017",
+                  "Pobreza - Met 2017")
 REGION       <- c("Todos",
                   "Urbano (más de 5.000 habitantes)",
                   "Urbano (menos de 5.000 habitantes)",
                   "Rural disperso",
+                  "Todos",
+                  "Todos",
                   "Todos",
                   "Todos",
                   "Todos",
@@ -4000,8 +4231,10 @@ POBREZA      <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
-                  "Pobre",
-                  "No pobre")
+                  "Pobre - Met 2006",
+                  "No pobre - Met 2006",
+                  "Pobre - Met 2017",
+                  "No pobre - Met 2017")
 QUINTIL      <- c("Todos",
                   "Todos",
                   "Todos",
@@ -4012,10 +4245,12 @@ QUINTIL      <- c("Todos",
                   "Quintil 4",
                   "Quintil 5",
                   "Todos",
+                  "Todos",
+                  "Todos",
                   "Todos")
 PAIS         <- "Uruguay"
 ANIO         <- 2024
-VALOR        <- c(a_ano, a_e_region, a_e_quintil, a_e_pobreza)
+VALOR        <- c(a_ano, a_e_region, a_e_quintil, a_e_pobreza, a_e_pobreza2)
 RESPONSABLE  <- "JIMENA PANDOLFI"
 
 m149 <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY,	PAIS,	ANIO,	VALOR,	RESPONSABLE)	
@@ -4069,6 +4304,7 @@ for(i in 1:5){
 
 # Situación de pobreza del hogar
 
+#Metodología 2006
 b_pobreza <- function(x) {
   x <- ech_svy %>%
     filter(pobre_aux == x) %>%
@@ -4082,6 +4318,19 @@ for(i in 1:2){
   a_e_pobreza[i] <- b_pobreza(x = i)
 }         
 
+#Metodología 2017
+b_pobreza <- function(x) {
+  x <- ech_svy %>%
+    filter(pobre_aux2 == x) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(NBI_materialidad11))
+  x <- mean(x$colname)
+}       
+
+a_e_pobreza2 <- numeric()
+
+for(i in 1:2){
+  a_e_pobreza2[i] <- b_pobreza(x = i)
+}         
 
 # Tramo de edad
 
@@ -4166,8 +4415,10 @@ CORTE_NUEVA  <- c("Total",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
-                  "Pobreza",
-                  "Pobreza",
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2017",
+                  "Pobreza - Met 2017",
                   "Tramo de edad",
                   "Tramo de edad",
                   "Tramo de edad",
@@ -4200,6 +4451,8 @@ REGION       <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
+                  "Todos",
+                  "Todos",
                   "Todos")
 POBREZA      <- c("Todos",
                   "Todos",
@@ -4210,8 +4463,10 @@ POBREZA      <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
-                  "Pobre",
-                  "No pobre",
+                  "Pobre - Met 2006",
+                  "No pobre - Met 2006",
+                  "Pobre - Met 2017",
+                  "No pobre - Met 2017",
                   "Todos",
                   "Todos",
                   "Todos",
@@ -4244,8 +4499,12 @@ QUINTIL      <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
+                  "Todos",
+                  "Todos",
                   "Todos")
 TRAMO        <- c("Todos",
+                  "Todos",
+                  "Todos",
                   "Todos",
                   "Todos",
                   "Todos",
@@ -4268,6 +4527,8 @@ TRAMO        <- c("Todos",
                   "Todos",
                   "Todos")
 SEXO          <- c("Todos",
+                   "Todos",
+                   "Todos",
                    "Todos",
                    "Todos",
                    "Todos",
@@ -4309,11 +4570,13 @@ ASCENDENCIA   <- c("Todos",
                    "Todos",
                    "Todos",
                    "Todos",
+                   "Todos",
+                   "Todos",
                    "Afro",
                    "No afro")
 PAIS         <- "Uruguay"
 ANIO         <- 2024
-VALOR        <- c(c_ano, a_e_region, a_e_quintil, a_e_pobreza, a_e_edad, a_e_sexo, a_e_afro)
+VALOR        <- c(c_ano, a_e_region, a_e_quintil, a_e_pobreza, a_e_pobreza2, a_e_edad, a_e_sexo, a_e_afro)
 RESPONSABLE  <- "JIMENA PANDOLFI"
 
 m150 <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY,	PAIS,	ANIO,	VALOR,	RESPONSABLE)	
@@ -4367,6 +4630,7 @@ for(i in 1:5){
 
 # Situación de pobreza del hogar
 
+#Metodología 2006
 b_pobreza <- function(x) {
   x <- ech_h_svy %>%
     filter(pobre_aux == x) %>%
@@ -4380,6 +4644,19 @@ for(i in 1:2){
   a_e_pobreza[i] <- b_pobreza(x = i)
 }         
 
+#Metodología 2017
+b_pobreza <- function(x) {
+  x <- ech_h_svy %>%
+    filter(pobre_aux2 == x) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(NBI_agua11))
+  x <- mean(x$colname)
+}       
+
+a_e_pobreza2 <- numeric()
+
+for(i in 1:2){
+  a_e_pobreza2[i] <- b_pobreza(x = i)
+}         
 
 # Base motor
 
@@ -4417,12 +4694,16 @@ CORTE_NUEVA  <- c("Total",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
-                  "Pobreza",
-                  "Pobreza")
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2017",
+                  "Pobreza - Met 2017")
 REGION       <- c("Todos",
                   "Urbano (más de 5.000 habitantes)",
                   "Urbano (menos de 5.000 habitantes)",
                   "Rural disperso",
+                  "Todos",
+                  "Todos",
                   "Todos",
                   "Todos",
                   "Todos",
@@ -4439,8 +4720,10 @@ POBREZA      <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
-                  "Pobre",
-                  "No pobre")
+                  "Pobre - Met 2006",
+                  "No pobre - Met 2006",
+                  "Pobre - Met 2017",
+                  "No pobre - Met 2017")
 QUINTIL      <- c("Todos",
                   "Todos",
                   "Todos",
@@ -4451,10 +4734,12 @@ QUINTIL      <- c("Todos",
                   "Quintil 4",
                   "Quintil 5",
                   "Todos",
+                  "Todos",
+                  "Todos",
                   "Todos")
 PAIS         <- "Uruguay"
 ANIO         <- 2024
-VALOR        <- c(c_ano, a_e_region, a_e_quintil, a_e_pobreza)
+VALOR        <- c(c_ano, a_e_region, a_e_quintil, a_e_pobreza, a_e_pobreza2)
 RESPONSABLE  <- "JIMENA PANDOLFI"
 
 m151 <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY,	PAIS,	ANIO,	VALOR,	RESPONSABLE)	
@@ -4508,6 +4793,7 @@ for(i in 1:5){
 
 # Situación de pobreza del hogar
 
+#Metodología 2006
 a_pobreza <- function(x) {
   x <- ech_svy %>%
     filter(pobre_aux == x) %>%
@@ -4521,6 +4807,19 @@ for(i in 1:2){
   a_e_pobreza[i] <- a_pobreza(x = i)
 }         
 
+#Metodología 2017
+a_pobreza <- function(x) {
+  x <- ech_svy %>%
+    filter(pobre_aux2 == x) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(NBI_agua11))
+  x <- mean(x$colname)
+}       
+
+a_e_pobreza2 <- numeric()
+
+for(i in 1:2){
+  a_e_pobreza2[i] <- a_pobreza(x = i)
+}         
 
 # Tramo de edad
 
@@ -4605,8 +4904,10 @@ CORTE_NUEVA  <- c("Total",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
-                  "Pobreza",
-                  "Pobreza",
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2017",
+                  "Pobreza - Met 2017",
                   "Tramo de edad",
                   "Tramo de edad",
                   "Tramo de edad",
@@ -4639,6 +4940,8 @@ REGION       <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
+                  "Todos",
+                  "Todos",
                   "Todos")
 POBREZA      <- c("Todos",
                   "Todos",
@@ -4649,8 +4952,10 @@ POBREZA      <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
-                  "Pobre",
-                  "No pobre",
+                  "Pobre - Met 2006",
+                  "No pobre - Met 2006",
+                  "Pobre - Met 2017",
+                  "No pobre - Met 2017",
                   "Todos",
                   "Todos",
                   "Todos",
@@ -4683,8 +4988,12 @@ QUINTIL      <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
+                  "Todos",
+                  "Todos",
                   "Todos")
 TRAMO        <- c("Todos",
+                  "Todos",
+                  "Todos",
                   "Todos",
                   "Todos",
                   "Todos",
@@ -4707,6 +5016,8 @@ TRAMO        <- c("Todos",
                   "Todos",
                   "Todos")
 SEXO          <- c("Todos",
+                   "Todos",
+                   "Todos",
                    "Todos",
                    "Todos",
                    "Todos",
@@ -4748,11 +5059,13 @@ ASCENDENCIA   <- c("Todos",
                    "Todos",
                    "Todos",
                    "Todos",
+                   "Todos",
+                   "Todos",
                    "Afro",
                    "No afro")
 PAIS         <- "Uruguay"
 ANIO         <- 2024
-VALOR        <- c(c_ano, a_e_region, a_e_quintil, a_e_pobreza, a_e_edad, a_e_sexo, a_e_afro)
+VALOR        <- c(c_ano, a_e_region, a_e_quintil, a_e_pobreza, a_e_pobreza2, a_e_edad, a_e_sexo, a_e_afro)
 RESPONSABLE  <- "JIMENA PANDOLFI"
 
 m152 <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY,	PAIS,	ANIO,	VALOR,	RESPONSABLE)	
@@ -4806,6 +5119,7 @@ for(i in 1:5){
 
 # Situación de pobreza del hogar
 
+#Metodología 2006
 a_pobreza <- function(x) {
   x <- ech_h_svy %>%
     filter(pobre_aux == x) %>%
@@ -4819,6 +5133,19 @@ for(i in 1:2){
   a_e_pobreza[i] <- a_pobreza(x = i)
 }         
 
+#Metodología 2017
+a_pobreza <- function(x) {
+  x <- ech_h_svy %>%
+    filter(pobre_aux2 == x) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(NBI_servhigien11))
+  x <- mean(x$colname)
+}       
+
+a_e_pobreza2 <- numeric()
+
+for(i in 1:2){
+  a_e_pobreza2[i] <- a_pobreza(x = i)
+}         
 
 # Base motor
 
@@ -4856,12 +5183,16 @@ CORTE_NUEVA  <- c("Total",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
-                  "Pobreza",
-                  "Pobreza")
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2017",
+                  "Pobreza - Met 2017")
 REGION       <- c("Todos",
                   "Urbano (más de 5.000 habitantes)",
                   "Urbano (menos de 5.000 habitantes)",
                   "Rural disperso",
+                  "Todos",
+                  "Todos",
                   "Todos",
                   "Todos",
                   "Todos",
@@ -4878,8 +5209,10 @@ POBREZA      <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
-                  "Pobre",
-                  "No pobre")
+                  "Pobre - Met 2006",
+                  "No pobre - Met 2006",
+                  "Pobre - Met 2017",
+                  "No pobre - Met 2017")
 QUINTIL      <- c("Todos",
                   "Todos",
                   "Todos",
@@ -4890,10 +5223,12 @@ QUINTIL      <- c("Todos",
                   "Quintil 4",
                   "Quintil 5",
                   "Todos",
+                  "Todos",
+                  "Todos",
                   "Todos")
 PAIS         <- "Uruguay"
 ANIO         <- 2024
-VALOR        <- c(c_ano, a_e_region, a_e_quintil, a_e_pobreza)
+VALOR        <- c(c_ano, a_e_region, a_e_quintil, a_e_pobreza, a_e_pobreza2)
 RESPONSABLE  <- "JIMENA PANDOLFI"
 
 m153 <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY,	PAIS,	ANIO,	VALOR,	RESPONSABLE)	
@@ -4949,6 +5284,7 @@ for(i in 1:5){
 
 # Situación de pobreza del hogar
 
+#Metodología 2006
 a_pobreza <- function(x) {
   x <- ech_svy %>%
     filter(pobre_aux == x) %>%
@@ -4962,6 +5298,19 @@ for(i in 1:2){
   a_e_pobreza[i] <- a_pobreza(x = i)
 }         
 
+#Metodología 2017
+a_pobreza <- function(x) {
+  x <- ech_svy %>%
+    filter(pobre_aux2 == x) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(NBI_servhigien11))
+  x <- mean(x$colname)
+}       
+
+a_e_pobreza2 <- numeric()
+
+for(i in 1:2){
+  a_e_pobreza2[i] <- a_pobreza(x = i)
+}         
 
 # Tramo de edad
 
@@ -5046,8 +5395,10 @@ CORTE_NUEVA  <- c("Total",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
-                  "Pobreza",
-                  "Pobreza",
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2017",
+                  "Pobreza - Met 2017",
                   "Tramo de edad",
                   "Tramo de edad",
                   "Tramo de edad",
@@ -5080,6 +5431,8 @@ REGION       <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
+                  "Todos",
+                  "Todos",
                   "Todos")
 POBREZA      <- c("Todos",
                   "Todos",
@@ -5090,8 +5443,10 @@ POBREZA      <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
-                  "Pobre",
-                  "No pobre",
+                  "Pobre - Met 2006",
+                  "No pobre - Met 2006",
+                  "Pobre - Met 2017",
+                  "No pobre - Met 2017",
                   "Todos",
                   "Todos",
                   "Todos",
@@ -5124,8 +5479,12 @@ QUINTIL      <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
+                  "Todos",
+                  "Todos",
                   "Todos")
 TRAMO        <- c("Todos",
+                  "Todos",
+                  "Todos",
                   "Todos",
                   "Todos",
                   "Todos",
@@ -5148,6 +5507,8 @@ TRAMO        <- c("Todos",
                   "Todos",
                   "Todos")
 SEXO          <- c("Todos",
+                   "Todos",
+                   "Todos",
                    "Todos",
                    "Todos",
                    "Todos",
@@ -5189,11 +5550,13 @@ ASCENDENCIA   <- c("Todos",
                    "Todos",
                    "Todos",
                    "Todos",
+                   "Todos",
+                   "Todos",
                    "Afro",
                    "No afro")
 PAIS         <- "Uruguay"
 ANIO         <- 2024
-VALOR        <- c(c_ano, a_e_region, a_e_quintil, a_e_pobreza, a_e_edad, a_e_sexo, a_e_afro)
+VALOR        <- c(c_ano, a_e_region, a_e_quintil, a_e_pobreza, a_e_pobreza2, a_e_edad, a_e_sexo, a_e_afro)
 RESPONSABLE  <- "JIMENA PANDOLFI"
 
 m154 <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY,	PAIS,	ANIO,	VALOR,	RESPONSABLE)	
@@ -5248,6 +5611,7 @@ for(i in 1:5){
 
 # Situación de pobreza del hogar
 
+#Metodología 2006
 a_pobreza <- function(x) {
   x <- ech_h_svy %>%
     filter(pobre_aux == x) %>%
@@ -5261,6 +5625,19 @@ for(i in 1:2){
   a_e_pobreza[i] <- a_pobreza(x = i)
 }         
 
+#Metodología 2017
+a_pobreza <- function(x) {
+  x <- ech_h_svy %>%
+    filter(pobre_aux2 == x) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(NBI_artefactos11))
+  x <- mean(x$colname)
+}       
+
+a_e_pobreza2 <- numeric()
+
+for(i in 1:2){
+  a_e_pobreza2[i] <- a_pobreza(x = i)
+}         
 
 # Base motor
 
@@ -5298,12 +5675,16 @@ CORTE_NUEVA  <- c("Total",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
-                  "Pobreza",
-                  "Pobreza")
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2017",
+                  "Pobreza - Met 2017")
 REGION       <- c("Todos",
                   "Urbano (más de 5.000 habitantes)",
                   "Urbano (menos de 5.000 habitantes)",
                   "Rural disperso",
+                  "Todos",
+                  "Todos",
                   "Todos",
                   "Todos",
                   "Todos",
@@ -5320,8 +5701,10 @@ POBREZA      <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
-                  "Pobre",
-                  "No pobre")
+                  "Pobre - Met 2006",
+                  "No pobre - Met 2006",
+                  "Pobre - Met 2017",
+                  "No pobre - Met 2017")
 QUINTIL      <- c("Todos",
                   "Todos",
                   "Todos",
@@ -5332,10 +5715,12 @@ QUINTIL      <- c("Todos",
                   "Quintil 4",
                   "Quintil 5",
                   "Todos",
+                  "Todos",
+                  "Todos",
                   "Todos")
 PAIS         <- "Uruguay"
 ANIO         <- 2024
-VALOR        <- c(c_ano, a_e_region, a_e_quintil, a_e_pobreza)
+VALOR        <- c(c_ano, a_e_region, a_e_quintil, a_e_pobreza, a_e_pobreza2)
 RESPONSABLE  <- "JIMENA PANDOLFI"
 
 m155 <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY,	PAIS,	ANIO,	VALOR,	RESPONSABLE)	
@@ -5390,6 +5775,7 @@ for(i in 1:5){
 
 # Situación de pobreza del hogar
 
+#Metodología 2006
 a_pobreza <- function(x) {
   x <- ech_svy %>%
     filter(pobre_aux == x) %>%
@@ -5403,6 +5789,19 @@ for(i in 1:2){
   a_e_pobreza[i] <- a_pobreza(x = i)
 }         
 
+#Metodología 2017
+a_pobreza <- function(x) {
+  x <- ech_svy %>%
+    filter(pobre_aux2 == x) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(NBI_artefactos11))
+  x <- mean(x$colname)
+}       
+
+a_e_pobreza2 <- numeric()
+
+for(i in 1:2){
+  a_e_pobreza2[i] <- a_pobreza(x = i)
+}         
 
 # Tramo de edad
 
@@ -5487,8 +5886,10 @@ CORTE_NUEVA  <- c("Total",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
-                  "Pobreza",
-                  "Pobreza",
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2017",
+                  "Pobreza - Met 2017",
                   "Tramo de edad",
                   "Tramo de edad",
                   "Tramo de edad",
@@ -5521,6 +5922,8 @@ REGION       <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
+                  "Todos",
+                  "Todos",
                   "Todos")
 POBREZA      <- c("Todos",
                   "Todos",
@@ -5531,8 +5934,10 @@ POBREZA      <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
-                  "Pobre",
-                  "No pobre",
+                  "Pobre - Met 2006",
+                  "No pobre - Met 2006",
+                  "Pobre - Met 2017",
+                  "No pobre - Met 2017",
                   "Todos",
                   "Todos",
                   "Todos",
@@ -5565,8 +5970,12 @@ QUINTIL      <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
+                  "Todos",
+                  "Todos",
                   "Todos")
 TRAMO        <- c("Todos",
+                  "Todos",
+                  "Todos",
                   "Todos",
                   "Todos",
                   "Todos",
@@ -5589,6 +5998,8 @@ TRAMO        <- c("Todos",
                   "Todos",
                   "Todos")
 SEXO          <- c("Todos",
+                   "Todos",
+                   "Todos",
                    "Todos",
                    "Todos",
                    "Todos",
@@ -5630,11 +6041,13 @@ ASCENDENCIA   <- c("Todos",
                    "Todos",
                    "Todos",
                    "Todos",
+                   "Todos",
+                   "Todos",
                    "Afro",
                    "No afro")
 PAIS         <- "Uruguay"
 ANIO         <- 2024
-VALOR        <- c(c_ano, a_e_region, a_e_quintil, a_e_pobreza, a_e_edad, a_e_sexo, a_e_afro)
+VALOR        <- c(c_ano, a_e_region, a_e_quintil, a_e_pobreza, a_e_pobreza2, a_e_edad, a_e_sexo, a_e_afro)
 RESPONSABLE  <- "JIMENA PANDOLFI"
 
 m156 <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY,	PAIS,	ANIO,	VALOR,	RESPONSABLE)	
@@ -5689,6 +6102,7 @@ for(i in 1:5){
 
 # Situación de pobreza del hogar
 
+#Metodología 2006
 a_pobreza <- function(x) {
   x <- ech_h_svy %>%
     filter(pobre_aux == x) %>%
@@ -5700,6 +6114,20 @@ a_e_pobreza <- numeric()
 
 for(i in 1:2){
   a_e_pobreza[i] <- a_pobreza(x = i)
+}         
+
+#Metodología 2017
+a_pobreza <- function(x) {
+  x <- ech_h_svy %>%
+    filter(pobre_aux2 == x) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(NBI_educacion11))
+  x <- mean(x$colname)
+}       
+
+a_e_pobreza2 <- numeric()
+
+for(i in 1:2){
+  a_e_pobreza2[i] <- a_pobreza(x = i)
 }         
 
 
@@ -5739,12 +6167,16 @@ CORTE_NUEVA  <- c("Total",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
-                  "Pobreza",
-                  "Pobreza")
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2017",
+                  "Pobreza - Met 2017")
 REGION       <- c("Todos",
                   "Urbano (más de 5.000 habitantes)",
                   "Urbano (menos de 5.000 habitantes)",
                   "Rural disperso",
+                  "Todos",
+                  "Todos",
                   "Todos",
                   "Todos",
                   "Todos",
@@ -5761,8 +6193,10 @@ POBREZA      <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
-                  "Pobre",
-                  "No pobre")
+                  "Pobre - Met 2006",
+                  "No pobre - Met 2006",
+                  "Pobre - Met 2017",
+                  "No pobre - Met 2017")
 QUINTIL      <- c("Todos",
                   "Todos",
                   "Todos",
@@ -5773,10 +6207,12 @@ QUINTIL      <- c("Todos",
                   "Quintil 4",
                   "Quintil 5",
                   "Todos",
+                  "Todos",
+                  "Todos",
                   "Todos")
 PAIS         <- "Uruguay"
 ANIO         <- 2024
-VALOR        <- c(c_ano, a_e_region, a_e_quintil, a_e_pobreza)
+VALOR        <- c(c_ano, a_e_region, a_e_quintil, a_e_pobreza, a_e_pobreza2)
 RESPONSABLE  <- "JIMENA PANDOLFI"
 
 
@@ -5910,6 +6346,7 @@ for(i in 1:5){
 
 # Situación de pobreza del hogar
 
+#Metodología 2006
 a_pobreza <- function(x) {
   x <- ech_svy %>%
     filter(pobre_aux == x) %>%
@@ -5923,6 +6360,19 @@ for(i in 1:2){
   a_e_pobreza[i] <- a_pobreza(x = i)
 }         
 
+#Metodología 2017
+a_pobreza <- function(x) {
+  x <- ech_svy %>%
+    filter(pobre_aux2 == x) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(NBI_educacion11))
+  x <- mean(x$colname)
+}       
+
+a_e_pobreza2 <- numeric()
+
+for(i in 1:2){
+  a_e_pobreza2[i] <- a_pobreza(x = i)
+}         
 
 # Tramo de edad
 
@@ -6006,8 +6456,10 @@ CORTE_NUEVA  <- c("Total",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
                   "Quintil de ingreso",
-                  "Pobreza",
-                  "Pobreza",
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2006",
+                  "Pobreza - Met 2017",
+                  "Pobreza - Met 2017",
                   "Tramo de edad",
                   "Tramo de edad",
                   "Tramo de edad",
@@ -6040,6 +6492,8 @@ REGION       <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
+                  "Todos",
+                  "Todos",
                   "Todos")
 POBREZA      <- c("Todos",
                   "Todos",
@@ -6050,8 +6504,10 @@ POBREZA      <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
-                  "Pobre",
-                  "No pobre",
+                  "Pobre - Met 2006",
+                  "No pobre - Met 2006",
+                  "Pobre - Met 2017",
+                  "No pobre - Met 2017",
                   "Todos",
                   "Todos",
                   "Todos",
@@ -6084,8 +6540,12 @@ QUINTIL      <- c("Todos",
                   "Todos",
                   "Todos",
                   "Todos",
+                  "Todos",
+                  "Todos",
                   "Todos")
 TRAMO        <- c("Todos",
+                  "Todos",
+                  "Todos",
                   "Todos",
                   "Todos",
                   "Todos",
@@ -6108,6 +6568,8 @@ TRAMO        <- c("Todos",
                   "Todos",
                   "Todos")
 SEXO          <- c("Todos",
+                   "Todos",
+                   "Todos",
                    "Todos",
                    "Todos",
                    "Todos",
@@ -6149,11 +6611,13 @@ ASCENDENCIA   <- c("Todos",
                    "Todos",
                    "Todos",
                    "Todos",
+                   "Todos",
+                   "Todos",
                    "Afro",
                    "No afro")
 PAIS         <- "Uruguay"
 ANIO         <- 2024
-VALOR        <- c(c_ano, a_e_region, a_e_quintil, a_e_pobreza, a_e_edad, a_e_sexo, a_e_afro)
+VALOR        <- c(c_ano, a_e_region, a_e_quintil, a_e_pobreza, a_e_pobreza2, a_e_edad, a_e_sexo, a_e_afro)
 RESPONSABLE  <- "JIMENA PANDOLFI"
 
 m158_tp <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY,	PAIS,	ANIO,	VALOR,	RESPONSABLE)	
@@ -6322,6 +6786,602 @@ m158_pu <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	
 m158 <- rbind(m158_pu, m158_tp)
 
 
+### 170	Hogares en situación de pobreza (% de la población total) (INE-Met 2017) ------------------------------------
+
+# Total
+
+a_est <- ech_h_svy %>%
+  srvyr::summarise(colname = srvyr::survey_mean(pobre17))
+
+a_ano<- mean(as.numeric(a_est$colname))
+
+c_ano <- a_ano
+
+# Region
+
+a_region <- function(x) {
+  x <- ech_h_svy %>%
+    filter(bd_region == x) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(pobre17))
+  x <- mean(x$colname)
+}       
+
+a_e_region <- numeric()
+
+for(i in 1:3){
+  a_e_region[i] <- a_region(x = i)
+}     
+
+c_region <- as.data.frame(a_e_region)
+
+
+# Sexo del jefe
+
+a_jefe <- function(x) {
+  x <- ech_h_svy %>%
+    filter(sexojefe == x) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(pobre17))
+  x <- mean(x$colname)
+}       
+
+a_e_jefe <- numeric()
+
+for(i in 1:2){
+  a_e_jefe[i] <- a_jefe(x = i)
+}     
+
+c_jefe <- as.data.frame(a_e_jefe)
+
+
+# Base motor
+
+CODIND  <- ""
+NOMINDICADOR  <- ""
+CATEGORIA  <- ""
+PESTAÑA  <- ""
+CORTE  <- ""
+CORTE_NUEVA  <- ""
+REGIÓN  <- ""
+TRAMO  <- ""
+SEXOJEFATURA  <- ""
+POBREZA  <- ""
+SEXO  <- ""
+ASCENDENCIA  <- ""
+DECIL  <- ""
+QUINTIL  <- ""
+DEPARTAMENTOUY  <- ""
+
+PAÍS  <- ""
+ANIO  <- ""
+VALOR  <- ""
+RESPONSABLE  <- ""
+
+CODIND       <- 170
+NOMINDICADOR <- "Hogares en situación de pobreza (% de la población total) (INE-Met 2017)"
+CATEGORIA    <- "Pobreza"
+CORTE_NUEVA  <- c("Total",
+                  "Total",
+                  "Total",
+                  "Total",
+                  "Sexo del jefe(a)",
+                  "Sexo del jefe(a)")
+REGION       <- c("Total País",
+                  "Urbano (más de 5.000 habitantes)",
+                  "Urbano (menos de 5.000 habitantes)",
+                  "Rural disperso",
+                  "Todos",
+                  "Todos")
+SEXOJEFATURA <-c("Todos",
+                 "Todos",
+                 "Todos",
+                 "Todos",
+                 "Jefe Varón",
+                 "Jefa Mujer")
+PAIS         <- "Uruguay"
+ANIO         <- 2024
+VALOR        <- c(c_ano, a_e_region, a_e_jefe)
+RESPONSABLE  <- "JIMENA PANDOLFI"
+
+
+
+
+m170 <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY,	PAIS,	ANIO,	VALOR,	RESPONSABLE)	
+
+
+
+### 171	Personas en situación de pobreza (% de la población total) (INE-Met 2017) ----------------------------------
+
+# Total
+
+a_est <- ech_svy %>%
+  srvyr::summarise(colname = srvyr::survey_mean(pobre17))
+
+a_ano<- mean(as.numeric(a_est$colname))
+
+c_ano <- a_ano
+
+# Region
+
+a_region <- function(x) {
+  x <- ech_svy %>%
+    filter(bd_region == x) %>%
+    
+    srvyr::summarise(colname = srvyr::survey_mean(pobre17))
+  x <- mean(x$colname)
+}       
+
+a_e_region <- numeric()
+
+for(i in 1:3){
+  a_e_region[i] <- a_region(x = i)
+}     
+
+c_region <- as.data.frame(a_e_region)
+
+
+# Edad
+
+a_edad <- function(x) {
+  x <- ech_svy %>%
+    filter(tramo_edad == x) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(pobre17))
+  x <- mean(x$colname)
+}       
+
+a_e_edad <- numeric()
+
+for(i in 1:7){
+  a_e_edad[i] <- a_edad(x = i)
+}     
+
+c_edad <- as.data.frame(a_e_edad)
+
+
+# Sexo
+
+a_sexo <- function(x) {
+  x <- ech_svy %>%
+    filter(bc_pe2 == x) %>%
+    
+    srvyr::summarise(colname = srvyr::survey_mean(pobre17))
+  x <- mean(x$colname)
+}       
+
+a_e_sexo <- numeric()
+
+for(i in 1:2){
+  a_e_sexo[i] <- a_sexo(x = i)
+}     
+
+c_sexo <- as.data.frame(a_e_sexo)
+
+# Ascendencia afro
+
+a_afro <- function(x) {
+  x <- ech_svy %>%
+    filter(bd_e29_1 == x) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(pobre17))
+  x <- mean(x$colname)
+}       
+
+a_e_afro <- numeric()
+
+for(i in 1:2){
+  a_e_afro[i] <- a_afro(x = i)
+}     
+
+c_afro <- as.data.frame(a_e_afro)
+
+
+# Base motor
+
+CODIND  <- ""
+NOMINDICADOR  <- ""
+CATEGORIA  <- ""
+PESTAÑA  <- ""
+CORTE  <- ""
+CORTE_NUEVA  <- ""
+REGIÓN  <- ""
+TRAMO  <- ""
+SEXOJEFATURA  <- ""
+POBREZA  <- ""
+SEXO  <- ""
+ASCENDENCIA  <- ""
+DECIL  <- ""
+QUINTIL  <- ""
+DEPARTAMENTOUY  <- ""
+
+PAÍS  <- ""
+ANIO  <- ""
+VALOR  <- ""
+RESPONSABLE  <- ""
+
+CODIND       <- 171
+NOMINDICADOR <- "Personas en situación de pobreza (% de la población total) (INE-Met 2017)"
+CATEGORIA    <- "Pobreza"
+CORTE_NUEVA  <- c("Total",
+                  "Total",
+                  "Total",
+                  "Total",
+                  "Edad",
+                  "Edad",
+                  "Edad",
+                  "Edad",
+                  "Edad",
+                  "Edad",
+                  "Edad",
+                  "Sexo",
+                  "Sexo",
+                  "Ascendencia étnico-racial",
+                  "Ascendencia étnico-racial")
+REGION       <- c("Total País",
+                  "Urbano (más de 5.000 habitantes)",
+                  "Urbano (menos de 5.000 habitantes)",
+                  "Rural disperso",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos")
+TRAMO         <- c("Todos", 
+                   "Todos",
+                   "Todos",
+                   "Todos",
+                   "De 0 a 5 años",
+                   "De 6 a 12 años",
+                   "De 13 a 18 años",
+                   "De 19 a 24 años",
+                   "De 25 a 29 años",
+                   "De 30 a 64 años",
+                   "De 65 años y más",
+                   "Todos",
+                   "Todos",
+                   "Todos",
+                   "Todos")
+SEXO          <- c("Todos",
+                   "Todos",
+                   "Todos",
+                   "Todos",
+                   "Todos",
+                   "Todos",
+                   "Todos",
+                   "Todos",
+                   "Todos",
+                   "Todos",
+                   "Todos",
+                   "Varones",
+                   "Mujeres",
+                   "Todos",
+                   "Todos")
+ASCENDENCIA  <- c("Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Afro",
+                  "No afro")
+PAIS         <- "Uruguay"
+ANIO         <- 2024
+VALOR        <- c(c_ano, a_e_region, a_e_edad, a_e_sexo, a_e_afro)
+RESPONSABLE  <- "JIMENA PANDOLFI"
+
+
+
+m171 <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY,	PAIS,	ANIO,	VALOR,	RESPONSABLE)	
+
+
+
+
+### 172	Hogares en situación de indigencia (% de la población total) (INE-Met 2017) --------------------------------
+
+# Total
+
+a_est <- ech_h_svy %>%
+  srvyr::summarise(colname = srvyr::survey_mean(indig17))
+
+a_ano<- mean(as.numeric(a_est$colname))
+
+c_ano <- a_ano
+
+# Region
+
+a_region <- function(x) {
+  x <- ech_h_svy %>%
+    filter(bd_region == x) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(indig17))
+  x <- mean(x$colname)
+}       
+
+a_e_region <- numeric()
+
+for(i in 1:3){
+  a_e_region[i] <- a_region(x = i)
+}     
+
+c_region <- as.data.frame(a_e_region)
+
+
+# Sexo del jefe
+
+a_jefe <- function(x) {
+  x <- ech_h_svy %>%
+    filter(sexojefe == x) %>%
+    
+    srvyr::summarise(colname = srvyr::survey_mean(indig17))
+  x <- mean(x$colname)
+}       
+
+a_e_jefe <- numeric()
+
+for(i in 1:2){
+  a_e_jefe[i] <- a_jefe(x = i)
+}     
+
+c_jefe <- as.data.frame(a_e_jefe)
+
+
+# Base motor
+
+CODIND  <- ""
+NOMINDICADOR  <- ""
+CATEGORIA  <- ""
+PESTAÑA  <- ""
+CORTE  <- ""
+CORTE_NUEVA  <- ""
+REGIÓN  <- ""
+TRAMO  <- ""
+SEXOJEFATURA  <- ""
+POBREZA  <- ""
+SEXO  <- ""
+ASCENDENCIA  <- ""
+DECIL  <- ""
+QUINTIL  <- ""
+DEPARTAMENTOUY  <- ""
+
+PAÍS  <- ""
+ANIO  <- ""
+VALOR  <- ""
+RESPONSABLE  <- ""
+
+CODIND       <- 172
+NOMINDICADOR <- "Hogares en situación de indigencia (% de la población total) (INE-Met 2017)"
+CATEGORIA    <- "Pobreza"
+CORTE_NUEVA  <- c("Total",
+                  "Total",
+                  "Total",
+                  "Total",
+                  "Sexo del jefe(a)",
+                  "Sexo del jefe(a)")
+REGION       <- c("Total País",
+                  "Urbano (más de 5.000 habitantes)",
+                  "Urbano (menos de 5.000 habitantes)",
+                  "Rural disperso",
+                  "Todos",
+                  "Todos")
+SEXOJEFATURA <-c("Todos",
+                 "Todos",
+                 "Todos",
+                 "Todos",
+                 "Jefe Varón",
+                 "Jefa Mujer")
+PAIS         <- "Uruguay"
+ANIO         <- 2024
+VALOR        <- c(c_ano, a_e_region, a_e_jefe)
+RESPONSABLE  <- "JIMENA PANDOLFI"
+
+
+m172 <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY,	PAIS,	ANIO,	VALOR,	RESPONSABLE)	
+
+### 173	Personas en situación de indigencia (% de la población total) (INE-Met 2017) --------------------------------
+
+# Total
+
+a_est <- ech_svy %>%
+  srvyr::summarise(colname = srvyr::survey_mean(indig17))
+
+a_ano<- mean(as.numeric(a_est$colname))
+
+c_ano <- a_ano
+
+# Region
+
+a_region <- function(x) {
+  x <- ech_svy %>%
+    filter(bd_region == x) %>%
+    
+    srvyr::summarise(colname = srvyr::survey_mean(indig17))
+  x <- mean(x$colname)
+}       
+
+a_e_region <- numeric()
+
+for(i in 1:3){
+  a_e_region[i] <- a_region(x = i)
+}     
+
+c_region <- as.data.frame(a_e_region)
+
+
+# Edad
+
+a_edad <- function(x) {
+  x <- ech_svy %>%
+    filter(tramo_edad == x) %>%
+    
+    srvyr::summarise(colname = srvyr::survey_mean(indig17))
+  x <- mean(x$colname)
+}       
+
+a_e_edad <- numeric()
+
+for(i in 1:7){
+  a_e_edad[i] <- a_edad(x = i)
+}     
+
+c_edad <- as.data.frame(a_e_edad)
+
+# Sexo
+
+a_sexo <- function(x) {
+  x <- ech_svy %>%
+    filter(bc_pe2 == x) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(indig17))
+  x <- mean(x$colname)
+}       
+
+a_e_sexo <- numeric()
+
+for(i in 1:2){
+  a_e_sexo[i] <- a_sexo(x = i)
+}     
+
+c_sexo <- as.data.frame(a_e_sexo)
+
+
+# Ascendencia afro
+
+a_afro <- function(x) {
+  x <- ech_svy %>%
+    filter(bd_e29_1 == x) %>%
+    srvyr::summarise(colname = srvyr::survey_mean(indig17))
+  x <- mean(x$colname)
+}       
+
+a_e_afro <- numeric()
+
+for(i in 1:2){
+  a_e_afro[i] <- a_afro(x = i)
+}     
+
+c_afro <- as.data.frame(a_e_afro)
+
+
+# Base motor
+
+CODIND  <- ""
+NOMINDICADOR  <- ""
+CATEGORIA  <- ""
+PESTAÑA  <- ""
+CORTE  <- ""
+CORTE_NUEVA  <- ""
+REGIÓN  <- ""
+TRAMO  <- ""
+SEXOJEFATURA  <- ""
+POBREZA  <- ""
+SEXO  <- ""
+ASCENDENCIA  <- ""
+DECIL  <- ""
+QUINTIL  <- ""
+DEPARTAMENTOUY  <- ""
+
+PAÍS  <- ""
+ANIO  <- ""
+VALOR  <- ""
+RESPONSABLE  <- ""
+
+CODIND       <- 173
+NOMINDICADOR <- "Personas en situación de indigencia (% de la población total) (INE-Met 2017)"
+CATEGORIA    <- "Pobreza"
+CORTE_NUEVA  <- c("Total",
+                  "Total",
+                  "Total",
+                  "Total",
+                  "Edad",
+                  "Edad",
+                  "Edad",
+                  "Edad",
+                  "Edad",
+                  "Edad",
+                  "Edad",
+                  "Sexo",
+                  "Sexo",
+                  "Ascendencia étnico-racial",
+                  "Ascendencia étnico-racial")
+REGION       <- c("Total País",
+                  "Urbano (más de 5.000 habitantes)",
+                  "Urbano (menos de 5.000 habitantes)",
+                  "Rural disperso",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos")
+TRAMO         <- c("Todos", 
+                   "Todos",
+                   "Todos",
+                   "Todos",
+                   "De 0 a 5 años",
+                   "De 6 a 12 años",
+                   "De 13 a 18 años",
+                   "De 19 a 24 años",
+                   "De 25 a 29 años",
+                   "De 30 a 64 años",
+                   "De 65 años y más",
+                   "Todos",
+                   "Todos",
+                   "Todos",
+                   "Todos")
+SEXO          <- c("Todos",
+                   "Todos",
+                   "Todos",
+                   "Todos",
+                   "Todos",
+                   "Todos",
+                   "Todos",
+                   "Todos",
+                   "Todos",
+                   "Todos",
+                   "Todos",
+                   "Varones",
+                   "Mujeres",
+                   "Todos",
+                   "Todos")
+ASCENDENCIA  <- c("Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Todos",
+                  "Afro",
+                  "No afro")
+PAIS         <- "Uruguay"
+ANIO         <- 2024
+VALOR        <- c(c_ano, a_e_region, a_e_edad, a_e_sexo, a_e_afro)
+RESPONSABLE  <- "JIMENA PANDOLFI"
+
+
+
+m173 <- cbind(CODIND,	NOMINDICADOR,	CATEGORIA,	PESTAÑA,	CORTE,	CORTE_NUEVA,	REGION,	TRAMO,	SEXOJEFATURA,	POBREZA,	SEXO,	ASCENDENCIA,	DECIL,	QUINTIL,	DEPARTAMENTOUY,	PAIS,	ANIO,	VALOR,	RESPONSABLE)	
+
+
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 ### Fusión de base motor ###
@@ -6332,7 +7392,8 @@ motor_2024 <- rbind(m111, m113, m121, m122, m123, m124,
                     m126, m127, m128, m132, m133, m134, 
                     m135, m141, m142, m145, m146 , m147, 
                     m148, m149, m150, m151, m152, m153, 
-                    m154, m155, m156, m157, m158 )
+                    m154, m155, m156, m157, m158, m170,
+                    m171, m172, m173)
 motor_2024 <- as.data.frame(motor_2024)
 motor_2024 <- motor_2024  %>% mutate(URBANORURALUY = case_when(PESTAÑA == "País Urbano"                                                                            ~ "Urbano (más de 5.000 habitantes)",
                                                                PESTAÑA == "Total País" & CORTE_NUEVA != "Región"                                                   ~  "Total País",
@@ -6354,12 +7415,10 @@ motor_2024 <- motor_2024[c("CODIND", "NOMINDICADOR", "CATEGORIA", "PESTAÑA", "C
                            "TRAMO", "SEXOJEFATURA", "POBREZA", "SEXO", "ASCENDENCIA", "DECIL", "QUINTIL",       
                            "DEPARTAMENTOUY", "URBANORURALUY", "PAÍS", "ANIO", "VALOR", "RESPONSABLE")]
    
+rio::export(motor_2024, "Data/Pobreza_2024.xlsx" )
 
 ###REVISAR
 #actualizaINE <- rio::import("Export actualiza 2024/Datos INE_Pobreza_2022y2023.xlsx")
-                                       
-Base_Motor_Pobreza  <- rio::import("Data/Base_Motor_Pobreza.xlsx")
-
-Base_Motor_Pobreza_24  <- rbind(Base_Motor_Pobreza, motor_2024)
-
-rio::export(Base_Motor_Pobreza_24, "Data/Base_Motor_Pobreza.xlsx" )
+# Base_Motor_Pobreza  <- rio::import("Data/Base_Motor_Pobreza.xlsx")
+# Base_Motor_Pobreza_24  <- rbind(Base_Motor_Pobreza, motor_2024)
+# rio::export(Base_Motor_Pobreza_24, "Data/Base_Motor_Pobreza.xlsx" )
