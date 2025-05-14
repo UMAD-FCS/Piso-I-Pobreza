@@ -2033,7 +2033,7 @@ DECIL      <- c("Decil 1",
                 "Decil 10")
 PAIS         <- "Uruguay"
 ANIO         <- 2024
-VALOR        <- c(m133_tp)
+VALOR        <- c(m133_tp)*100
 RESPONSABLE  <- "JIMENA PANDOLFI"
 
 
